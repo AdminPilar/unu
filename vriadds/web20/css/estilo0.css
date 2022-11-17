@@ -1,0 +1,24 @@
+
+
+.btnMnx{
+    border: 1px solid #3187cc;
+    color: #CCC;
+    display: block;
+    height: 72px;
+    width: 100%;
+    text-decoration: none;
+    font-weight: normal;
+    text-align: center;
+    padding-top: 12px;
+}
+
+.btnMnx:hover{
+    color: #FFF;
+    background-color: #3187cc;
+    border-color: #BBB;
+}
+
+.bg-primary{
+    background-color: #11579c !important;
+}
+

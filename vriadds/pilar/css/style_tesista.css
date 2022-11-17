@@ -1,0 +1,302 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,500,500i,700,700i');
+body {
+	font-family:'Ubuntu', sans-serif;
+	line-height: 1.5;
+	background-color:#eeeeee;
+}
+.navbar-default{
+	background-color: #fff;
+	border-bottom: 2px solid #e7e7e7;
+}
+.navbar-brand-pilar > img {
+	position: relative;
+	display: inline-block;
+	padding: 0 15px 0 0;
+	max-width:60px; 
+	margin-top:-13px;
+}
+.tesista-inicio{
+	margin-top: 60px;
+	background-color: #fff;
+}
+.page-header{
+	margin-top: 10px;
+}
+.list-group-item:first-child,.list-group-item:last-child{
+	border-radius: 0px;
+}
+#panelTesis{
+    padding-top: 20px;
+}
+.panel, .form-control{
+    border-radius: 0px;
+}
+
+.panel-group .panel {
+    border-radius: 0px;
+}
+
+a:focus, a:hover {
+    color: #23527c;
+    text-decoration: none;
+}
+.panel-default>.panel-heading {
+    background-color: #fff;
+    color:#054986;
+}
+.panel-title>a{
+    font-weight: 400;
+
+}
+.listdoc{
+    padding: 0px 20px;
+}
+/*Herramientas*/
+    .herramamientas>iframe{
+        width: 100%;
+        height: 600px;
+    }
+    .title{
+        color: #006893;
+        font-weight: 500;
+    }
+/*/Herramientas*/
+/*time line*/
+.timeline {
+    list-style: none;
+    padding: 20px 0 20px;
+    position: relative;
+}
+
+    .timeline:before {
+        top: 0;
+        bottom: 0;
+        position: absolute;
+        content: " ";
+        width: 3px;
+        background-color: #eeeeee;
+        left: 2%;
+        margin-left: -1.5px;
+    }
+
+    .timeline > li {
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+        .timeline > li:before,
+        .timeline > li:after {
+            content: " ";
+            display: table;
+        }
+
+        .timeline > li:after {
+            clear: both;
+        }
+
+        .timeline > li:before,
+        .timeline > li:after {
+            content: " ";
+            display: table;
+        }
+
+        .timeline > li:after {
+            clear: both;
+        }
+
+        .timeline > li > .timeline-panel {
+            width: 94%;
+            float: left;
+            border: 1px solid #d4d4d4;
+            border-radius: 2px;
+            padding: 20px;
+            position: relative;
+            -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
+        }
+
+            .timeline > li > .timeline-panel:before {
+                position: absolute;
+                top: 26px;
+                right: -100px;
+                display: inline-block;
+                border-top: 15px solid transparent;
+                border-left: 15px solid #ccc;
+                border-right: 0 solid #ccc;
+                border-bottom: 15px solid transparent;
+                content: " ";
+            }
+
+            .timeline > li > .timeline-panel:after {
+                position: absolute;
+                top: 27px;
+                right: -14px;
+                display: inline-block;
+                border-top: 14px solid transparent;
+                border-left: 14px solid #fff;
+                border-right: 0 solid #fff;
+                border-bottom: 14px solid transparent;
+                content: " ";
+            }
+
+        .timeline > li > .timeline-badge {
+            color: #fff;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            font-size: 1.4em;
+            text-align: center;
+            position: absolute;
+            top: 16px;
+            left: 2%;
+            margin-left: -25px;
+            background-color: #999999;
+            z-index: 100;
+            border-top-right-radius: 50%;
+            border-top-left-radius: 50%;
+            border-bottom-right-radius: 50%;
+            border-bottom-left-radius: 50%;
+        }
+
+        .timeline > li.timeline-inverted > .timeline-panel {
+            float: left;
+            left : 5%;
+        }
+
+            .timeline > li.timeline-inverted > .timeline-panel:before {
+                border-left-width: 0;
+                border-right-width: 15px;
+                left: -15px;
+                right: auto;
+            }
+
+            .timeline > li.timeline-inverted > .timeline-panel:after {
+                border-left-width: 0;
+                border-right-width: 14px;
+                left: -14px;
+                right: auto;
+            }
+
+.timeline-badge.primary {
+    background-color: #2e6da4 !important;
+}
+
+.timeline-badge.success {
+    background-color: #3f903f !important;
+}
+
+.timeline-badge.warning {
+    background-color: #f0ad4e !important;
+}
+
+.timeline-badge.danger {
+    background-color: #d9534f !important;
+}
+
+.timeline-badge.info {
+    background-color: #5bc0de !important;
+}
+
+.timeline-title {
+    margin-top: 0;
+    color: inherit;
+}
+
+.timeline-body > p,
+.timeline-body > ul {
+    margin-bottom: 0;
+}
+
+    .timeline-body > p + p {
+        margin-top: 5px;
+    }
+
+@media (max-width: 767px) {
+    ul.timeline:before {
+        left: 10px;
+    }
+
+    ul.timeline > li > .timeline-panel {
+        width: calc(97% - 90px);
+        width: -moz-calc(97% - 90px);
+        width: -webkit-calc(97% - 90px);
+    }
+
+    ul.timeline > li > .timeline-badge {
+        left: 10px;
+        /*margin-left: -10px;*/
+        top: 16px;
+    }
+
+    ul.timeline > li > .timeline-panel {
+        float: right;
+    }
+    	.timeline > li.timeline-inverted > .timeline-panel {
+            float: left;
+            left : 12%;
+        }
+
+        ul.timeline > li > .timeline-panel:before {
+            border-left-width: 0;
+            border-right-width: 15px;
+            left: -15px;
+            right: auto;
+        }
+
+        ul.timeline > li > .timeline-panel:after {
+            border-left-width: 0;
+            border-right-width: 14px;
+            left: -14px;
+            right: auto;
+        }
+}
+/*end time line*/
+.flecha{
+	padding: 30px auto;
+	text-align: center;
+}
+.flecha>a,.flecha>p{
+	margin:0px;
+	font-size: 20px;
+	color:green;
+	text-decoration: none;
+}
+.green{
+	background-color: #86c123 !important;
+}
+/* 0_Registra proyecto */
+
+.btn{
+ border-radius: 0px;
+}
+.indi_group{
+    padding: 50px 10px;
+    width: 80%;
+    border:0px transparent;
+    color: white;
+    font-size: 18px;
+}
+.btn-select{
+    text-align: center;
+}
+.btn-default:hover,.btn-default:active ,.btn-default:focus ,.btn-default:visited{
+    color: #fff;
+    background-color:#0f8aa7;
+    border-color: transparent;
+}
+.bg-1{
+    background-color: #26cdf3;
+}
+.bg-2{
+    background-color:   #e0476c;
+}
+
+/* 0_Registra proyecto */
+
+/*	<p> Ver Estados Anteriores</p>*/
+footer{
+    border-top: 1px solid ;
+    padding-top: 20px;
+    font-size: 13px;
+    line-height:15px;
+}

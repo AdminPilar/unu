@@ -1,0 +1,31 @@
+-- conexion MSSQL
+
+__construct DbContext() {
+  // Trusted_Connection=Yes;  (Windows Authentication)
+  this.Database.Connection.ConnectionString = @"Data Source=DESKTOP-OBLJKFV\SQLEXPRESS;Initial Catalog=rpGeneral;User ID=;Integrated Security=SSPI;";
+}
+
+
+--
+-- creacion SQL de Autonumerico y Clave Primaria
+--
+CREATE TABLE Historico  (
+   Id INT IDENTITY(1,1) NOT NULL,
+   Autor varchar(50) NOT NULL,
+   PRIMARY KEY(Id)
+)
+GO
+
+CREATE TABLE Cargos  (
+   Id int IDENTITY(1,1) NOT NULL,
+   Nombre nvarchar(max) NULL,
+   Obs  nvarchar(max)   NULL,
+   PRIMARY KEY CLUSTERED
+)
+GO
+
+CREATE TABLE Historiales  (
+   Id INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+   Autor varchar(50) NOT NULL
+)
+

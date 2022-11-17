@@ -1,0 +1,1044 @@
+/*#*/
+/*# VRI - Universidad Nacional de Ucayali - PUCALLPA 2020*/
+/*# Ing. Ramiro Pedro, Ing. Fred Torres, Ing. Julio Tisnado*/
+/*#*/
+
+@import url('https://fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,500,500i,700,700i');
+@import 'fontello.css';
+
+  body {
+      font-family:'Ubuntu', sans-serif;
+      line-height: 1.6;
+      color: #f5f6f7;
+      background-color: #F5F5F5;
+      /*background: url(../img/body_bg.jpg) repeat-x left top #F5F5F5; */
+      background-position: 0px 60px;
+  }
+
+  p {
+    font-size: 15px;
+  }
+  .margin {
+    padding:20px 20px;
+  }
+  .margin-bd{
+    padding:20px 20px;
+  }
+
+  .contenido1{
+    padding: 20px;
+  }
+  .container-fluid {
+      padding-top: 0px;
+      padding-bottom: 0px;
+  }
+  
+
+/* Navbar  HOME*/
+
+
+.navbar-home
+{
+
+      padding-top: 10px;
+      padding-bottom: 10px;
+      border: 0;
+      border-radius: 0;
+      margin-bottom: 0;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      transition: color 300ms ease-in-out;
+
+}
+
+
+.navbar-nav  li a:hover {
+      
+      color: #f17b62 !important; 
+
+  }
+
+
+.navbar-default{
+    opacity: 100%;
+   /*background-color: rgba(45, 57, 79, 0.79);*/
+   /*background-color: rgba(8, 112, 171, 0.85);*/
+
+   background-color:   rgba(17, 87, 156, 0.93);
+    
+
+  }
+
+.navbar-default .navbar-nav>li>a {
+    /*color: #fff;*/
+    color: #fff;
+    font-weight: 300;
+    font-size: 13px;
+
+
+
+}
+
+/* globales */
+
+.modal-content{
+  border-radius:0px;
+}
+
+.modal-header
+{
+ color:#fff;
+  /*border-radius: none;*/
+  background-color: #dc6363;
+}
+
+
+.btn
+{
+
+  border-radius: 2px;
+}
+
+/* fin globales */
+
+
+.contenido
+{
+
+  color:#000;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+.contenido h1
+{
+font-size: 20px;
+border-bottom: 1px solid #705F55; 
+margin-bottom: 18px;
+
+}
+
+.contenido h2
+{
+font-size: 20px;
+border-bottom: 1px solid #705F55; 
+
+}
+
+.contenido section
+{
+text-align: justify;
+}
+
+.descargas,
+.descargas a
+{
+margin: 0 auto;
+text-align: center !important;  
+/*background-color: #f18f7a;**/
+background-color:#dc6363;
+color: #fff;
+margin-top: 15px;
+}
+
+
+
+
+/* -------------- */
+
+
+
+
+  .vri-logo
+  {
+    max-width: 38%;
+    min-width: 8%;
+    display:block;
+    margin-left:50px;
+    color:#fff;
+
+  }
+
+
+ .vri-anio
+  {
+    max-width: 25%;
+    min-width: 8%;
+    display:block;
+    margin-top: 10px;
+    margin-right:50px;
+    color:#fff;
+
+  }
+
+
+
+ .vri-info
+ {
+    margin: 0px;
+    width: 100%;
+    text-align: center;
+    align-content: center;
+    /*background-color: #007da9;*/
+    /*background-color: rgba(45, 57, 79, 0.8);*/
+    /*background-color:  rgba(7, 88, 158, 0.68);*/
+    background-color:  rgba(16, 84, 152, 0.78);
+
+    padding: 15em 0em 10em  0em;
+    
+    /*background-image: url("http://vriunap.pe/vriadds/vri/web/header10.jpg");*/
+
+    
+    background-size: 100%;
+  }
+
+ .vri-panel
+ {
+    margin: 0px;
+    width: 100%;
+    text-align: center;
+    align-content: center;
+ 
+    
+    background-size: 100%;
+
+      text-transform: uppercase;
+  }
+
+
+
+.vri-btn-acceso
+{
+     padding: 0px 0px 0px;
+}
+
+
+
+.vri-panel-btn ,
+.vri-panel-btn:hover,
+.vri-panel-btn:active 
+{
+    /*background-color: #556aaf ;   */
+    /*background-color: #29558e ;*/
+    /*background-color: #3d3c5b;*/
+    /* background-color: #BD467D; */
+
+    /*background-color:     #2a364e;*/
+    background-color:     #11579c;
+
+    color: #ffffff;
+    width: 100%;
+    border-radius: 0px;
+    border: 0px;
+    padding: 25px 0px 32px 0px;
+    font-size: 0.9em;
+
+
+  -webkit-transition: background-color 500ms ease-in-out;
+  -o-transition: background-color 500ms ease-in-out;
+  transition: background-color 500ms ease-in-out;
+  
+}
+
+.vri-panel-btn:hover
+{
+   /* background-color: #67b5dc ; */
+  /* background-color: #6cbee4 ;*/
+  /*background-color: #303030 ; negro*/ 
+/*  background-color: #f17b62 ;*/
+
+background-color: #dc6363;
+  color: inherit;
+  text-decoration: none;
+  
+}
+
+
+
+
+
+/*SECCION PAGINAS   */
+
+
+
+
+.navbar-paginas {
+      padding-top: 0px;
+      padding-bottom: 0px;
+      border: 0;
+      border-radius: 0;
+      margin-bottom: 0;
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      transition: color 300ms ease-in-out;
+      /* prueba */
+
+  }
+
+
+.navbar-nav  li a:hover {
+      
+      color: #f17b62 !important; 
+
+  }
+
+
+.navbar-default .navbar-nav>li>a {
+    /*color: #fff;*/
+    color: #fff;
+    font-weight: 300;
+    font-size: 13px;
+
+
+  }
+
+.navbar-right
+{
+
+  padding-right: 30px;
+}
+
+
+
+
+
+
+
+.vri-header
+{
+
+/*background-color: #2a364e;*/
+background-color: #11579c;
+height: 160px;
+vertical-align: middle;
+}
+
+.vri-logo-small
+  {
+    max-width: 25%;
+    min-width: 5%;
+    display:block;
+    /*
+    padding-top: 45px;
+    padding-bottom: 15px;
+    */
+    
+    /*margin-left:20px;*/
+    
+    color:#fff;
+
+  }
+
+
+
+.vri-btn-small
+{
+
+    background-color: #3b5079;
+    color: #fff;
+    border-radius: 0px;
+    border: 0px;
+    padding: 0px 0px 17px 0px;
+    font-size: 0.9em;
+
+  -webkit-transition: background-color 500ms ease-in-out;
+  -o-transition: background-color 500ms ease-in-out;
+  transition: background-color 500ms ease-in-out;
+
+}
+
+
+.vri-btn-small:hover
+{
+
+  background-color: #f17b62 ;
+  
+  color: inherit;
+  text-decoration: none;
+
+
+}
+
+.actual
+{
+/*background-color: #87bece;
+color: #f3f3f3 !important;*/
+
+border-top: 2.5px solid #fff;
+
+}
+
+
+
+
+.Aligner {
+  display: flex;
+  align-items: center;
+  /*justify-content: center;*/
+}
+
+.Aligner .izquierda {
+    
+    margin-left: auto;
+}
+
+
+
+/* FIN PAGINAS  */
+
+
+
+
+
+.vri-seccion
+{
+    /*padding: 150px 30px 150px 30px;*/
+
+    height: 400px;    
+    color:#000;
+    text-align: justify;
+    /*text-justify:inter-word;*/
+    text-justify:auto;
+    line-height: 150%;
+    font-weight: 300;
+}
+
+
+
+
+.seccion-titulo
+{
+
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-transform: uppercase;
+    padding-bottom:  30px;    
+}
+
+.seccion-bloque
+{
+
+padding: 51px 0px 51px 0px;
+
+}
+
+.seccion-link
+{
+ display: inline-block;
+ color:#2a364e;
+
+ 
+
+ text-transform: uppercase;
+ line-height: 20px
+ font-size: 14px;
+ font-weight: 500;
+ padding-top: 45px;
+}
+
+
+
+.seccion-link:hover
+{
+text-decoration: none;
+color: #f17b62 ;
+
+}
+
+
+
+
+
+
+.curso 
+{
+    background-image: url('http://vriunap.pe/vriadds/vri/web/fondo-curso1.jpg');     
+    padding: 70px 90px 90px 90px ; 
+}
+
+
+.curso .titulo-curso
+{
+    line-height: 1.2;
+    font-weight: 400;
+    color: rgba(255,255,255,0.6)
+}
+
+.contenedor-curso
+{
+
+
+  display: inline-block;
+  vertical-align: middle;
+
+}
+
+.numero-curso
+{
+
+    color: #fff;
+    font-size: 180px;
+    font-weight: 400;
+    letter-spacing: -25px;
+    padding-top: 80px;
+    padding-left: -80px;
+
+    vertical-align: middle;
+    
+}
+
+
+.texto-proxima-sustentacion
+{ 
+  line-height: 1.2;
+  font-weight: 400;
+  color: rgba(255,255,255,0.6);
+margin-bottom: 20px;
+}
+
+
+.texto-sustentacion
+{
+
+color: #fff;
+font-weight: 300;
+font-size: 13px;
+line-height: 1;
+color: #f3f3f3;
+width: 100%;
+}
+
+
+
+
+
+.fill { 
+    
+    min-height: 20%;
+    height: 100%;
+
+   vertical-align: middle;
+
+}
+
+
+.texto-autor
+{
+  text-align: right;
+  font-size: 11px;
+  color: #f3f3f3;
+  margin-top: 10px;
+}
+
+
+
+
+.texto-curso
+{
+
+    font-size: 20px;
+    font-weight: 200;
+    text-align: left;
+    color:  #fff;
+    text-transform: uppercase;
+    vertical-align: middle;
+    padding-left: 40px;
+    /* padding-top: 50px; /*original*/
+    padding-top: 20px; /* para doble concurso */
+
+}
+
+
+
+.mes-curso
+{
+    margin-top: 60px; /*45 default*/
+    font-size: 40px;
+    text-align: right;
+    color: #fff;
+    text-transform: uppercase;;
+    padding-top: 0px; /*0 default*/
+    padding-right: 0px;
+    letter-spacing: -2px;
+}
+
+.boton-curso
+{
+
+    display: inline-block;
+    vertical-align: top;
+   /*margin-top: 45px; /*15 original*/
+    margin-top: 25px;
+    margin-left: 25px; 
+
+    width: 100%;
+    max-width: 150px;
+    line-height: 1.1;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+    text-transform: uppercase;
+    color: #fff;
+    background-color: transparent;
+    border: 1px solid #d0d0d0;
+    padding: 12px 10px;
+
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    -webkit-transition: background-color 300ms ease-in-out, color 300ms ease-in-out, border-color 300ms ease-in-out;
+    -o-transition: background-color 300ms ease-in-out, color 300ms ease-in-out, border-color 300ms ease-in-out;
+    transition: background-color 300ms ease-in-out, color 300ms ease-in-out, border-color 300ms ease-in-out;
+
+}
+
+.boton-curso:hover
+{
+    text-decoration: none;
+    color: #505050;
+    background-color: #fff;
+}
+
+
+
+.noticias
+{
+    padding-left: 0px;
+    padding-right: 0px; 
+}
+
+
+
+
+.numero-cifras 
+{
+font-size: 18px;
+text-align: center;
+line-height:1;
+
+}
+
+.numero-cifras>h1
+{
+
+font-size: 32px; 
+font-weight: 400; 
+letter-spacing: -3px;   
+margin-bottom: 0px;
+margin-top: 0px
+}
+
+
+.numero-cifras-tejecucion 
+{
+font-size: 15px;
+text-align: center;
+    line-height:1;
+  }
+
+.numero-cifras-tejecucion>h1
+{
+
+font-size: 25px; 
+font-weight: 400; 
+/*letter-spacing: -3px;   */
+margin-bottom: 0px;
+margin-top: 0px
+}
+
+
+
+
+
+
+.texto-cifras
+{
+
+font-size: 40px;
+}
+
+
+
+.rowfix {
+    display: table;
+}
+.rowfix [class*="col-"] {
+    display: table-cell;
+    float: none;
+
+    vertical-align: middle;
+}
+
+
+.rowfixtop {
+    display: table;
+}
+.rowfixtop [class*="col-"] {
+    display: table-cell;
+    float: none;
+
+    vertical-align:top;
+}
+
+
+
+
+
+.texto-cifras
+{
+
+padding-left: 0px;
+padding-right: 0px;
+color:#fff;
+text-align:left;
+font-size: 12px;
+height: 100%;
+}
+
+
+/*  OJO  OTRO FILL
+.fill
+{
+
+  min-height: 100%;
+    height: 100%;
+}
+
+*/
+
+
+
+.site-logo
+{
+  display: block;
+  overflow: hidden;
+  text-indent: 100%;
+  white-space: nowrap;
+
+}
+
+
+
+
+#footer
+{
+  line-height: 1.2;
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+
+}
+
+.footer-item p 
+{
+ font-size: 13px;
+ margin-bottom: 17px; 
+ display: block;
+ 
+}
+
+.footer-item .derechos  
+{
+color: rgba(85,85,85,0.5);
+word-wrap:break-word;
+white-space: normal; /* no funciona mmm */
+font-size: 11px;
+
+}
+
+
+.footer-item h5
+{
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 15px;
+  margin-top: 0px; 
+  display: block;
+  text-transform: uppercase;
+ /* para cifras*/
+  text-align: left;
+
+}
+
+.footer-item a { color: inherit; }
+
+#footer-logo
+{
+  width: 180px;
+  height: 45px;
+  background: url('https://vriunap.pe/vriadds/vri/web/logo_footer.png');
+  margin-bottom: 10px;
+}
+
+.footer-info
+{
+
+margin: 0px;
+padding: 0px;
+
+}
+
+#footer-slogan
+{
+  font-weight: 300;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+}
+
+.footer-item { height: 200px; }
+
+.footer-small-footer {color: #fff;}
+
+.footer-item-interes h5 
+{ 
+  text-align: center;
+  color: #000000;
+  margin-bottom: 10px;
+
+}
+
+
+.footer-item .fondo-bottom
+{
+  position: absolute;
+  bottom: 25px;
+  margin: 0;
+}
+
+.paddington30 { padding: 30px; }
+.paddington030 { padding: 15px, 30px,30px,30px;}
+
+.bg-0 { background-color: #fff; }
+.bg-1 { background-color: #f3f3f3; }
+.bg-2 { background-color: #555; }
+.bg-3 { background-color: #3d3d3d; }
+.bg-4 { background-color: #303030; }
+.bg-5 { background-color: #556aaf ;}
+/*.bg-6 { background-color: #2a364e ;}*/
+.bg-6 { background-color: #11579c ;}
+
+
+.bg-7 {background-color: rgba(241, 165, 57, 0.84);}
+/*.bg-8 {background-color: #f17b62;}*/
+.bg-8 {background-color: #dc6363;}
+
+
+.bg-9 {
+    background-color: rgba(50, 50, 50, 1);
+    background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(102,102,102,1)), color-stop(100%, rgba(15,15,15,1)));
+    background: linear-gradient(135deg, rgba(102,102,102,1) 0%, rgba(15,15,15,1) 100%);
+}
+
+
+
+
+.box {
+/*.bg-8 {background-color: #f17b62;}*/
+background-color: #dc6363;}
+}
+
+.box a{
+  text-decoration: none;
+}
+
+
+
+.gi-1x{font-size: 1em; }
+.gi-15x{font-size: 1.5em; }
+.gi-2x{font-size: 2em; }
+.gi-3x{font-size: 3em;}
+.gi-4x{font-size: 4em;}
+.gi-5x{font-size: 5em;}
+.gi-6x{font-size: 6em;}
+.gi-7x{font-size: 7em;}
+
+
+
+
+.social-btn
+{
+  line-height: 0;
+  font-size: 0;
+  letter-spacing: -1px;
+  white-space: nowrap;
+}
+
+.social-btn a
+{
+  display: inline-block;
+  vertical-align: top;
+  line-height: 1;
+  font-size: 16px;
+  letter-spacing: 0;
+  margin-left: 10px;
+  margin-top: -1px;
+  margin-bottom: -1px;
+
+  -webkit-transition: color 300ms ease-in-out;
+  -o-transition: color 300ms ease-in-out;
+  transition: color 300ms ease-in-out;
+}
+
+.social-btn a:first-child { margin-left: 0; }
+
+.social-btn a:hover
+{
+  text-decoration: none;
+  color: #555;
+}
+
+.social-btn a:before
+{
+  width: auto;
+  margin: 0;
+}
+
+
+
+
+
+.carousel-inner>.item>a>img, 
+.carousel-inner>.item>img,
+{
+height: 0px;
+
+}
+
+
+/*  ----------------*/
+
+
+
+.content-slider-container
+{ 
+
+  height: 400px; width: auto;
+}
+
+.content-slider
+{
+  position: relative;
+  height: 100%;
+}
+.content-slider .slides-container { display: none; }
+.content-slider .slides-pagination
+{
+  position: absolute;
+  bottom: 26px;
+  width: 100%;
+  font-size: 0;
+  line-height: 0;
+  text-align: center;
+  z-index: 3;
+}
+.content-slider .slides-pagination a
+{
+  display: inline-block;
+  vertical-align: top;
+  background-color: #666;
+  text-indent: -9999px;
+  width: 40px;
+  height: 7px;
+  margin: 0 5px;
+  outline: 0;
+
+  -webkit-transition: background-color 300ms ease-in-out;
+  -o-transition: background-color 300ms ease-in-out;
+  transition: background-color 300ms ease-in-out;
+}
+.content-slider .slides-pagination a.current { cursor: default; }
+.content-slider .slides-pagination a.current,
+.content-slider .slides-pagination a:hover
+{
+  background-color: #000;
+}
+.content-slider .description
+{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(102, 67, 93, 0.5);
+  padding: 10px 0 40px;
+  color: #efefef;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.2;
+  text-align: center;
+}
+.content-slider .description:before
+{
+  content: "";
+  width: 0;
+  height: 100%;
+  margin-left: -4px;
+}
+.content-slider .description:before,
+.content-slider .description .inner
+{
+  display: inline-block;
+  vertical-align: middle;
+}
+.content-slider .description .inner
+{
+  width: 95%;
+  max-width: 520px;
+} 
+.content-slider .description p { margin-bottom: 15px; }
+.content-slider .description .title
+{
+  font-size: 20px;
+  font-weight: 300;
+  text-transform: uppercase;
+  color: #fff;
+}
+.content-slider .description .custom-btn { margin-top: 15px; }
+
+
+
+/*---------------------*/
+
+
+.tv {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index:-1;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+  
+  .screen {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+
+    margin: auto;
+
+    opacity: 0;
+    transition: opacity .5s;
+
+    &.active {
+      opacity: 1;
+
+
+    }
+  }
+}
+
+
+.texto-banner
+{
+color: #000;
+
+}

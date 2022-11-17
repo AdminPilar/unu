@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700');
+
+body
+{
+
+font-family: 'Ubuntu';
+}
+
+/*Fonts*/
+/**background-colors*/
+
+.gradTipo1 {
+	background: rgba(8,71,89,1);
+	background: -moz-linear-gradient(-45deg, rgba(8,71,89,1) 0%, rgba(95,203,230,1) 100%);
+	background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(8,71,89,1)), color-stop(100%, rgba(95,203,230,1)));
+	background: -webkit-linear-gradient(-45deg, rgba(8,71,89,1) 0%, rgba(95,203,230,1) 100%);
+	background: -o-linear-gradient(-45deg, rgba(8,71,89,1) 0%, rgba(95,203,230,1) 100%);
+	background: -ms-linear-gradient(-45deg, rgba(8,71,89,1) 0%, rgba(95,203,230,1) 100%);
+	background: linear-gradient(135deg, rgba(8,71,89,1) 0%, rgba(95,203,230,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#084759', endColorstr='#5fcbe6', GradientType=1 );
+}
+
+
+/*Jcesar ==================*/
+
+.radiohead {
+    position:relative;
+    top:250px;
+    left:50%;
+    margin:auto;
+}
+.radiohead img {
+    position:absolute;
+    left:-100px;
+    top:250;
+    -webkit-animation-name: fade;
+    -webkit-animation-iteration-count: infinite    -webkit-animation-duration: 12s;;
+
+    animation-name: fade;
+    animation-iteration-count: infinite;
+    animation-duration: 12s;
+}
+
+@-webkit-keyframes fade {
+    0% {opacity: 0;}
+    80% {opacity: 1;}
+    50% {opacity: 1;}
+    100% {opacity: 1;}
+}
+@keyframes fade {
+    0% {opacity: 0;}
+    80% {opacity: 1;}
+    50% {opacity: 1;}
+    100% {opacity:0;}
+}
+
+.text-radiohead
+{
+  padding-top: 500px;
+}
+
+#fadein {
+      -webkit-animation-delay: -10s;
+        background-color:none;
+}
+#fadeout {
+    -webkit-animation-delay: -5s;
+    background-color: none;
+}
+
+text-anuncio {
+    padding: 6px 8px 6px 8px;
+    font-size: 90%;
+    color: #fff;
+    background-color: #ff6a8c;
+    border-radius: 3px;
+    -webkit-box-shadow: inset 0 -1px 0 rgba(0,0,0,.25);
+    box-shadow: inset 0 -1px 0 rgba(0,0,0,.25);
+}
+/* ======================*/
+

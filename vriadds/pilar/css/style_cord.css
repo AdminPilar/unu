@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,500,500i,700,700i');
+body {
+	font-family:'Ubuntu', sans-serif;
+	line-height: 1.5;
+	background-color:#eeeeee;
+	padding-top: 50px;
+}
+.navbar-default{
+	background-color: #b70248;
+	border-bottom: 2px solid #ef83ac;
+}
+.navbar-default .navbar-brand{
+	color:#fff;
+	font-size: 20px;
+	letter-spacing: 3px;
+}
+.navbar-default .navbar-brand:hover{
+	color:#fff;
+}
+.navbar-brand-pilar > img {
+	position: relative;
+	display: inline-block;
+	float: left;
+	padding: 0 15px 0 0;
+	max-width:60px; 
+	margin-top:-13px;
+}
+.btn-xs,.btn-sm,.btn-md , .btn-lg{
+	border-radius: 0px;
+}
+.btn-opt{
+	width: 100%;
+}
+.title-py{
+	text-align: justify;
+}
+.navbar-default .navbar-nav>li>a {
+    color: #fff;
+    letter-spacing: 0.8
+    px;
+}
+.navbar-default .navbar-nav>li>a:hover {
+    color: #fff;
+    font-weight: bold;
+    background-color: transparent;
+}
+.menuIzq{
+	/*background-color: white;*/
+}
+.list-group-item:first-child,.list-group-item:last-child {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
+.row{
+	margin: 0px;
+	padding: auto 5%;
+}
+#panelCord{
+	background-color: white;
+}

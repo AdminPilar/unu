@@ -1,0 +1,29 @@
+
+#
+# VRI - Universidad Nacional de Ucayali - PUCALLPA 2020
+# Ing. Ramiro Pedro, Ing. Fred Torres, Ing. Julio Tisnado
+# Modificado por Ing. Betxy Rojas 
+#RewriteEngine on  // modificado unuv1.0
+
+#RewriteCond %{HTTPS} !=on
+#RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,NE]
+
+Options All -Indexes
+
+# <IfModule mod_rewrite.c>
+# RewriteEngine On
+# RewriteBase /
+# RewriteRule ^index\.php$ - [L]
+# RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteCond %{REQUEST_FILENAME} !-d
+# RewriteRule . /index.php [L]
+# </IfModule>
+
+<Files 403.shtml>
+order allow,deny
+allow from all
+</Files>
+
+RewriteEngine on
+RewriteCond $1 !^(index\.php|robots\.txt|sitemap\.xml|.well-known|vriadds|repositor)
+RewriteRule ^(.*)$ index.php/$1 [L]

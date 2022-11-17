@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title> Messenger - VRI </title>
+	<!-- Latest compiled and minified CSS -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+
+<script type="text/javascript">
+function sendMessage( num, sms )
+{
+    var dta = num + sms;
+	if ( dta.length > 71 ){
+		$("#dispx").html( "La cadena excede el límite" );
+		return;
+	}
+
+	$("#dispx").html( "Procesando..." );
+	while( dta.length <= 71 ) dta += " ";
+
+	$.ajax({
+	    url     : "http://181.224.200.4",
+	    data    : { LED : dta },
+	    dataType: "json",
+	    success: function( response ){
+	    	if (response.confirm == "success") {
+		    $("#dispx").html( "Se ha enviado a <b>" +num+ "</b>" );
+	    	}
+	    }
+	});
+}
+
+function countMessage()
+{
+	var sms = $("#sms").val();
+	$("#dispx").html( sms.length + " - caracteres de 60" );
+}
+
+function prepareToSend()
+{
+	var sms = $("#sms").val();
+	var num = $("#num").val();
+	sendMessage( num, sms );
+}
+
+function prepareTexts()
+{
+	$("#sms").val("");
+	$("#num").val("");
+}
+</script>
+
+<body>
+<!-- ========================================================================================== -->
+<div style="background: black; height: 50px; margin-bottom: 0px; color: white; font-family: Verdana; padding: 5px">
+	<div style="float:left">
+		<img src="http://vriunap.pe/absmain/imgs/vri.png" width="35">
+	</div>
+	<div style="float:left; padding: 9px">
+		Vicerrectorado de Investigación 2016
+	</div>
+	<div style="float:right">
+		<img src="http://vriunap.pe/absmain/imgs/unap.png" width="35">
+	</div>
+</div>
+<!-- ========================================================================================== -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12" style="padding: 7px">
+
+            <div class="panel panel-primary" class="form-horizontal">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        CONTENIDO DE SMS
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <form action="/action_page.php">
+                        <div class="form-group">
+                            <label for="num"> Nro Celular: </label>
+                            <input type="number" class="form-control" id="num">
+                        </div>
+                        <div class="form-group">
+                            <label for="msg"> Mensaje: </label>
+                            <textarea onkeyup="countMessage()" class="form-control" rows="4" id="sms" placeholder="Hasta 60 Caracteres en Plataforma VRI"></textarea>
+                        </div>
+                        <div class="checkbox">
+                            <label><input type="checkbox"> <small>Recuerdame</small> </label>
+                        </div>
+                        <div id="dispx" class="alert alert-info" role="alert" style="height: 36px; padding: 7px"> Esperando... </div>
+                        <div class="form-group">
+                            <div style="text-align:center">
+                                <input type="submit" class="btn btn-md btn-info" value="Borrar Texto" onclick="prepareTexts()">
+                                <input type="submit" class="btn btn-md btn-success" value="Enviar SMS" onclick="prepareToSend()">
+                            </div>
+                        </div>
+                    </form>
+                    <!--
+                    <div class="form-group">
+                        <div class="col-md-6"> Número Celular </div>
+                        <div class="col-md-6">
+                            <input type="text" id="num" class="form-control input-md" value="974786734" autofocus>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6"> Mensaje </div>
+                        <div class="col-md-6">
+                            <textarea onkeyup="countMessage()" class="form-control" rows="4" id="sms" placeholder="Hasta 60 Caracteres en Plataforma VRI"></textarea>
+                        </div>
+                    </div>
+                    <div id="dispx" class="alert alert-info" role="alert" style="height: 36px; padding: 7px"> Esperando... </div>
+                    <div class="form-group">
+                        <div style="text-align:center">
+                            <input type="submit" class="btn btn-md btn-info" value="Borrar Texto" onclick="prepareTexts()">
+                            <input type="submit" class="btn btn-md btn-success" value="Enviar SMS" onclick="prepareToSend()">
+                        </div>
+                    </div>
+                    -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

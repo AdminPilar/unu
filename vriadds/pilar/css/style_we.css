@@ -1,0 +1,431 @@
+  @import url('https://fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,500,500i,700,700i');
+
+/*
+.modal-dialog {
+  width: 90%;
+  height: 90%;
+  margin: 0;
+  padding: 0;
+}
+
+.modal-content {
+  height: auto;
+  min-height: 100%;
+  border-radius: 0;
+  margin: 0 auto;
+}*/
+
+  body {
+      font-family:'Ubuntu', sans-serif;
+      line-height: 1.6;
+      color: #f5f6f7;
+      background-color: #f5f5f5;
+  }
+  p {
+    font-size: 15px;
+  }
+  .margin {
+    padding:20px 20px;
+  }
+  .margin-bd{
+    padding:20px 20px;
+  }
+  .bg-blue { 
+      background-color: #556370; /* blue */
+      color: #ffffff;
+  }
+  .bg-teal{ 
+    /*+#26cdf3*/
+      /*background-color:#4ecdc4; */
+      background-color:#26cdf3;
+      color: #ffffff;
+  }
+  .bg-green{ 
+      background-color:#ffcb6b/*#c7f465*/; /* gren */
+      color: #ffffff;
+  }
+  .bg-red-ligth{ 
+      background-color:#ff6b6b; /* red-ligth */
+      color: #ffffff;
+  }
+  .bg-red-dark{ 
+      background-color:#c54d57; /* red-dark */
+      color: #ffffff;
+  }
+  .bg-white{
+    background-color:#fff; /*  white */
+    color: #000;
+  }
+  .bg-skyblue{ /* celeste */
+    background-color: #00bcd4;
+    color:#fff;
+  }
+  .bg-vino{ /* Vinoooo*/
+    /*background-color: #890032;*/
+    background-color: #d03e73;
+    color: #fff;
+  }
+  .contenido1{
+    padding: 20px;
+  }
+  .container-fluid {
+      padding-top: 0px;
+      padding-bottom: 0px;
+  }
+  .navbar {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      border: 0;
+      border-radius: 0;
+      margin-bottom: 0;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+  .navbar-nav  li a:hover {
+      color: #00bcd4 !important;
+  }
+  .navbar-default{
+    /*background-color: #556370;*/
+    /*background-color: #730037;*/
+    /*background-color: rgba(255, 255, 255, 0.63);*/
+    /*background-color: rgba(138,221,50,0.2);
+    background-color: rgba(138,221,45,0.2);*/
+    background-color:rgb(60, 179, 113,0.5);
+    background-color:rgb(60, 179, 113,0.2);
+  }
+  .navbar-default .navbar-nav>li>a {
+    /*color: #fff;*/
+    color: #fff;
+    font-size: 13px;
+
+  }
+  .logo{
+    width: 22%;
+  }
+  .footer{
+    padding-top    :20px;
+    padding-bottom :20px;
+    color: white;
+    font-size: 11px;
+    line-height: 13px;
+  }
+  .info-pilar{
+    margin: 0px;
+    width: 100%;
+    text-align: center;
+    align-content: center;
+    background-color: rgba(149, 0, 68, 1.0);
+
+    padding: 8em 1.6875em 2em  2em;
+    background-image: url("/vriadds/pilar/imag/baner.png");
+    background-size: 140%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .info-pilar2{
+    margin: 0px;
+    width: 100%;
+    text-align: center;
+    align-content: center;
+    background-color: rgba(30, 132, 73);
+
+    padding: 8em 1.6875em 2em  2em;
+    background-image: url("/vriadds/pilar/imag/baner.png");
+    background-size: 140%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .logo-pilar3{
+    width: 10%;
+    display:block;
+    margin:0 auto 0 auto;
+    color:#fff;
+  }
+  #text-info-pilar{
+    padding: 0% 20%;
+    /*color:#556370;*/
+  }
+  #name-pilar{
+    color: #fff;
+  }
+  .description{
+    text-align: justify;
+  }
+  .btn-user{
+    width: 100%;
+    font-size: 2em;
+    border-radius: 0px;
+    border-color: rgba(255,255,255,.15);
+    padding: 60px 0px;
+  }
+  .btn-preg{
+    width: 100%;
+    font-size: 1em;
+    border-radius: 0px;
+    border-color: rgba(255,255,255,.15);
+    background-color: #1f3e74;
+    padding: 5px 0px;
+  }
+  .btn-preg:hover, .btn-preg:active, .btn-preg:focus{
+    background-color: #1f3e74;
+    color:white;
+  }
+  .btn-user:hover, .btn-user:active, .btn-user:focus{
+    background-color: #d03e73;
+    color:#fff;
+  }
+  .titulo{
+    color:#00bcd4;
+    border-bottom-style: solid;
+    border-bottom: 2.5px solid #00bcd4;
+    margin-bottom: 20px;
+    font-size: 19px;
+  }
+  a.blink{
+    color: #fff;
+    background-color: #00bcd4;
+    border: 1px solid #ddd;
+    border: none;
+    padding: 5px 15px
+  }
+  .bderecha{
+    font-size: 14px;
+    width: 100%;
+  }
+  .btn-acces-pilar{
+      padding: 0px 0px;
+  }
+  /*login*/
+  .overlay {
+    height: 0%;
+    width: 100%;
+    position: fixed;
+    z-index: 10000;
+    top: 0;
+    left: 0;
+    overflow-y: hidden;
+    transition: 0.5s;
+  }
+  .tesista{
+    background-color: rgb(0,0,0);
+    background-color: rgba(38, 205, 243, 0.92);
+    /*background-color: rgba(78, 205, 196, 0.92);*/
+  }
+   .docente{
+    background-color: rgb(0,0,0);
+    background-color: rgba(255, 203, 107, 0.92);/*rgba(155, 206, 45, 0.92);*/
+  }
+  .coord{
+    background-color: rgb(0,0,0);
+    background-color: rgba(255, 107, 107, 0.92);
+  }
+
+  .overlay-content {
+      position: relative;
+      top: 7%;
+      width: 100%;
+      text-align: center;
+      margin-top: 30px;
+  }
+
+  .overlay a {
+      padding: 8px;
+      text-decoration: none;
+      /*font-size: 36px;*/ 
+      color: #818181; 
+      display: block; 
+      transition: 0.3s; }
+
+  .overlay a:hover, .overlay a:focus {
+      color: #d03e73;
+  }
+
+  .overlay .closebtn {
+      position: absolute;
+      top: 20px;
+      right: 45px;
+      font-size: 60px;
+  }
+
+  @media screen and (max-width: 520px) {
+      .info-pilar{
+          background: rgba(137, 0, 50, 0.94);
+      }
+      h3{
+        font-size: 16px;
+      }
+      h4{
+        font-size: 10px;
+      }
+      .logo-pilar3{
+        min-width: 30%;
+        display:block;
+        margin:0 auto 0 auto;
+        padding-top:100px;
+        color:#fff;
+      }
+      .container{
+        margin: 0px;
+        padding:0px;
+      }
+      .contenido1{
+        padding: 0px;
+      }
+  }
+
+  @media screen and (max-height: 800px) {
+    .overlay {overflow-y: scroll;}
+    .overlay a {font-size: 20px}
+    .overlay .closebtn {
+      font-size: 40px;
+      top: 15px;
+      right: 35px;
+    }
+  }
+
+  /*parto II login*/
+  .login-page {
+  width: 360px;
+  padding: 0% 0 0;
+  margin: auto;
+  text-align: center;
+  align-content: center;
+}
+.login-logo{
+  width: 30%;
+  display:block;
+  margin:0 auto;
+}
+.login-title-tes{
+  color:#26cdf3;
+  font-weight: bold;
+}
+.login-title-doc{
+  color:#ffcb6b;
+  font-weight: bold;
+}
+.login-title-cord{
+  color:#ff6b6b;
+  font-weight: bold;
+}
+
+.form {
+  /*position: relative;*/
+  z-index: 1;
+  background: #FFFFFF;
+  max-width: 360px;
+  margin: 0 auto 100px;
+  padding: 45px;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+.form input {
+  font-family: "Roboto", sans-serif;
+  outline: 0;
+  background: #f2f2f2;
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+  color:#000;
+}
+.form button {
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  outline: 0;
+  width: 100%;
+  border: 0;
+  padding: 15px;
+  color: #FFFFFF;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+}
+.login-btn-tesista{
+    background: #26cdf3;
+}
+.login-btn-docente{
+    background: #ffcb6b;
+}
+.login-btn-coord{
+    background: #ff6b6b;
+}
+.form button:hover,.form button:active,.form button:focus {
+    font-weight: bold;
+    color:;
+}
+.form .message {
+  margin: 15px 0 0;
+  color: #b3b3b3;
+  font-size: 14px;
+}
+.form .message a {
+  /*color: #d03e73;*/
+  font-weight: bold;
+  text-decoration: none;
+}
+.form .register-form {
+  display: none;
+}
+.alert-danger{
+  color:#fff;
+  border-radius: none;
+  background-color: #d03e73;
+}
+.gi-1x{ 
+  font-size: 1.5em; 
+  color:#d03e73 ;
+  position: float;
+}
+/*.container2 {
+  position: relative;
+  z-index: 1;
+  max-width: 300px;
+  margin: 0 auto;
+}
+.container2:before, .container:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+.container2 .info {
+  margin: 50px auto;
+  text-align: center;
+}
+.container2 .info h1 {
+  margin: 0 0 15px;
+  padding: 0;
+  font-size: 36px;
+  font-weight: 300;
+  color: #1a1a1a;
+}
+.container2 .info span {
+  color: #4d4d4d;
+  font-size: 12px;
+}
+.container2 .info span a {
+  color: #000000;
+  text-decoration: none;
+}
+.container2 .info span .fa {
+  color: #EF3B3A;
+}*/
+
+  /*endLogin*/
+.modal-pilar{
+  border-radius:0px;
+}
+.modal-pilar-title{
+   color:#fff;
+  /*border-radius: none;*/
+  background-color: #d03e73;
+}
+.modal-pilar-content{
+  color:#000;
+  border-radius: none;
+}

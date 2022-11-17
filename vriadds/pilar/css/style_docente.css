@@ -1,0 +1,257 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,500,500i,700,700i');
+body {
+	font-family:'Ubuntu', sans-serif;
+	line-height: 1.5;
+	background-color:#eeeeee;
+	margin-top:70px;
+}
+/*#1c679c  - #1c679c*/
+
+.navbar-default{
+	background-color: #1c679c;
+	padding: 5px 0px;
+	border: 0;
+	border-radius: 0;
+	margin-bottom: 0;
+	font-size: 15px;
+	z-index: 1;
+	box-shadow:1px 0px 20px rgba(0, 0, 0, 0.08);
+}
+.navbar-default .navbar-brand{
+	color:white;
+	font-size: 20px;
+	letter-spacing: 3px;
+}
+.navbar-default .navbar-brand:hover,active{
+	color:white;
+	list-style:none;
+	font-weight: 300;
+}
+.navbar-brand-pilar > {
+	display: inline-block;
+	float: left;
+
+}
+.navbar-brand-pilar > img {
+	position: relative;
+	display: inline-block;
+	float: left;
+	padding: 0 15px 0 0;
+	max-width:60px; 
+	margin-top:-13px;
+}
+.navbar-default .navbar-nav>li>a {
+    color: #fff;
+}
+.navbar-default .navbar-nav>li>a:hover {
+    color: white;
+    font-weight: bold;
+    background-color: transparent;
+}
+
+
+.panel-heading {
+    padding: 10px 15px;
+    border-radius: 0px;
+}
+
+/*Side Nav*/
+.main{
+	padding:0px;
+}
+.sidemenu {
+    background-color: #fff;
+    padding:0px;  
+}
+.list-group-item{
+	padding:10px 15px;
+	margin: -1px;
+	border:0px;
+}
+.list-group-item:first-child, 
+.list-group-item:last-child{    
+	border-radius: 0px;
+}
+
+.nav-pills>a:hover{
+ background-color:#6ac2cd;
+ color:#fff;
+ border-right: 4px  solid #42757b;
+}
+a.list-group-item, button.list-group-item {
+    color: #1c679c;
+
+}
+.table>tbody>tr>td{
+	padding:2px;
+}
+
+.footer.fixed {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 10px 20px;
+    background: white;
+    border-top: 1px solid #e7eaec;
+    font-size: 9px;
+}
+/* Clase docente*/
+.docente-info{
+	background-color: #1c679c;
+	margin-top: 0px;
+	padding: 7px 5px 15px 5px;
+	text-align: center;
+	align-content: center;
+	border-bottom: 5px solid #3e2c42;
+	color:#fff;
+}
+.docente-titulo{
+	font-weight: 300; 
+}
+.docente-titulo span{
+	font-weight: bold; 
+}
+.docente-img{
+	max-width: 35%;
+	margin: 20px auto 0 auto;
+	padding-bottom: 10px;
+}
+.docente-name{
+	/*color:#fff;*/
+	margin: 0px 0px 0px auto;
+	font-size: 14px;
+	font-weight: 300;
+}
+.docente-cargo{
+	color:#fff;
+	margin: 0px;
+	font-size: 10px;
+	font-weight: 500;
+}
+.docente-fedu{
+	background-color: #8bd0c2;
+}
+.panel-warning>.docente-fedu {
+	background-color: #8bd0c2;
+	color:white;
+	border-color: #8bd0c2;
+}
+a.docente-fedu{
+	color:#fff;
+}
+
+a.docente-fedu{
+	color:#fff;
+}
+a.docente-fedu:hover{
+	color:#fff;
+}
+.badge-mail{
+	background: #dd463b;
+}
+/* Clase Panel de Trabajo*/
+.panel-trabajo{
+    /*overflow: scroll;*/
+}
+.panel-view{
+    box-shadow:1px 0px 20px rgba(0, 0, 0, 0.08);
+	background-color: #fff;
+	padding: 20px 40px;
+
+}
+.btn, .btn-xs, .btn-md{
+	border-radius: 0px;
+}
+.pilar{
+	font-size: 90px;
+	text-align: center;
+	border-bottom: 5px solid ;
+}
+.titulo{
+	/*font-size: 18px;*/
+	color: #1c679c;
+	font-weight: 300;
+	padding-bottom: 8px;
+	margin-bottom: 15px;
+	border-bottom: 2px solid ;
+	text-shadow: 0.5px 0.5px 4px #7bcfec;
+}
+.docente-inicio{
+	text-align: justify;
+}
+.panel{
+	border-radius: 0px;
+	border:none;
+}
+span.glyphicon{
+	padding-right: 10px;
+}
+
+.panel-docente-numero{
+	font-size: 70px;
+	font-weight: 700;
+	text-align: center;
+	padding: 0px;
+}
+.panel-docente-texto{
+	font-size: 20px;
+	text-align: center;
+	padding: 0px;
+}
+
+.panel-default>.panel-heading {
+    color: #fff;
+}
+
+.panel-default>.panel-num-4 {
+    background-color: #8bd0c2;
+    border-bottom: 0px;
+}
+.panel-default>.panel-info-4 {
+    border:1px solid #8bd0c2;
+}
+.panel-default>.panel-num-3 {
+    background-color: #4c7ab6;
+    border-bottom: 0px;
+}
+.panel-default>.panel-info-3 {
+	border:1px solid #4c7ab6;
+}
+
+.panel-default>.panel-num-2 {
+    background-color: #35bce4;
+    border-bottom: 0px;
+}
+.panel-default>.panel-info-2 {
+	border:1px solid #35bce4;
+}
+
+.panel-default>.panel-num-1 {
+    background-color: #67c0cd;
+    border-bottom: 0px;
+}
+.panel-default>.panel-info-1 {
+	border:1px solid #67c0cd;
+}
+.table-bordered>tbody>tr>td, 
+.table-bordered>tbody>tr>th, 
+.table-bordered>tfoot>tr>td, 
+.table-bordered>tfoot>tr>th, 
+.table-bordered>thead>tr>td, 
+.table-bordered>thead>tr>th, 
+.table-bordered {
+    border: 1px solid #1c679c;
+}
+.form-control{
+	border-radius: 0px;
+}
+fieldset{
+	border :#1c679c 1px solid;
+	padding: 10px 10px;
+}
+
+.panel-info-docente{
+	padding: 0px;
+}
