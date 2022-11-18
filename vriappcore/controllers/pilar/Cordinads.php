@@ -2008,7 +2008,7 @@ public function execSorteo( $idtram=0 )
 
    //  Excepción Arte
    /*if($tram->IdCarrera!= 11){
-       // SELECT * FROM vriunap_pilar3.vxDocInLinXX WHERE TipoDoc='N' AND Activo=6 AND LinEstado=2 AND IdLinea='182' AND IdCarrera='1'
+       // SELECT * FROM desarrollo_pilar3.vxDocInLinXX WHERE TipoDoc='N' AND Activo=6 AND LinEstado=2 AND IdLinea='182' AND IdCarrera='1'
        $tpres = $this->dbPilar->getSnapView( 'vxDocInLin', "TipoDoc='N' AND Activo=6 AND LinEstado=2 AND IdLinea='$tram->IdLinea' AND IdCarrera='$tram->IdCarrera' " );
    }else{
 

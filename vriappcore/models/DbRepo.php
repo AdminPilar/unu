@@ -20,7 +20,7 @@ class DbRepo extends PedrixAdo
         //
         // set the local class DB access
         //
-        $this->setDB( "vriunap_absmain" ); // modificar testing-produccion
+        $this->setDB( "desarrollo_absmain" ); // modificar testing-produccion
     }
 
     //---------------------------------------------------------------------------
@@ -72,7 +72,7 @@ class DbRepo extends PedrixAdo
         if( !$id ) return null;
 
         $this->db->where( "IdDocente='$id' ORDER BY IdGrado" );
-        $table = $this->db->get( "vriunap_pilar3.docEstudios" ); // modificar testing-produccion
+        $table = $this->db->get( "desarrollo_pilar3.docEstudios" ); // modificar testing-produccion
 		if( ! $table->num_rows() ) return null;
 
         return $table->row()->AbrevGrado;

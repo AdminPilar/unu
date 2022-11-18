@@ -20,7 +20,7 @@ class DbWeb extends PedrixAdo
         //
         // set the local class DB access
         //
-        $this->setDB( "vriunap_web" );
+        $this->setDB( "desarrollo_web" );
     }
 
     //---------------------------------------------------------------------------

@@ -29,7 +29,7 @@ SELECT * FROM tesTramites AS A, tblTesistas AS T WHERE A.IdTesista1=T.Id AND T.C
 
 SELECT A.Codigo, A.IdCarrera AS Car, C.Nombre, A.DNI, T.Codigo AS CodTramite,
        T.Estado, A.Apellidos, A.Nombres, A.NroCelular, A.SemReg
-  FROM tesTramites AS T, tblTesistas AS A, vriunap_absmain_testing.dicCarreras AS C
+  FROM tesTramites AS T, tblTesistas AS A, desarrollo_absmain_testing.dicCarreras AS C
  WHERE T.IdTesista1 = A.Id
    AND A.Codigo LIKE '14%'
    AND T.Estado >= 6

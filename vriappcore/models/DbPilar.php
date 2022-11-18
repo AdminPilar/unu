@@ -20,7 +20,7 @@ class DbPilar extends PedrixAdo
         //
         // set the local class DB access
         //
-        $this->setDB( "vriunap_pilar3" ); // modificar testing-produccion
+        $this->setDB( "desarrollo_pilar3" ); // modificar testing-produccion
     }
 
     //---------------------------------------------------------------------------
@@ -223,7 +223,7 @@ class DbPilar extends PedrixAdo
     public function Analytics( $field, $order="ORDER BY Fi DESC" ) {
 
         $strQuery = "SELECT $field AS Item, count(*) AS Fi
-                       FROM vriunap_pilar3.logLogins 
+                       FROM desarrollo_pilar3.logLogins 
                       GROUP BY $field
                       $order LIMIT 12"; // modificar testing-produccion
 
