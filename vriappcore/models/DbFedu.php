@@ -20,7 +20,7 @@ class DbFedu extends PedrixAdo
         //
         // set the local class DB access
         //
-        $this->setDB( "vriunap_fedu" );
+        $this->setDB( "desarrollo_fedu" );
     }
 
     public function proyectosExe(){

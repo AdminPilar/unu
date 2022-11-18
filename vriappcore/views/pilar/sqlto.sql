@@ -6,7 +6,7 @@ CREATE  VIEW vxSustens AS
  SELECT S.Id, S.IdTramite, S.Codigo, if((now() > S.Fecha),0,1) AS Pendiente,
         C.Id AS IdCarrera, C.IdFacultad, C.Nombre AS Carrera, S.Fecha, S.Lugar
    FROM tesSustens AS S,
-        vriunap_absmain.dicCarreras AS C
+        desarrollo_absmain.dicCarreras AS C
   WHERE C.Id = S.IdCarrera
 ;
 
