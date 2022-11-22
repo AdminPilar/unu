@@ -30,27 +30,36 @@
 	        <?php
 
 		        $estTram = $this->dbPilar->inTramByTesista("$sess->userId");
+		        $ini=1;
+		        $fin=8;
 		        if($estTram){
-			        if($estTram->Estado>2)
+		        	if($estTram->Tipo==2){
+		        		 $ini=8;
+		        		$fin=15;
+		        	}
+			        if($estTram->Estado>0)
 			        	echo "	<div class='flecha' id='textdown' >
 			        				<a href='#'  onclick='showHidden(".$estTram->Estado.")'>
 
 			        					<span class='glyphicon glyphicon-chevron-down'></span>
 			        				</a>
 		        			 	</div>";
-	        	}
-	        	$estados = $this->dbPilar->getTable("dicEstadTram");
+	        	}	        	
+	        	
+	        	$estados = $this->dbPilar->getTable("dicEstadTram","Id>=$ini and Id<=$fin");
 	        	$flag = 1;
+	        	        	
+	        
 	        	foreach($estados->result() as $row){
-	        		$color='green';
+	        		$color='';
 		            $estado='';
 			        if($estTram){
 			         	if($row->Id < $estTram->Estado){
 			         		$estado= "hidden";
-			         		$color = "danger";
+			         		$color = "green";
 			         	}
 			         	if($row->Id == $estTram->Estado){
-			         		$color = "danger";
+			         		$color = "green";
 			         	}
 		    		}
 			        ?>

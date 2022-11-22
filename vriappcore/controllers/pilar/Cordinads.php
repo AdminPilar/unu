@@ -2310,7 +2310,8 @@ private function inPasar6( $tram, $sess )
 
           $this->dbPilar->Update( 'tesTramites', array(
                 'Estado'    => 8,
-                'FechModif' => mlCurrentDate()
+                'FechModif' => mlCurrentDate(),
+                'FechActProy' =>mlCurrentDate()
             ) , $tram->Id );
           $titulo='Aprobación de Proyecto';
 

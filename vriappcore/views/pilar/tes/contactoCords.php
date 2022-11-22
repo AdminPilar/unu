@@ -30,6 +30,9 @@
 				</tr> //Modificado unuv1.0  -->
 			</table>
 		</div>
+		<div class="col-md-3">
+		
+		</div>
 
 		<!-- Modificado Oliver -->
 		<div class="col-md-9">
@@ -46,9 +49,7 @@
 			</table>
 		</div>
 		
-		<div class="col-md-3">
 		
-		</div>
 
 		<!--
 		<div class="col-md-9">

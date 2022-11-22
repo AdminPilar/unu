@@ -58,8 +58,6 @@
 		 		if($sess->userLevel==1){
 
 			 ?>  
-  
-			 <a href="javascript:void(0)" onclick="lodPanel('panelCord','cordinads/vwProy2018')" class="list-group-item"><span class="glyphicon glyphicon-home"></span> Proyectos de Tesis</a>
 			 <?php } ?>
 
 		</ul>

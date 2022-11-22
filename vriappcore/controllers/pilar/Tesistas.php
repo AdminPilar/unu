@@ -485,12 +485,7 @@ class Tesistas extends CI_Controller {
         $sess = $this->gensession->GetSessionData();
         $tram = $this->dbPilar->inTramByTesista( $sess->userId );
 
-        /*Modificado 20/07/2022*/
-        $det = $this->dbPilar->inLastTramDet( $tram->Id );
-        //$det = $this->dbPilar->inTramDetIter($tram->Id, 3);
-        $dias  = mlDiasTranscHoy( $det->Fecha );
-        /*Fin*/
-
+        
         // no hay tramite disponble nuevo tramite
         if( $tram == null ) 
         {
@@ -498,12 +493,18 @@ class Tesistas extends CI_Controller {
             return;
         }
 
+        /*Modificado 20/07/2022*/
+        $det = $this->dbPilar->inLastTramDet( $tram->Id );
+        //$det = $this->dbPilar->inTramDetIter($tram->Id, 3);
+        $dias  = mlDiasTranscHoy( $det->Fecha );
+        /*Fin*/
+
         // Anuncio para tesistas sin activacion de tram Borr
-        if($tram->Tipo == 1 && $tram->Estado < 8)
+        if($tram->Tipo == 1 && $tram->Estado <= 8)
         {
             echo "<br><br><center><h3>  ¡Lo sentimos! <br> Usted aún no cumple los requisitos para este proceso (Borrador de Tesis). </h3></center>";
-            echo "<hr><div class='alert alert-warning'>
-            <span class='glyphicon glyphicon-exclamation-sign'></span> <b>Importante</b><p>Antes de continuar con el proceso usted deberá: <br><b>(a)</b> Completar el tiempo mínimo <br><b>(b)</b> Poseer el grado académico de Bachiller<br><br> Si cumple con los requisitos <b>(a) y (b)</b> está apto para proseguir con su trámite, de lo contrario deberá esperar hasta cumplir lo estipulado.</p></div>";
+            /*echo "<hr><div class='alert alert-warning'>
+            <span class='glyphicon glyphicon-exclamation-sign'></span> <b>Importante</b><p>Antes de continuar con el proceso usted deberá: <br><b>(a)</b> Completar el tiempo mínimo <br><b>(b)</b> Poseer el grado académico de Bachiller<br><br> Si cumple con los requisitos <b>(a) y (b)</b> está apto para proseguir con su trámite, de lo contrario deberá esperar hasta cumplir lo estipulado.</p></div>";*/
         }
         
         if( $tram->Tipo == 1 && $tram->Estado == 8  ) {
@@ -973,10 +974,10 @@ class Tesistas extends CI_Controller {
         $pdf->Cell( 174, 5, toUTF("ACTA DE APROBACION DE PROYECTO DE TESIS"), 0, 1, 'C' );
 
 
-        $dia = (int) substr( $tram->FechModif, 8, 2 );
-        $mes = mlNombreMes( substr($tram->FechModif,5,2) );
-        $ano = (int) substr( $tram->FechModif, 0, 4 );
-        $hor = substr( $tram->FechModif, 11, 8 );
+        $dia = (int) substr( $tram->FechActProy, 8, 2 );
+        $mes = mlNombreMes( substr($tram->FechActProy,5,2) );
+        $ano = (int) substr( $tram->FechActProy, 0, 4 );
+        $hor = substr( $tram->FechActProy, 11, 8 );
 
 
         // revisa modo de aprobacion
@@ -2481,7 +2482,7 @@ public function NotificacionCelular($cel,$mensaje)
             $this->load->view('pilar/tes/proc/13_sustvirtual',array('sess'=>$sess));
         }
         else{
-            echo "<br><br><center><h3>  ¡Lo sentimos!  <br> Usted aún no cumple los requisitos para este proceso. </h3></center>";
+            echo "<br><br><center><h3>  ¡Lo sentimos!  <br> Usted aún no cumple los requisitos para este proceso ( Sustentacion Virtual ). </h3></center>";
         }
     }
 

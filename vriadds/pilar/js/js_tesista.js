@@ -13,7 +13,7 @@ function hiddenElem(esti){
 	for (var i = 1; i < esti; i++) {
 		$('#est'+i).hide();
 	}
-	$('#textdown').html("<a href='#'onclick='showHidden("+esti+")'><p> Mostrar Estados ya realizados</p><span class='glyphicon glyphicon-chevron-down'></span></a>");
+	$('#textdown').html("<a href='#'onclick='showHidden("+esti+")'><span class='glyphicon glyphicon-chevron-down'></span></a>");
 }
 // main info inicio hide- show
 
