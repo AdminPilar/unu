@@ -25,7 +25,7 @@
  $procesos = array (
         0 => "",
         1 => "Revisión de Formato",
-        2 => "Para Asesor",
+        2 => "Proyecto de Tesis en Asesor",
         3 => "Para Sorteo",
         4 => "Para Revisión (1)",
         5 => "Para Revisión (2)",     // 05
@@ -83,7 +83,7 @@
 			<tr>
 				<th width="5%">N°</th>
 				<th width="" align="center">Código</th>
-				<th width="">Fec. Ultima Mod.</th>
+				<th width="">Fech. Ultima Mod.</th>
 				<th width="" align="center">Estado</th>
 				<th width="40%">Titulo</th>
 				<th width="" align="center">Revisiones</th>
@@ -121,10 +121,11 @@
 				$revisiones="";
 				$grado =base_url("/repositor/bach/$rowgrado");
 				$grado2="";
+				$actap = base_url("pilar/tesistas/actaProy/$row->Id");
 				if( $row->Estado >= 9 )
 				$aut = "<p style='font-size:9.5px;font-weight:bold; margin-bottom: 0px'>"
 				 . "TESISTA(S): ".$this->dbPilar->inTesistas($row->Id)."</p>";
-
+				
 				switch ($row->Estado) {
 					case 9:
 						$opt=""; 
@@ -135,7 +136,9 @@
 								$rowgrado=$this->dbPilar->getOneField("testramsbach","File","IdTramite=$row->Id and IdTesista=$row->IdTesista2");
 								$grado2 =base_url("/repositor/bach/$rowgrado");
 								$opt.=" | <a href='$grado2' target=_blank class='btn btn-success btn-xs' title='Grado de Bachiller -Tesista 2'><span class='glyphicon glyphicon-list-alt'></span> </a>";
+								
 							}
+						$opt .= " | <a href='$actap' class='btn btn-xs btn-primary no-print' target=_blank> ACTA </a>";
 						break;
 					case 10:
 						$opt="";
