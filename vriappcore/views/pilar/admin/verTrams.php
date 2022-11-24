@@ -1,20 +1,7 @@
-<ol class="breadcrumb">
-    <small class="text-right" id="ixp">
-        <?php //  $this->benchmark->elapsed_time(); ?>
-        Tiempo de carga: <strong> {elapsed_time} s</strong>
-    </small>
-</ol>
 
 <?php
 
-    if( $tipo <= 2 ) {
-
-        $ini = ($tipo==1)? 1 : 9;
-        $fin = ($tipo==1)? 8 : 15;
-        // OJO :
-        // Estado = 14 para los sustentados completos
-
-        $onsubm = "sndLoad('admin/innerTrams/$tipo', new FormData(fsee) )";
+    $onsubm = "sndLoad('admin/innerTrams/$tipo', new FormData(fsee) )";
 ?>
 
 <div class="col-md-12">
@@ -28,10 +15,9 @@
                     <select id="estado" name="estado" class="form-control" onchange="<?=$onsubm?>" autofocus> <!-- required -->
                         <option value="0">(todos)</option>
                         <?php
-                        for( $Id=$ini; $Id<=$fin ; $Id++  )
-                        {
-                            $issel = ($Id==$estado)? "selected" : "";
-                            echo "<option value=$Id $issel> estado $Id </option>";
+                        foreach ($tEstadotip->result() as  $value) {
+                            $issel = ($value->Id==$estado)? "selected" : "";
+                             echo "<option value='$value->Id' $issel>$value->Nombre </option>";
                         }
                         ?>
                     </select>
@@ -49,9 +35,8 @@
                         ?>
                     </select>
                 </div>
-
                 <div class="col-md-3">
-                    <input id="jurado" name="jurado" type="text" class="form-control input-md" placeholder="Nombre de Jurado">
+                    <input id="codigo" name="codigo" value="<?=$codigo?>" type="text" class="form-control input-md" placeholder="Codigo Proyecto">
                 </div>
                 <div class="col-md-2">
                     <button type="submit" class="btn btn-success btn-block"> <span class="glyphicon glyphicon-search"></span> Buscar </button>
@@ -60,22 +45,21 @@
         </fieldset>
     </form>
 </div>
-<?php } ?>
 
 <!-- ============================================================================ -->
-  <table class="table table-striped table-hover">
+<table class="table table-striped table-hover">
     <thead>
       <tr>
-        <th> Nro </th>
+        <th>Nro</th>
         <th class="col-md-1"> Codigo </th>
         <th class="col-md-2"> Tesista </th>
         <th class="col-md-5"> Titulo </th>
-        <th class="col-md-1"> Fecha </th>
+        <th class="col-md-2"> Fecha Ult. Mod. </th>
         <th class="col-md-2"> Opciones </th>
       </tr>
     </thead>
     <tbody>
-<?php
+    <?php
 
     $nro = $tproys->num_rows();
 
@@ -114,7 +98,8 @@
         12 => "btn-success",
         13 => "btn-info",
         14 => "btn-default",
-        15 => "btn-default"
+        15 => "btn-default",
+        16 => "btn-default"
     );
 
     //-------------------------------------------------------------------
@@ -123,8 +108,8 @@
     foreach( $tproys->result() as $row ) {
 
         echo "<tr id='nr$nro'>";
-        $rowgrado=$this->dbPilar->getOneField("testramsbach","File","IdTramite=$row->Id and IdTesista=$row->IdTesista1");
-        
+        $rowgrado=$this->dbPilar->getOneField("testramsbach","File","IdTramite=$row->Id and IdTesista=$row->IdTesista1");    
+        $Rowdicestatramite = $this->dbPilar->getSnapRow( "dicestadtram", "Id=$row->Estado");    
         $det    = $this->dbPilar->inLastTramDet( $row->Id );
 		if( ! $det ){ echo "Error detail ($row->Id)"; continue; }
 
@@ -133,20 +118,18 @@
         $autors = $this->dbPilar->inTesistas( $row->Id );
         $carrer = $this->dbRepo->inCarrera( $row->IdCarrera );
 
-
-        // popUp con Id Tipo
         $estado = "";
 		$archi = base_url("/repositor/docs/$det->Archivo");
 		$actap = base_url("pilar/tesistas/actaProy/$row->Id");
         $grado = base_url("/repositor/bach/$rowgrado");
 		$menus = "<a href='$archi' class='btn btn-xs btn-info no-print' target=_blank> ver PDF </a>";
 
-        // Estado >= 1 && <= 6 : Proyectos
+        // Tipo 1 = Proyecto de tesis
         if( $row->Tipo == 1 ) {
 
             $btnclr = $proceclr[ ($row->Estado>15 or $row->Estado<0)? 0:$row->Estado ];
             $estado = $procesos[ ($row->Estado>15 or $row->Estado<0)? 0:$row->Estado ];
-            $estado = "<button class='btn btn-xs $btnclr'> $estado </button>";
+            $estado = "<button class='btn btn-xs $Rowdicestatramite->TipoBoton'> $estado </button>";
             $estado = $estado . " <br><small> (E: $row->Estado) </small> ";
 
 			// rechazar proyecto y grabar historia
@@ -254,8 +237,7 @@
             $fecha =  "<small><b>Sustentación: ".mlFechaNorm($fechSu)."</b></small>";
         }
 
-
-        echo "<td> $nro <br><span style='color:red;font-size:10px'>::$row->Id</span> </td>";
+        echo "<td>$nro</td>";
         echo "<td> <b>$row->Codigo</b> <br> $estado </td>";
         echo "<td> <span style='color:blue;font-size:9px'>$carrer<br></span> <small>$autors</small> </td>";
         echo "<td> <small> $det->Titulo </small> </td>";
@@ -267,9 +249,9 @@
         $nro--;
     }
 
-?>
+    ?>
     </tbody>
-  </table>
+</table>
 
 
 <!-- ============================================================================ -->
