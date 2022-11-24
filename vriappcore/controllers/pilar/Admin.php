@@ -243,19 +243,20 @@ class Admin extends CI_Controller {
         $this->load->view( "pilar/admin/verActBorr" );
     }
 
+    //entra
     public function innerTrams( $tipo=null )
     {
         $this->gensession->IsLoggedAccess( PILAR_ADMIN );
 
         $estado = mlSecurePost( "estado" );
         $carrer = mlSecurePost( "carrer" );
-        $jurado = mlSecurePost( "jurado" );
-
+        //$jurado = mlSecurePost( "jurado" );
+        $codigo = mlSecurePost( "codigo" );
 
         // en casi interno con envio de FormData
         //
-        if( $tipo==1 && $estado==null && $carrer==null )  $estado = 1;
-        if( $tipo==2 && $estado==null && $carrer==null )  $estado = 10;
+        if( $tipo==1 && $estado==null && $carrer==null )  $estado = 0;
+        if( $tipo==2 && $estado==null && $carrer==null )  $estado = 0;
 
         $filtro = " Tipo='$tipo' ";
         //----------------------------------------------------------------
@@ -263,7 +264,7 @@ class Admin extends CI_Controller {
             $filtro .= " AND Estado='$estado' ";
         if( $carrer >= 1 )
             $filtro .= " AND IdCarrera='$carrer' ";
-        if( strlen($jurado) ) {
+       /* if( strlen($jurado) ) {
             $idDocn = $this->dbRepo->inByDatos( $jurado );
             if( ! $idDocn ) $idDocn=-101;
             $filtro = "Tipo='$tipo' AND (IdJurado1=$idDocn OR
@@ -271,6 +272,11 @@ class Admin extends CI_Controller {
                                          IdJurado3=$idDocn OR
                                          IdJurado4=$idDocn) ";
             $estado = $carrer = 0;
+        }*/
+        if( strlen($codigo) )
+        {
+            $filtro = "Tipo='$tipo' AND codigo = '$codigo'";
+             $estado = $carrer = 0;
         }
         //----------------------------------------------------------------
         $filtro .= " ORDER BY Estado DESC, FechModif DESC ";
@@ -284,14 +290,16 @@ class Admin extends CI_Controller {
 
         $this->load->view( "pilar/admin/verTrams", array (
                 'tcarrs' => $this->dbRepo->getTable( "dicCarreras", "1 ORDER BY Nombre" ),
+                'tEstadotip' => $this->dbPilar->getTable( "dicestadtram", "Tipo=$tipo" ),
                 'tproys' => $tproys,
                 'carrer' => $carrer,
                 'estado' => $estado,
-                'jurado' => $jurado,
-                'tipo'   => $tipo
+                'codigo' => $codigo,
+                'tipo'   => $tipo,
             ) );
     }
 
+    // entra
     public function panelProys()
     {
         // todos acceden

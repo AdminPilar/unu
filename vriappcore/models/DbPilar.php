@@ -206,7 +206,7 @@ class DbPilar extends PedrixAdo
         return $this->getOneField("dicEstadTram","Nombre","Id=$est");
     }
 
-    public function inTipo($idTram)
+     public function inTipo($idTram)
     {
         $est = $this->getOneField("tesTramites","Tipo","Id=$idTram");
 
