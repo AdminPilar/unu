@@ -138,7 +138,7 @@
 								$opt.=" | <a href='$grado2' target=_blank class='btn btn-success btn-xs' title='Grado de Bachiller -Tesista 2'><span class='glyphicon glyphicon-list-alt'></span> </a>";
 								
 							}
-						$opt .= " | <a href='$actap' class='btn btn-xs btn-primary no-print' target=_blank> ACTA </a>";
+						$opt .= " | <a href='$actap' class='btn btn-xs btn-primary no-print' target=_blank title='Acta de Aprobación de Proyecto'> ACTA </a>";
 						break;
 					case 10:
 						$opt="";

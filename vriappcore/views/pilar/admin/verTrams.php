@@ -82,8 +82,8 @@
      $procesos = array (
         0 => "",
         1 => "Revisión de Formato",
-        2 => "Para Asesor",
-        3 => "Para Sorteo",
+        2 => "Proyecto de Tesis en Asesor",
+        3 => "Listo para sorteo",
         4 => "Para Revisión (1)",
         5 => "Para Revisión (2)",     // 05
         6 => "Para Revisión (3)", 
