@@ -488,22 +488,21 @@ public function vwLogCordinador(){
    $dato=$this->dbPilar->getSnapView("logCordinads","IdCarrera=$carrera AND IdUser =$sess->userId ORDER BY ID DESC");
    echo "<h3><b>Registro de Actividades<small></b></h3><ul>";
 
-
-   echo "<table>";
-               echo "<tr>";
-                  echo "<th>Fecha</th>";
-                  echo "<th>Operacion</th>";
-                  echo "<th>Justificacion</th>";
-                  echo "<th>Detalle</th>";
-               echo "</tr>";   
+   //Modificado Oliver
+   echo "<table class='table table-sm table-hover'>";
+               echo "<tr>
+                  <th>Fecha </th>
+                  <th>Operacion </th>
+                  <th>Justificacion </th>
+                  <th>Detalle </th>
+               </tr>";   
       foreach( $dato->result() as $row ){
-               echo "<tr>";
-                  echo "<td> $row->Fecha </td>";
-                  echo "<td> $row->IdOperacion </td>";
-                  echo "<td> $row->Just </td>";
-                  echo "<td> $row->Detalle </td>";
-               echo "</tr>";   
-     
+               echo "<tr>
+                  <td> $row->Fecha </td>
+                  <td> (".$row->IdOperacion.") </td>
+                  <td> $row->Just </td>
+                  <td> $row->Detalle </td>
+               </tr>";
       }
    echo "</table>";
 
