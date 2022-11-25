@@ -39,6 +39,7 @@ SELECT A.Codigo, A.IdCarrera AS Car, C.Nombre, A.DNI, T.Codigo AS CodTramite,
 */
 
 
+
 include( "absmain/mlLibrary.php" );
 date_default_timezone_set('America/Lima'); //Agregado unuv1.0
 
@@ -258,12 +259,22 @@ class Admin extends CI_Controller {
         if( $tipo==1 && $estado==null && $carrer==null )  $estado = 0;
         if( $tipo==2 && $estado==null && $carrer==null )  $estado = 0;
 
+         if( strlen($codigo) )
+        {
+            $filtro = "Tipo='$tipo' AND codigo = '$codigo'";
+             $estado = $carrer = 0;
+        }else{
         $filtro = " Tipo='$tipo' ";
         //----------------------------------------------------------------
         if( $estado >= 1 )
-            $filtro .= " AND Estado='$estado' ";
+        {
+           $codigo=""; $filtro .= " AND Estado='$estado' ";
+        }
         if( $carrer >= 1 )
-            $filtro .= " AND IdCarrera='$carrer' ";
+        {
+            $codigo=""; $filtro .= " AND IdCarrera='$carrer' ";
+        }
+         }
        /* if( strlen($jurado) ) {
             $idDocn = $this->dbRepo->inByDatos( $jurado );
             if( ! $idDocn ) $idDocn=-101;
@@ -273,11 +284,7 @@ class Admin extends CI_Controller {
                                          IdJurado4=$idDocn) ";
             $estado = $carrer = 0;
         }*/
-        if( strlen($codigo) )
-        {
-            $filtro = "Tipo='$tipo' AND codigo = '$codigo'";
-             $estado = $carrer = 0;
-        }
+       
         //----------------------------------------------------------------
         $filtro .= " ORDER BY Estado DESC, FechModif DESC ";
 
@@ -945,14 +952,12 @@ class Admin extends CI_Controller {
         if(!$tram){ echo "No registro"; return; }
 
         echo "<b>Codigo :</b> $tram->Codigo ";
-        echo "<br><b>Linea ($tram->IdLinea) :</b> " . $this->dbRepo->inLineaInv($tram->IdLinea);
+        echo "<br><b>Linea :</b> " . $this->dbRepo->inLineaInv($tram->IdLinea);
         echo "<br><b>Tesista(s) :</b> "             . $this->dbPilar->inTesistas($tram->Id);
         echo "<hr>";
 
         // mensaje editable
-        $msg = "<b>Saludos</b><br><br>\nSu proyecto ha sido rechazado, contiene los siguientes errores:\n"
-             . "<br><br><ul>\n<li> La redacción tiene que ser mejorada.\n</ul><br>\nDeberá corregir y subir su proyecto a la brevedad posible.\n"
-             . "<br><b>Nota</b>: Revise el <a href='http://vriunap.pe/vriadds/pilar/doc/manual_tesistav3.pdf'>manual de tesista aquí.</a>";
+        $msg = "";
 
 
         // detallaremos evento interno Ev31
@@ -961,7 +966,8 @@ class Admin extends CI_Controller {
 
         echo "<div class='form-group'>";
         echo    "<label for='comment'>Mensaje a enviar:</label>";
-        echo    "<textarea class='form-control' rows=8 name='msg'>$msg</textarea>";
+        echo " <label for='comment'><small class='help-block'> Indique el o los motivos del rechazo.</small></label>";
+        echo    "<textarea class='form-control' rows=8 name='msg' required>$msg</textarea>";
         echo "</div>";
     }
 
@@ -2172,22 +2178,36 @@ class Admin extends CI_Controller {
             echo "Error: No es borrable";
             return;
         }
-
+        $titulo='Corregir Formato Rde Proyecto de Tesis'; //agregado unuv.2.0
         $msg = $_POST["msg"];
-        echo $msg;
 
+        //$this->dbPilar->Update( "tesTramites", array('Tipo'=>0,'Estado'=>0), $tram->Id );
+        $msg1="el proyecto de tesis con codigo <b class='text-danger'>$tram->Codigo</b> fue Retornado,se notifico mediante correo electronico y mensaje de texto al Tesista";
+        $msgenviar ="<b>Saludos.</b><br>\nSu proyecto con codigo <b>".$tram->Codigo."</b> ha sido rechazado, contiene los siguientes errores:  <br><br>\n".$msg
+         ." <br> <br> Debera corregir y subir nuevamente su proyecto."; //Agregado unuv1.0
 
-        // $this->dbPilar->Delete( "tesTramites", $tram->Id );
-        // no borramos pero dejamos para consultas de eliminacion
-        $this->dbPilar->Update( "tesTramites", array('Tipo'=>0,'Estado'=>0), $tram->Id );
+        if($tram->IdTesista2 !=0)
+          {
+             $mail = $this->dbPilar->inCorreo( $tram->IdTesista1);
+             $mail2 = $this->dbPilar->inCorreo( $tram->IdTesista2);
+             $cel= $this->dbPilar->inCelTesista( $tram->IdTesista1);
+             $cel2= $this->dbPilar->inCelTesista( $tram->IdTesista2);
 
-        //
-        // envio de correo
-        //
-        $mail = $this->dbPilar->inCorreo( $tram->IdTesista1 );
-        $this->logCorreo( $tram->Id, $mail, "Corregir Formato Retornado", $msg );
+             $this->logCorreos( 0,$tram->IdTesista1, $mail,  $titulo, $msgenviar );
+             $this->logCorreos( 0,$tram->IdTesista2, $mail2,  $titulo, $msgenviar );
+            $this->notiCelu($cel,1);
+             $this->notiCelu($cel2,1);
 
-        echo "<br><br> <b>$tram->Codigo</b> fue Retornado...";
+          }
+          else{
+                $cel= $this->dbPilar->inCelTesista( $tram->IdTesista1);
+                $mail = $this->dbPilar->inCorreo( $tram->IdTesista1);
+                $this->logCorreos(0,$tram->IdTesista1,$mail,  $titulo, $msgenviar );
+                $this->notiCelu($cel,1);
+          }
+         $this->logTramites( $sess->userId, $tram->Id, "Retorna Proyecto : Corregir Observaciones", $motivo );    
+
+        echo  $msg1;
     }
 
     public function inRechaDire( $rowTram, $sess )
@@ -2815,13 +2835,41 @@ class Admin extends CI_Controller {
 
     public function notiCelu($idDoc,$tipo)
     {
-        // $this->load->library('genmessage');
-        $cel = $this->dbRepo->inCelu($idDoc);
+       $this->load->library('apismss'); 
+         $number   = "0051$cel";
+         if($tip==1){ // Tesista : mensaje rechazo del proyecto
+           $mensaje  = "UNU -PILAR \nEstimado(a) Tesista su proyecto fue rechazado por la comisión de Grados y Titulos, revisar su correo para mas detalles del rechazo. \nDebera corregir y subir nuevamente su proyecto en la plataforma PILAR en http://pilar.unu.edu.pe/unu/pilar  \n\n".date("d-m-Y")."\nPlataforma PILAR.";
+        }
+        else if($tip==2){
+           $mensaje  = "UNU PILAR \nEstimado(a) Tesista su proyecto ha sido enviado a su Asesor con la aprobacion de la comision de Grados y Titulos, su Asesor tendra un plazo de 3 dias calendarios para determinar la aprobación o rechazo mediante la Plataforma PILAR  en http://pilar.unu.edu.pe/unu/pilar  \n\n".date("d-m-Y")."\nPILAR.";
+        }
+        else if($tip==3){
+           $mensaje  = "UNU PILAR \nEstimado(a) Docente Se le ha remitido un proyecto para asesoria, Ud. tiene 7 días calendarios para revisarlo y determinar la aprobación o rechazo mediante la Plataforma PILAR en http://pilar.unu.edu.pe/unu/pilar  \n\n".date("d-m-Y")."\nPILAR.";
+        }else if($tip==4){ //jurado - tesista
+           $mensaje  = "UNU PILAR \nEstimado(a) Tesista su Proyecto de Tesis ha sido enviado a los miembros de su Jurado,será revisado en un plazo de 15 dias Calendarios mediante la Plataforma PILAR en http://pilar.unu.edu.pe/unu/pilar  \n\n".date("d-m-Y")."\nPILAR.";
+        }
+        else if($tip==5){ //jurados  
+            $mensaje  = "UNU PILAR \nEstimado(a) Docente usted fué SORTEADO como JURADO de un proyecto de tesis,Ud. tiene 15 días calendarios para revisarlo en la plataforma PILAR en http://pilar.unu.edu.pe/unu/pilar  \n\n".date("d-m-Y")."\nPILAR.";
+        }
+        else if($tip==6){ //jurados- asesor
+           $mensaje  = "UNU PILAR \nEstimado(a) Docente se le notifica que uno de los proyecto de la cual Ud. asesora ha sido enviado a los miembros del Jurado puede revisarlo en la plataforma PILAR en http://pilar.unu.edu.pe/unu/pilar \n\n".date("d-m-Y")."\nPILAR.";
+        }
+        else if($tip==7){ //jurados- asesor
+           $mensaje  = "UNU PILAR \nEstimado(a) Tesista Felicitaciones su proyecto ha sido aprobado ya puede visualizar y descargar su Acta de Aprobacion en la plataforma PILAR en http://pilar.unu.edu.pe/unu/pilar \n\n".date("d-m-Y")."\nPILAR.";
+        }
+        else if($tip==8){ //jurados- asesor
+           $mensaje  = "UNU PILAR \nEstimado(a) Tesista su proyecto ha sido desaprobado por lo que se procedera a archivar el presente trámite y queda habilitad@ para realizar un nuevo trámite en la plataforma PILAR en http://pilar.unu.edu.pe/unu/pilar \n\n".date("d-m-Y")."\nPILAR.";
+        }
+        else{
+           $mensaje  = "UNU PILAR \nEstimado(a) Docente se le recuerda revisar la plataforma PILAR en http://pilar.unu.edu.pe/unu/pilar y verificar los proyectos de tesis pendientes.\n\n".date("d-m-Y")."\nPILAR.";
+        }
+        $result   = $this->apismss->sendMessageToNumber2($number,$mensaje);
 
-        $result = $this->apismss->sendMsj($cel,$tipo);
-        //$this->apismss->sendMsj("930654095",$tipo);
-
-       print($result);
+        if ($result) {
+           return "Mensaje Enviado al $number";
+        }else{
+           return  "Error al enviar mensaje : $number";
+        }
     }
 
     // los que estan excediendo en tiempos 730 dias

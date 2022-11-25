@@ -108,9 +108,9 @@ class GenMailer extends CI_Email
 
         $this->initialize($config);
 
-        $this->from('soporte_pilar@unu.edu.pe', 'Plataforma PILAR - UNU');
+        $this->from('betxymarianelarojas@gmail.com', 'Plataforma PILAR - UNU');
         $this->to( $mailx );
-        $this->cc('soportepilarunu@gmail.com'); //poner soportepilarunu@gmail.com produccion
+        $this->cc(''); //poner soportepilarunu@gmail.com produccion
 
         $this->subject( $title );
         $this->message( $this->frmMsgPilar($msg) );
