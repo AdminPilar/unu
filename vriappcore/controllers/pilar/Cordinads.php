@@ -486,11 +486,32 @@ public function vwLogCordinador(){
     $sess = $this->gensession->GetSessionData(PILAR_CORDIS);
    $carrera=mlGetGlobalVar("IdCarrera");
    $dato=$this->dbPilar->getSnapView("logCordinads","IdCarrera=$carrera AND IdUser =$sess->userId ORDER BY ID DESC");
-   echo "<h2><b>Registro de Actividades<small></b></h2><ul>";
-   foreach ($dato->result() as  $row) {
-      echo "<li>$row->Fecha :: (".$row->IdOperacion.") $row->Just , $row->Detalle<br></li>";
-   }
-   echo "</ul>";
+   echo "<h3><b>Registro de Actividades<small></b></h3><ul>";
+
+
+   echo "<table>";
+               echo "<tr>";
+                  echo "<th>Fecha</th>";
+                  echo "<th>Operacion</th>";
+                  echo "<th>Justificacion</th>";
+                  echo "<th>Detalle</th>";
+               echo "</tr>";   
+      foreach( $dato->result() as $row ){
+               echo "<tr>";
+                  echo "<td> $row->Fecha </td>";
+                  echo "<td> $row->IdOperacion </td>";
+                  echo "<td> $row->Just </td>";
+                  echo "<td> $row->Detalle </td>";
+               echo "</tr>";   
+     
+      }
+   echo "</table>";
+
+
+   //foreach ($dato->result() as  $row) {
+   //   echo "<li>$row->Fecha :: (".$row->IdOperacion.") $row->Just , $row->Detalle<br></li>";
+  // }
+   //echo "</ul>";
 }
 
 // Function de Memorandums
