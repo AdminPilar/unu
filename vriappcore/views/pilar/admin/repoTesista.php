@@ -52,9 +52,8 @@ echo date('H:i:s Y-m-d');
               <td><?php echo $row->NroCelular; ?> </td>
               <td><?php echo $row->FechaReg; ?></td>
               <td>
-               <button onclick="RestaurarContrase(<?php echo $row->Id; ?>);" id ='bet' type="submit" title="Restaurar Contraseña"><i class="glyphicon glyphicon-wrench"></i></button>
+              <button onclick="Modificar(<?php echo $row->Id; ?>);" id ='bet' type="submit" title="Editar"><i class="glyphicon glyphicon-pencil"></i></button>
                <button onclick="Acceso(<?php echo $row->Id; ?>);" id ='bet2' type="submit" title="Log de Accesos"><i class="glyphicon glyphicon-user"></i></button>
-               <button onclick="modificar(<?php echo $row->Id; ?>);" id ='editar' type="submit" title="Editar"><i class="glyphicon glyphicon-pencil"></i></button>
                  &nbsp; &nbsp; &nbsp; &nbsp;
                 <!--<input type="button" value="Abrir modal éxito" name="registrar"  id="btnExito" class="registrar" tabindex="8" />
                <button onclick="listDocRepo(<?php echo $row->Id; ?>);" type="button" title="Modificar"><i class="glyphicon glyphicon-pencil"></i></button>
@@ -72,28 +71,53 @@ echo date('H:i:s Y-m-d');
 </div>
 <script>
   //agregadp unuv1.0 - recuperacion de contraseña tesista
-  function RestaurarContrase(codigo)
+  function Modificar(Id)
   {
-    $('#modalcambio').modal('show');
-    document.getElementById("codigo").value=codigo;
+    
+    document.getElementById("id").value=Id;
+    jVRI.ajax({
+      url  : "admin/BuscarTesista/"+Id,
+      DataType: 'json',
+      success: function( data )
+      {
+        data = JSON.parse(data);
+        $('#modalModificar').modal('show');
+        document.getElementById("codigo").value = data.DatosTesista[0].Codigo;
+       document.getElementById("dni").value = data.DatosTesista[0].DNI;
+        document.getElementById("nombres").value = data.DatosTesista[0].Nombres;
+         document.getElementById("apellidos").value = data.DatosTesista[0].Apellidos;
+          document.getElementById("correo").value = data.DatosTesista[0].Correo;
+           document.getElementById("direccion").value = data.DatosTesista[0].Direccion;
+            document.getElementById("celular").value = data.DatosTesista[0].NroCelular;
+       // alert(data);
+      }
+    }); 
   }
 
   //agregadp unuv1.0 - recuperacion de contraseña tesista
-  function EnviarContrase()
+  function ModificarDatos()
 {	  
-	 datita = new FormData(corazon);
-   val = document.getElementById("codigo").value;
-		jVRI("#popis").html( "Enviando...");
-		$('#idpro').prop('disabled', true);
-		jVRI.ajax({
-			url  : "admin/RestaurarContrase/"+val,
-			data :  datita ,
-			success: function( arg )
-			{
-				jVRI("#popis").html( arg );
-			}
-		});	
+  if(document.getElementById("motivo").value.trim() === "")
+   {
+     $nombre = document.querySelector("#motivo");
+     $nombre.focus();
+   }
+   else 
+   {
+     datita = new FormData(corazon);
+     jVRI("#popis").html( "Enviando...");      
+     jVRI.ajax({
+        url  : "admin/ModificarTesista/",
+        data: datita,
+        success: function( arg )
+        {
+          jVRI("#popis").html( arg );
+          document.getElementById('idpro').disabled = true;
+        }
+      });
+   }  
 }
+
 
 function Acceso(codigo){
     jVRI.ajax({
@@ -121,34 +145,90 @@ function Acceso(codigo){
         }
       });
   }
+
+  function cerrar()
+  {
+   // $("#modalModificar .close").click();
+    $('#modalModificar').modal('hide');
+    lodPanel('admin/panelListaTesista');
+  }
   </script>
 
 <!--modal cambiar contraseña- agregado unuv1.0 - cambio de contraseña tesista -->
-  <div class="modal fade" id="modalcambio"  role="dialog">
+  <div class="modal" id="modalModificar"  role="dialog">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header" style="background-color: Pink">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 id='mensaje' class="modal-title">Recuperacion de Contraseña</h3>
+                <h3 id='mensaje' class="modal-title">Modificar Datos</h3>
             </div>
             <div class ='modal-body' id='popis'>
               <br>
             <form id='corazon' method='POST'>
-            <div class="form-group">
-              <label class="col-md-4 control-label"> Contraseña por defecto </label>
-              <div class="col-md-7">
-                <input id ="contra" name="contra" type="text" class="form-control input-md" value="TesistaUNU" readonly>
-                <input id ="codigo" name="codigo" type="hidden" class="form-control input-md"  >
+              <div class="form-group row">
+                <label class="col-md-4 control-label"> Codigo </label>
+                <div class="col-md-7">
+                  <input id ="contra" name="contra" type="text" class="form-control input-md" value="TesistaUNU" readonly>
+                  
+                </div>
+                <div class="col-md-1">
+                </div>
               </div>
-              <div class="col-md-1">
+               <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Codigo</label>
+                <div class="col-sm-9">
+                  <input id="codigo" name="codigo" class="form-control input-md" >
+                  <input id ="id" name="id" type="hidden" class="form-control input-md">
+                </div>
               </div>
-            </div>
+               <div class="form-group row">
+                <label class="col-sm-3 col-form-label">DNI</label>
+                <div class="col-sm-9">
+                  <input name="dni" class="form-control" id="dni" >
+                </div>
+              </div>
+               <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Nombres</label>
+                <div class="col-sm-9">
+                  <input name="nombres" class="form-control" id="nombres" >
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Apellidos</label>
+                <div class="col-sm-9">
+                  <input name="apellidos" class="form-control" id="apellidos" >
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Correo</label>
+                <div class="col-sm-9">
+                  <input name="correo" class="form-control" id="correo" >
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Direccion</label>
+                <div class="col-sm-9">
+                  <input name="direccion" class="form-control" id="direccion" >
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Celular</label>
+                <div class="col-sm-9">
+                  <input name="celular" class="form-control" id="celular" >
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Motivo</label>
+                <div class="col-sm-9">
+                  <textarea name="motivo" class="form-control" id="motivo"> </textarea>
+                </div>
+              </div>            
             </form>
             </div>
             <br>
             <div class="modal-footer">
-              <button id='idpro' type="button" onclick='EnviarContrase()' class="btn btn-success" >Procesar</button>
-              <button onclick="" type="button"  class="btn btn-danger" data-dismiss="modal" data-backdrop="false">Close</button>              
+               <button id='idpro' type="button" onclick='ModificarDatos()' class="btn btn-success" >Procesar</button>
+              <button onclick="cerrar();"  class="btn btn-danger" data-dismiss="modal" >Close</button>            
             </div>
         </div>
 

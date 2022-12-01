@@ -37,6 +37,9 @@
     </div>
 
 </div>
+ <div class="col-md-2" align="left">
+                <button type="button" class="form-control btn btn-danger" onclick='sndLoad("admin/listBusqTesi", new FormData(frmbusq),true)'> <i class="glyphicon glyphicon-save"></i> Cancelar </button>
+            </div>   <br>
 
 
 
