@@ -1,4 +1,4 @@
- <script type="text/javascript">
+<script type="text/javascript">
     $(document).ready(function() {
    /* $('#example').DataTable(
         {
@@ -95,44 +95,7 @@
 
             $nro = $tproys->num_rows();
 
-             $procesos = array (
-                0 => "",
-                1 => "Revisión de Formato",
-                2 => "Para Asesor",
-                3 => "Para Sorteo",
-                4 => "Para Revisión (1)",
-                5 => "Para Revisión (2)",     // 05
-                6 => "Para Revisión (3)", 
-                7 => "Dictaminacion",
-                8 => "Proy. Aprobado",      // 06
-                9 => "Presentacion Grado de Bach.",      // 10
-                10 => "Revisión de Formato de Borrador",     // 11
-                11 => "Revision Borrador (1)",
-                12 => "Revision Borrador (2)",
-                13 => "Revision Borrador (3)",
-                14 => "Gen Memos",
-                15 => "Susten"
-            );
-
-            $proceclr = array(
-                0 => "",
-                1 => "btn-success",
-                2 => "btn-primary",
-                3 => "btn-danger",
-                4 => "btn-success",
-                5 => "btn-warning",
-                6 => "btn-default",
-                7 => "btn-default",
-                8 => "btn-success",
-                9 => "btn-default",
-                10 => "btn-danger",
-                11 => "btn-warning",
-                12 => "btn-success",
-                13 => "btn-info",
-                14 => "btn-default",
-                15 => "btn-default",
-                16 => "btn-default"
-            );
+                    
 
             //-------------------------------------------------------------------
             // filtrado de acciones dependiento del tipo de tramite
@@ -243,7 +206,6 @@
                 // Estado >= 10 && <= 14 : Borradores
                 if( $row->Tipo == 2 ) {
 
-                    $btnclr = $proceclr[ $row->Estado ];
                     $estado = "<button class='btn btn-xs $Rowdicestatramite->TipoBoton'>  $Rowdicestatramite->Nombre </button>";
 
                      if( $row->Estado==9 ) {
@@ -291,7 +253,6 @@
                     $fechSu = $this->dbPilar->inFechSustent( $row->Id );
 
                     $estado = ($row->Estado==16)? "Programado" : "Concluido";
-                    $btnclr = $proceclr[ $row->Estado ];
                     $estado = "<button class='btn btn-xs $btnclr'> $estado </button>";
 
                     $fecha =  "<small><b>Sustentación: ".mlFechaNorm($fechSu)."</b></small>";
@@ -358,7 +319,3 @@
     }
     
 </script>
-
-
-<!-- /MODAL  -->
-

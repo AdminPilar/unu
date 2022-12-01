@@ -18,23 +18,23 @@
     $nro = $tproys->num_rows();
 
     $procesos = array (
-        "proy nuevo",
+        "Proyecto nuevo",
         "Asesoria",
-        "para Sorteo",
-        "en Revisión (1)",//agregado unuv1.0
-        "en Revisión (2)", //agregado unuv1.0
-        "en Revisión (3)",//agregado unuv1.0
-        "en Dictamen",
-        "P. Aprobado", 
+        "Para Sorteo",
+        "En Revisión (1)",//agregado unuv1.0
+        "En Revisión (2)", //agregado unuv1.0
+        "En Revisión (3)",//agregado unuv1.0
+        "En Dictamen",
+        "Proy. Aprobado", 
         "Presentacion Grado de Bach.",      // 10
         "Revisión de Formato de Borrador",     // 11
-       "Revision Borrador (1)",
-         "Revision Borrador (2)",
+        "Revision Borrador (1)",
+        "Revision Borrador (2)",
         "Revision Borrador (3)",
         "Dictamen",
-         "Revision Presencial",
-         "Borrador de Tesis Final",
-         "otros"
+        "Revision Presencial",
+        "Borrador de Tesis Final",
+        "Otros"
     );
 
     $proceclr = array(
@@ -53,7 +53,7 @@
         "btn-success",
         "btn-success",
         "btn-success",
-         "btn-success"
+        "btn-success"
 
     );
 
