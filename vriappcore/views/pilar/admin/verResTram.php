@@ -1,14 +1,21 @@
 <?php
     $idtram = ($ttram)? $idtram = $ttram->Id : 0;
 ?>
-
-<div class="col-md-12">
+<div class="col-md-12"> 
     <div class="col-md-12 workspace">
+       <fieldset>
+    <legend>Opciones</legend>
+        <?php if($ttram->Tipo!=0 && $ttram->Estado!=0 ) {?>
         <button onclick='sndLoad("admin/tesRenunc/<?=$idtram?>", null,true)' class="btn btn-warning" style="font-size: 12px; font-weight: bold"> <i class="glyphicon glyphicon-cog"></i> Renunciar </button>
+         <button onclick='sndLoad("admin/tesEdiTitu/<?=$idtram?>", null,true);' class="btn btn-primary" style="font-size: 12px; font-weight: bold"> <i class="glyphicon glyphicon-edit"></i> Cambiar Titulo </button>
+        <?php } ?>
+        <?php if($ttram->Estado!=0 && $ttram->Tipo==0) {?>
         <button onclick='sndLoad("admin/tesHabili/<?=$idtram?>", null,true)' class="btn btn-success" style="font-size: 12px; font-weight: bold"> <i class="glyphicon glyphicon-cog"></i> Habilitar </button>
         |
-        <button onclick='sndLoad("admin/tesEdiPass/<?=$idtes?>", null,true)' class="btn btn-primary" style="font-size: 12px; font-weight: bold"> <i class="glyphicon glyphicon-cog"></i> Cambiar Datos </button>
-        <button onclick='sndLoad("admin/tesEdiTitu/<?=$idtram?>", null,true);' class="btn btn-primary" style="font-size: 12px; font-weight: bold"> <i class="glyphicon glyphicon-edit"></i> Cambiar Titulo </button> |
+       
+      <?php } ?>        
+        <!--<button onclick='sndLoad("admin/tesEdiPass/<?=$idtes?>", null,true)' class="btn btn-primary" style="font-size: 12px; font-weight: bold"> <i class="glyphicon glyphicon-cog"></i> Cambiar Datos </button>-->
+       
         <button onclick='sndLoad("admin/tesHistory/<?=$idtram?>", null,true);' class="btn btn-primary" style="font-size: 12px; font-weight: bold"> <i class="glyphicon glyphicon-list"></i> Log de Trámite </button>
         <?php if( $ttram AND $ttram->Estado >= 4): ?>
             <button onclick='sndLoad("admin/tesCambios/<?=$idtram?>", null,true);' class="btn btn-primary" style="font-size: 12px; font-weight: bold"> <i class="glyphicon glyphicon-user"></i> Log de Cambios </button>
@@ -20,32 +27,18 @@
             echo '| <a target="_blank" href="tesistas/actaBorr/'.$ttram->Id.'" class="btn btn-default" style="font-size: 12px; font-weight: bold"> <i class="glyphicon glyphicon-qrcode"></i> Acta Borr </a>';
         }
         ?>
+        </fieldset>
     </div>
+  
 </div>
 
 <div class="col-md-12" id="panelView">
-  <div class="row col-md-12 workspace">
-      <div class="col-md-2">
-          <?php
-
-            /*
-            // limitados y localmente ineficiente
-            //
-                $img = null;
-                $img = $this->dbWeb->getOneField( "dicPersonaJs", "Foto", "IdTesista=$idtes" );
-                if( $img )
-                echo "<img src='$img'>";
-            */
-
-            // Previos : 1240  :: modo dinámico y buferizado
-            /*if( $media = $this->genapi->getDataPer($tdata->DNI) )
-                echo "<img src='$media->foto'>";*/
-
-          ?>
-      </div>
+  <div class="row col-md-12 workspace">  
       <!-- datos de tesista ini -->
-      <div class="col-md-10">
+      <div class="col-md-12">
           <!--	Tiempo de carga: <strong> {elapsed_time} s</strong><hr>//-->
+           <fieldset>
+    <legend>Datos Tesista</legend> 
           <table class="table table-bordered table-striped" style="font-size: 13px">
               <tr>
                   <th> DNI </th>
@@ -61,38 +54,53 @@
                   <td> <?=$tdata->Codigo?> </td>
                   <td> <?=$idtram? $this->dbPilar->inTesistas($idtram) : $tdata->DatosPers?>  <small>(<?=$tdata->Id?>)</small> </td>
                   <td> <?=$tdata->Carrera?> </td>
-                  <td> <?=$tdata->NroCelular?> <input onclick="num.value=<?=$tdata->NroCelular?>" data-toggle="modal" data-target="#dlgSms" class="btn btn-info btn-xs" type="button" value="..."> </td>
+                  <td> <?=$tdata->NroCelular?> <!--<input onclick="num.value=<?=$tdata->NroCelular?>" data-toggle="modal" data-target="#dlgSms" class="btn btn-info btn-xs" type="button" value="..."> </td>-->
                   <td> <?=$tdata->Correo?> </td>
                   <td> <?=mlFechaNorm($tdata->FechaReg)?> </td>
               </tr>
           </table>
-
+        </fieldset>
+         <fieldset>
+    <legend>Datos Tesis</legend> 
           <table class="table table-bordered table-striped" style="font-size: 13px">
               <tr>
                   <th> Cod de Proy </th>
                   <th> Año </th>
+                  <th> Tipo</th>
                   <th> Estado </th>
                   <th> Linea </th>
                   <th> Fecha Ini Proy </th>
                   <th> Fecha Ini Borr </th>
                   <th> Ultima Fecha </th>
                   <th> Dias </th>
-                  <th> Ejecución </th>
+                  <!--<th> Ejecución </th>-->
               </tr>
-              <?php if( $ttram ) { ?>
+              <?php if( $ttram ) 
+              {   if($ttram->Estado == 0)
+                  {
+                    $esatdo = "ANULADO";
+                  } 
+                  else{
+                    $Rowdicestatramite = $this->dbPilar->getSnapRow( "dicestadtram", "Id=$ttram->Estado");
+                    $esatdo = $Rowdicestatramite->Nombre;
+                  }             
+
+                ?>
               <tr>
                   <td> <?php echo "$ttram->Codigo :: <small>(Id:$ttram->Id)</small>" ?> </td>
                   <td> <?=$ttram->Anio?> </td>
-                  <td> <?=$ttram->Estado?> </td>
-                  <td> <small><?php echo "($ttram->IdLinea) : " . $this->dbRepo->inLineaInv($ttram->IdLinea); ?> </small> </td>
+                  <td> <?php if($ttram->Tipo!=0){ echo "ACTIVO";} else {echo "INACTIVO";} ?> </td>
+                  <td> <?=$esatdo ?> </td>
+                  <td> <small><?php echo $this->dbRepo->inLineaInv($ttram->IdLinea); ?> </small> </td>
                   <td> <?=mlFechaNorm($ttram->FechRegProy)?> </td>
-                  <td> <?=mlFechaNorm($ttram->FechActBorr)?> </td>
+                  <td> <?php if(mlFechaSolo($ttram->FechActBorr) =='30/11/-0001'){ echo "";} else {echo mlFechaNorm($ttram->FechActBorr);} ?> </td>
                   <td> <?=mlFechaNorm($ttram->FechModif)?> </td>
                   <td> <b><?=mlDiasTranscHoy($ttram->FechModif)?></b> </td>
-                  <td> <b><?=$proyA? mlDiasTranscHoy($proyA->Fecha) : "(trámite)"?></b> </td>
+                  <!--<td> <b><?=$proyA? mlDiasTranscHoy($proyA->Fecha) : "(trámite)"?></b> </td>-->
               </tr>
               <?php } ?>
           </table>
+        </fieldset>
       </div>
       <!-- datos de tesista fin -->
   </div>
@@ -126,7 +134,8 @@
 
 <div class="col-md-12" id="panelView">
   <div class="col-md-12 workspace">
-
+     <fieldset>
+    <legend>Revisiones del Jurado</legend> 
 	<table class="table table-bordered table-striped" style="font-size: 12px">
 		<tr>
 			<th> Iteracion </th>
@@ -145,13 +154,14 @@
 				echo "<tr>";
 				echo "<td> $row->Iteracion </td>";
 				echo "<td>" .mlFechaNorm($row->Fecha). "</td>";
-				echo "<td> [ $row->vb1 / $row->vb2 / $row->vb3 / $row->vb4 ] </td>";
+				echo "<td> [ $row->vb1 / $row->vb2 / $row->vb3 ] </td>";
 				echo "<td> <small>$row->Titulo</small> </td>";
 				echo "<td> <a class='btn btn-xs btn-info' target=_blank href='$lnk'> VER </a> </td>";
 				echo "</tr>";
 			}
 		?>
 	</table>
+</fieldset>
   </div>
 </div>
 

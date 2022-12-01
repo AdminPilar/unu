@@ -19,7 +19,7 @@ $(document).ready(function() {
   <div class="tab-content nav-pills">
     <!-- ..................Repositorio de Docentes................... -->
     <div id="dtab1" class="tab-pane fade in active" style="">
-      <center><h3> Top Accesos Docentes </h3></center>
+      <center><h3> Top Accesos Tesistas </h3></center>
           <div class="col-md-2">
            </div>
             <div class="col-md-10">      

@@ -1,7 +1,6 @@
-
-<script type="text/javascript">
+ <script type="text/javascript">
     $(document).ready(function() {
-    $('#example').DataTable(
+   /* $('#example').DataTable(
         {
            "language": {
             "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
@@ -10,15 +9,33 @@
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
         ]
-        });
+        });*/
+
     } );
 </script>
+
 <?php
+    $nombre='';
+    if($tipo==1)
+    {
+        $nombre ='Proyectos de Tesis';
+    }
+    else if($tipo ==2)
+    {
+        $nombre='Borrador de Tesis';
+    }
+    else if($tipo ==3)
+    {
+         $nombre='Sustencaciones de Tesis';
+    }
 
     $onsubm = "sndLoad('admin/innerTrams/$tipo', new FormData(fsee) )";
 ?>
 
-<!--<div class="col-md-12">
+
+<div> <center><h3> <?=$nombre?> </h3></center></div>
+
+<div class="col-md-12">
     <form id="fsee" class="form-horizontal" onsubmit="<?=$onsubm?>; return false">
         <fieldset>            <div class="form-group no-print">
                 <input type="hidden" name="tipo" value="<?=$tipo?>"> 
@@ -56,12 +73,12 @@
             </div>
         </fieldset>
     </form>
-</div>-->
+</div>
 
 <!-- ============================================================================ -->
-<div> <center><h3> PROYECTOS DE TESIS </h3></center></div>
 <div class="col-md-12">
     <div class="table-responsive">
+
         <table id="example"class="table table-striped table-bordered" style="width:100%">
                <thead>
               <tr>
@@ -69,10 +86,10 @@
                 <th class="col-md-1"> Codigo </th>
                 <th class="col-md-2"> Tesista </th>
                 <th class="col-md-5"> Titulo </th>
-                <th class="col-md-2"> Fecha Ult. Mod. </th>
-                <th class="col-md-2"> Opciones </th>
+                <th class="col-md-1"> Fecha Ult. Mod. </th>
+                <th class="col-md-3"> Opciones </th>
               </tr>
-            </thead>
+            </thead>            
              <tbody>
             <?php
 
@@ -143,45 +160,58 @@
                 if( $row->Tipo == 1 ) 
                 {
                     $estado = "<button class='btn btn-xs $Rowdicestatramite->TipoBoton'> $Rowdicestatramite->Nombre </button>";
-                    $estado = $estado . " <br><small> (E: $row->Estado) </small> ";
+                    $estado = $estado . " <br> ";
 
                     // ESTADO 1: Proyecto de Tesis en revisión por la Comisión de Grados y Títulos.
                     if( $row->Estado == 1 AND $diasp>=0 )
                     { 
                         $menus .= " | <button onclick='popLoad(\"admin/execRechaza/$row->Id\",$nro)' class='btn btn-xs btn-danger'>Rechazar</button> ";
-                        $menus .=" | <button onclick='pyDirect($nro,$row->Id)' class='btn btn-xs btn-warning'> Al Asesor </button>";
+                        $menus .=" | <button onclick='popLoad(\"admin/execEnvia/$row->Id\",$nro)' class='btn btn-xs btn-warning'>Enviar al Asesor</button>";
                     }
 
                     if( $row->Estado == 2 )
-                        $menus .= " | <button onclick='popLoad(\"admin/execNoDirec/$row->Id\",$nro)' class='btn btn-xs btn-danger'> Rechazar </button>";
+                    {
+                        if($diasp>3)
+                        {
+                            $menus .= " | <button onclick='popLoad(\"admin/execNoDirec/$row->Id\",$nro)' class='btn btn-xs btn-danger'> Exceso de Tiempo </button>";
+                        }                        
+                    }                      
 
                     if( $row->Estado == 3 AND $diasp>=0 ){
                         $menus .= " | <button onclick='popLoad(\"admin/execSorteo/$row->Id\",$nro)' class='btn btn-xs btn-warning'> Sorteo </button>";
                     }
 
                     // revisiones
-                    if( $row->Estado == 4 ) {
+                    if( $row->Estado == 4 || $row->Estado == 5 || $row->Estado == 6) {
 
                         $menus .= " | <button onclick='popLoad(\"admin/execCorrec/$row->Id\",$nro)' class='btn btn-xs btn-primary'> Correcs </button>";
-                        $menus .=  "<button onclick='popLoad(\"admin/execCancelPy/$row->Id\",$nro)' class='btn btn-xs btn-danger'> Archivar </button>" ;
-                        if( $diasp > 60 ) {
-
-                            $menus .= " | <button onclick='popLoad(\"admin/execRech4/$row->Id\",$nro)' class='btn btn-xs btn-danger'> Cancelar </button>";
-                            $menus .= "<br> <p style='color:red'> <b>Exceso de tiempo</b> <br> [ $det->vb1 / $det->vb2 / $det->vb3 ] </p>";
+                        $menus .=  " | <button onclick='popLoad(\"admin/execCancelPy/$row->Id\",$nro)' class='btn btn-xs btn-danger'> Archivar </button>" ;
+                        if( $diasp > 15) 
+                        {
+                            $menus .= " | <button onclick='popLoad(\"admin/execRech4/$row->Id\",$nro)' class='btn btn-xs btn-warning'> Exceso de Tiempo </button>";
+                            //$menus .=  " | <button onclick='popLoad(\"admin/execCancelPy/$row->Id\",$nro)' class='btn btn-xs btn-danger'> Archivar </button>" ;
+                            $menus .= " <p style='color:red'> <b>Exceso de tiempo</b> </p>";
                         }
                         else {
-                            $menus .= "<br>[ $det->vb1 / $det->vb2 / $det->vb3 ]";
+                            //$menus .= "<br>[ $det->vb1 / $det->vb2 / $det->vb3 ]";
                         }
                     }
 
+
                     // dictaminaciones
-                    if( $row->Estado == 5  ) {
+                    if( $row->Estado == 7  ) {
 
                         $cance = ($det->vb1 + $det->vb2 + $det->vb3)<0? "<button onclick='popLoad(\"admin/execCancelPy/$row->Id\",$nro)' class='btn btn-xs btn-danger'> Cancelar </button>" : "";
-
-                        $menus .= " | <button onclick='popLoad(\"admin/execAprobPy/$row->Id\",$nro)' class='btn btn-xs btn-warning'> Aprobar </button> $cance";
-                         $menus .= " | <button onclick='popLoad(\"admin/execCorrec/$row->Id\",$nro)' class='btn btn-xs btn-primary'> Correcs </button>";
-                        $menus .= "<br>[ $det->vb1 / $det->vb2 / $det->vb3 ]";
+                        $menus .= " | <button onclick='popLoad(\"admin/execCorrec/$row->Id\",$nro)' class='btn btn-xs btn-primary'> Dictaminar </button>";
+                        if( $diasp > 15) 
+                        {
+                            $menus .= " | <button onclick='popLoad(\"admin/execRech4/$row->Id\",$nro)' class='btn btn-xs btn-warning'> Exceso de Tiempo </button>";
+                            //$menus .=  " | <button onclick='popLoad(\"admin/execCancelPy/$row->Id\",$nro)' class='btn btn-xs btn-danger'> Archivar </button>" ;
+                            $menus .= " <p style='color:red'> <b>Exceso de tiempo</b> </p>";
+                        }
+                        //$menus .= " | <button onclick='popLoad(\"admin/execAprobPy/$row->Id\",$nro)' class='btn btn-xs btn-warning'> Aprobar </button> $cance";
+                         //$menus .= " | <button onclick='popLoad(\"admin/execCorrec/$row->Id\",$nro)' class='btn btn-xs btn-primary'> Correcs </button>";
+                      //  $menus .= "<br>[ $det->vb1 / $det->vb2 / $det->vb3 ]";
 
                     }
 
@@ -214,7 +244,7 @@
                 if( $row->Tipo == 2 ) {
 
                     $btnclr = $proceclr[ $row->Estado ];
-                    $estado = "<button class='btn btn-xs $btnclr'> Borr (E: $row->Estado) </button>";
+                    $estado = "<button class='btn btn-xs $Rowdicestatramite->TipoBoton'>  $Rowdicestatramite->Nombre </button>";
 
                      if( $row->Estado==9 ) {
                     $menus .= " | <a href='$actap' class='btn btn-xs btn-primary no-print' target=_blank> ACTA </a>";
@@ -236,6 +266,22 @@
                     if( $row->Estado==11 ) {
                         $menus .= " | <button onclick='borDirect($nro,$row->Id)' class='btn btn-xs btn-warning'>Envia a Revisión</button>";
                     }
+
+                    if( $row->Estado==12 ) {
+                        $menus .= " | <button onclick='borDirect($nro,$row->Id)' class='btn btn-xs btn-warning'>Envia a Revisión</button>";
+                    }
+                    if( $row->Estado==13 ) {
+                        $menus .= " | <button onclick='borDirect($nro,$row->Id)' class='btn btn-xs btn-warning'>Envia a Revisión</button>";
+                    }
+                    if( $row->Estado==14 ) {
+                        $menus .= " | <button onclick='borDirect($nro,$row->Id)' class='btn btn-xs btn-warning'>Envia a Revisión</button>";
+                    }
+                    if( $row->Estado==15 ) {
+                        $menus .= " | <button onclick='borDirect($nro,$row->Id)' class='btn btn-xs btn-warning'>Envia a Revisión</button>";
+                    }
+                    if( $row->Estado==16 ) {
+                        $menus .= " | <button onclick='borDirect($nro,$row->Id)' class='btn btn-xs btn-warning'>Envia a Revisión</button>";
+                    }
                 }
 
                 // Con programacion de sustent y pasados
@@ -244,11 +290,21 @@
                     // fecha de susten.
                     $fechSu = $this->dbPilar->inFechSustent( $row->Id );
 
-                    $estado = ($row->Estado==13)? "Programado" : "Concluido";
+                    $estado = ($row->Estado==16)? "Programado" : "Concluido";
                     $btnclr = $proceclr[ $row->Estado ];
                     $estado = "<button class='btn btn-xs $btnclr'> $estado </button>";
 
                     $fecha =  "<small><b>Sustentación: ".mlFechaNorm($fechSu)."</b></small>";
+                }
+                if( $row->Tipo == 0 ) 
+                {
+
+                    // fecha de susten.
+                    $fechSu = $this->dbPilar->inFechSustent( $row->Id );
+
+                    $estado = ($row->Estado==0)? "RECHAZADO" : "ARCHIVADO";
+                    $btnclr = ($row->Estado==0)? "btn-danger" : "btn-warning";                   
+                    $estado = "<button class='btn btn-xs $btnclr'> $estado </button>";
                 }
 
                 echo "<td>$nro</td>";
@@ -281,7 +337,7 @@
   <div class="modal-content">
 	<div class="modal-header" style="background: #920738; color:white">
 	  <button class="close" data-dismiss="modal" style="color:white">&times;</button>
-	  <h4 class="modal-title"> Modificar </h4>
+	  <h4 class="modal-title"> AD¡dministrador </h4>
 	</div>
   <form name="fX" id="fX" method="post">
 	<div class="modal-body" id="vwCorrs" style="font-size:13px">
@@ -289,7 +345,7 @@
 	</div>
   </form>
 	<div class="modal-footer">
-		<button class="btn btn-success" id="popOk" onclick="popProcede('admin/popExec',new FormData(fX))">Procesar</button>
+		<button  class="btn btn-success" id="popOk" onclick="popProcede('admin/popExec',new FormData(fX))">Procesar</button>
 		<button onclick="prueba();" class="btn btn-danger" data-dismiss="modal"> Cerrar</button>
 	</div>
   </div>
@@ -302,5 +358,7 @@
     }
     
 </script>
+
+
 <!-- /MODAL  -->
 

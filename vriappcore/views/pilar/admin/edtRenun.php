@@ -1,5 +1,7 @@
+
 <div class="col-md-12 workspace">
-    <hr>
+    <center>
+   <div class="admin-title col-wine"> Renuncia de Proyecto de Tesis</div></center>
     <form name='frmtitu' class="form-horizontal" onsubmit='sndLoad("admin/inSaveRenun", new FormData(this),true)'>
         <input type="hidden" name="idtram" value="<?=$idtram?>">
         <div class="form-group">

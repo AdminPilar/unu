@@ -75,8 +75,10 @@
             <a onclick="lodPanel('admin/panelProys')" href="javascript:void(0)" class="list-group-item"><span class="glyphicon glyphicon-th-list"></span> Proyectos de Tesis</a>
             <a onclick="lodPanel('admin/panelBorrs')" href="javascript:void(0)" class="list-group-item"><span class="glyphicon glyphicon-book"></span> Borrador de Tesis</a>
             <a onclick="lodPanel('admin/panelSuste')" href="javascript:void(0)" href="#" class="list-group-item"><span class="glyphicon glyphicon glyphicon-calendar"></span> Sustentaciones</a>
-			<a onclick="lodPanel('admin/panelRechz')" href="javascript:void(0)" class="list-group-item"><span class="glyphicon glyphicon-book"></span> Proys/Borr Rechazados </a>
-            <a onclick="lodPanel('admin/panelCaduc')" href="javascript:void(0)" class="list-group-item"><span class="glyphicon glyphicon-book"></span> Proys/Borr Caducados </a>
+			       <a onclick="lodPanel('admin/panelRechz')" href="javascript:void(0)" class="list-group-item"><span class="glyphicon glyphicon-book"></span> Proys/Borr Rechazados </a>
+           <!--<a onclick="lodPanel('admin/panelCaduc')" href="javascript:void(0)" class="list-group-item"><span class="glyphicon glyphicon-book"></span> Proys/Borr Archivados </a>-->
+             <a onclick="lodPanel('admin/panelBusqa')" href="javascript:void(0)" class="list-group-item"><span class="glyphicon glyphicon-search"></span> <b>Búsquedas</b> </a>
+              <a onclick="lodPanel('admin/panelOnBor')" href="javascript:void(0)" class="list-group-item disabled"><span class="glyphicon glyphicon-search"></span> Activar Borrador </a>
           </ul>
         </div>
         <?php } else { ?>
@@ -90,12 +92,13 @@
 		<div class="list-group">
           <ul class="nav nav-pills bderecha">
              <?php if( $sess->userLevel < 4 ) { ?>
-            <a onclick="lodPanel('admin/panelBusqa')" href="javascript:void(0)" class="list-group-item"><span class="glyphicon glyphicon-search"></span> <b>Búsquedas</b> </a>
-            <a onclick="lodPanel('admin/panelOnBor')" href="javascript:void(0)" class="list-group-item"><span class="glyphicon glyphicon-search"></span> Activar Borrador </a>
+           
+           
             <?php }?>
             <a onclick="lodPanel('admin/panelListaTesista')" class="list-group-item" ><span class="glyphicon glyphicon-sunglasses"></span> Datos Tesista</a> <!--agregado unuv1.0 - Recuperacion de contraseña - tesista -->
             <!--Creado 23/02/2022-->  
             <a onclick="lodPanel('admin/panelListaPosibles')" href="javascript:void(0)" class="list-group-item" ><span class="glyphicon glyphicon-sunglasses"></span> Repositorio Postulantes</a>
+            <a onclick="lodPanel('admin/panelLogsT')" href="javascript:void(0)" class="list-group-item"><span class="glyphicon glyphicon-book"></span> Accesos Tesistas </a>
 
             <a href="#" class="list-group-item disabled" ><span class="glyphicon glyphicon-book"></span> Reporte Tesista</a>
           </ul>
@@ -107,8 +110,8 @@
           <ul class="nav nav-pills bderecha">
               <?php if( $sess->userLevel < 4 ) { ?>
             <a onclick="lodPanel('admin/panelLista')" href="javascript:void(0)" class="list-group-item"><span class="glyphicon glyphicon-sunglasses"></span> Repositorio Docentes </a>
-            <a onclick="lodPanel('admin/panelConst')" href="javascript:void(0)" class="list-group-item"><span class="glyphicon glyphicon-book"></span> Constancias </a>
-            <a onclick="lodPanel('admin/panelPilar')" href="javascript:void(0)" class="list-group-item disabled"><span class="glyphicon glyphicon-book"></span> Docentes en PILAR </a>
+            <!--<a onclick="lodPanel('admin/panelConst')" href="javascript:void(0)" class="list-group-item"><span class="glyphicon glyphicon-book"></span> Constancias </a>
+            <a onclick="lodPanel('admin/panelPilar')" href="javascript:void(0)" class="list-group-item disabled"><span class="glyphicon glyphicon-book"></span> Docentes en PILAR </a>-->
              <?php } ?>
             <a onclick="lodPanel('admin/panelLogsD')" href="javascript:void(0)" class="list-group-item"><span class="glyphicon glyphicon-book"></span> Accesos Docentes </a>
             
