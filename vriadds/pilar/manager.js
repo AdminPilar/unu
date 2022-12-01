@@ -19,12 +19,14 @@ function lodPanel( urlink )
 	//jVRI("#panelView").load( urlink );
     $("#panelView").html( lodmsg );
     $("#panelView").load( urlink );
-}
+  }
 
 
 //unuv1.0 - estado sorteo de jurado
 function popProcede( urlink, arg )
 {
+  
+
 	jVRI("#vwCorrs").load( urlink, arg );    
     jVRI("#vwCorrs").html( "¡...Procesando...... por favor espere!"); 
     $("#popOk").prop( "disabled", true );

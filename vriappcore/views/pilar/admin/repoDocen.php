@@ -17,6 +17,15 @@ $(document).ready(function() {
     $("#tres").empty();
     cargarGrados(iddocen);
 }
+
+ //agregado unuv1.0
+  function listDocLineas(iddocen)
+{    
+    $("#dlg1").modal();
+    $("#doc1").val( iddocen );
+    $("#cuatro").empty();
+    cargarLineas(iddocen);
+}
 function AccesoDoc(codigo){
     jVRI.ajax({
         type:'GET', 
@@ -30,7 +39,6 @@ function AccesoDoc(codigo){
         data.logindocentes.forEach(logdoc => {
           valor += logdoc.Tipo;
            valor += "<tr>"+
-             "<td>" + logdoc.Id + "</td>"+
              "<td>" + logdoc.Fecha + "</td>"+
              "<td>" + logdoc.Accion + "</td>"+ 
              "<td>" + logdoc.OS + "</td>"+
@@ -50,7 +58,7 @@ function AccesoDoc(codigo){
   <div class="tab-content nav-pills">
     <!-- ..................Repositorio de Docentes................... -->
     <div id="dtab1" class="tab-pane fade in active" style="">
-      <center><h3> Repositorio Repositorio VRI </h3></center>
+      <center><h3> Repositorio Docentes</h3></center>
       <div class="col-md-2">
          <a href="#dtab2" data-toggle="tab" class="btn btn-success btn-block">Agregar <i class="glyphicon glyphicon-plus"></i></a>
       </div>
@@ -82,11 +90,11 @@ function AccesoDoc(codigo){
                         <td><?php echo $row->Correo; ?> </td>
                         <td><?php echo $row->Activo; ?></td>
                         <td>
-                        <button onclick="RestaurarContrase(<?php echo $row->Id; ?>,2);" id ='bet' type="submit" title="Enviar Cuenta"><i class="glyphicon glyphicon-wrench"></i></button>
-                        <button onclick="RestaurarContrase(<?php echo $row->Id; ?>,1);" id ='bet' type="submit" title="Restaurar Contraseña"><i class="glyphicon glyphicon-wrench"></i></button>
+                       <!-- <button onclick="RestaurarContrase(<?php echo $row->Id; ?>,2);" id ='bet' type="submit" title="Enviar Cuenta"><i class="glyphicon glyphicon-wrench"></i></button>
+                        <button onclick="RestaurarContrase(<?php echo $row->Id; ?>,1);" id ='bet' type="submit" title="Restaurar Contraseña"><i class="glyphicon glyphicon-wrench"></i></button> -->
                          | <button onclick="listDocRepo(<?php echo $row->Id; ?>);" type="button" title="Modificar"><i class="glyphicon glyphicon-pencil"></i></button>
                          |  <button onclick="listDocGrad(<?php echo $row->Id; ?>);" type="button" title="Grados/Titulos"><i class="glyphicon glyphicon-education"></i></button>
-                         |  <button onclick="listDocGrad(<?php echo $row->Id; ?>);" type="button" title="Lineas Investigación"><i class="glyphicon glyphicon-tasks"></i></button>
+                         |  <button onclick="listDocLineas(<?php echo $row->Id; ?>);" type="button" title="Lineas Investigación"><i class="glyphicon glyphicon-tasks"></i></button>
                         |   <button onclick="AccesoDoc(<?php echo $row->Id; ?>);" id ='bet' type="submit" title="Log de Accesos"><i class="glyphicon glyphicon-user"></i></button>
                         </td>
                     </tr>
@@ -394,12 +402,95 @@ function AccesoDoc(codigo){
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-warning" data-dismiss="modal"> Salir </button>
+        <button  type="button" class="btn btn-warning" data-dismiss="modal"> Salir </button>
       </div>
     </div>
   </div>
 </div>
 
+
+<div class="modal fade" id="dlg1" tabindex="-1" role="dialog" aria-labelledby="dlgJurLab" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <span class="label label-default mycaption"> Listado de Linea de Investigacion </span>
+        <!-- form -->
+          <form class="form-horizontal" id="frmDatos1" name="frmDatos1" novalidate="novalidate" method="POST">
+          <fieldset>
+              <!-- select areas -->
+              <!--<div class="form-group form-group-sm">
+                    <label class="col-sm-2 col-md-2 control-label"> Linea </label>
+                    <div class="col-md-8">
+                        <select id="linea1" name="linea1" class="form-control" required>
+                            <option value="" disabled selected> seleccione </option>
+                            <?php
+                                foreach( $tlinea->result() as $row )
+                                {                                   
+                                    echo "<option value=$row->Id> $row->Nombre </option>";
+                                }
+                            ?>
+                        </select>
+                         <input name="doc1" id="doc1" type="hidden" class="form-control">
+                    </div>
+                     <div class="col-md-2">
+                      <button type="button" class="btn btn-success btn-block" onclick="AgregarLinea()"> <i class="glyphicon glyphicon-plus"></i> </button>
+                  </div>  
+                  <label class="col-md-12 control-label" style="display:block" id=''>betxy  </label>                
+              </div>
+              <div class="form-group form-group-sm" align="rigth">
+                  <label class="col-md-12 control-label" style="display:none" id='MsgError'>  </label> 
+                 
+              </div>-->
+               <div class="form-group row">
+                <label class="col-sm-2 col-md-2 control-label"> Linea </label>
+                <div class="col-sm-8">
+                  <select id="linea1" name="linea1" class="form-control" required>
+                            <option value="" disabled selected> seleccione </option>
+                            <?php
+                                foreach( $tlinea->result() as $row )
+                                {                                   
+                                    echo "<option value=$row->Id> $row->Nombre </option>";
+                                }
+                            ?>
+                        </select>
+                         <input name="doc1" id="doc1" type="hidden" class="form-control">
+                </div>
+                <div class="col-md-2">
+                      <button type="button" class="btn btn-success btn-block" onclick="AgregarLinea()"> <i class="glyphicon glyphicon-plus"></i> </button>
+                  </div> 
+              </div> 
+              <div class="form-group row">
+                <label class="col-sm-2 col-md-2 control-label">  </label>
+                <div class="col-sm-8">
+                   <label style="display:none;color:red;font-size: 10px" id='MsgError'>  </label> 
+                </div>
+                <div class="col-md-2">
+                </div> 
+              </div>                       
+              <hr>
+              <!-- select areas -->
+              <div class="form-group form-group-sm">
+                  <div class="col-md-12">
+                      <table class="table table-bordered table-striped" style="font-size: 10px">
+                          <th> Id </th>
+                          <th> Nombre Linea </th>
+                          <th> Estado </th>
+                          <th> Fecha </th>
+                          <tbody id="cuatro"></tbody>
+                      </table>
+                  </div>
+              </div>
+
+          </fieldset>
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button  type="button" class="btn btn-warning" data-dismiss="modal"> Salir </button>
+      </div>
+    </div>
+  </div>
+</div>
 <!--modal cambiar contraseña- agregado unuv1.0 - cambio de contraseña tesista -->
 <div class="modal fade" id="modalcambio"  role="dialog">
       <div class="modal-dialog modal-dialog-centered" role="document">
@@ -495,6 +586,49 @@ function cargarGrados(iddoce){
     });
 }
 
+//agregado unuv1.0 - Mantenimiento Docente  
+function cargarLineas(iddoce){
+
+    $("#cuatro").empty();    
+
+     $.ajax({
+        url  : 'admin/DocenteLineas/'+iddoce,       
+        success: function( arg )
+        {
+            $("#cuatro").html( arg );
+        }
+    });
+}
+
+ function AgregarLinea(){
+
+   $("#linea").val( "" ); 
+   document.getElementById('MsgError').innerHTML=''; 
+    var id = document.getElementById('doc1').value;
+     $.ajax({                        
+       type: "POST",                 
+       url:'admin/AgregarLinea/',                   
+       data: $('#frmDatos1').serialize(),
+       success: function(arg)            
+       { 
+        //alert(arg);       
+          if(arg.trim()==="no")
+          {
+             document.getElementById('MsgError').style.display = 'block';
+              document.getElementById('MsgError').innerHTML = 'Esa linea ya esta asociada al docente';
+
+          }
+          else
+          {
+            $("#cuatro").empty();
+            cargarLineas(arg);
+          }
+
+         
+       }
+     });   
+}
+
  function AgregarGrado(){
 
     $("#tres").empty();
@@ -539,10 +673,9 @@ function listDocRepo(id)
                 <table class="table table-hover">
                   <thead>
                     <tr>
-                      <th>ID</th>
                       <th>FECHA</th>
                       <th>ACCION</th>
-                      <th>SISTEMA OPERATIVO</th>
+                      <th>S.O</th>
                       <th>NAVEGADOR</th>
                       <th>IP</th>
                     </tr>
