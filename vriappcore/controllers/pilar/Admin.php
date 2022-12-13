@@ -199,7 +199,7 @@ class Admin extends CI_Controller {
         $matriculaperiodo = mlSecurePost( "matriculaperiodo" );  
 
 
-        if( $this->dbRepo->getSnapRow("tblcandidatostesistas","documento_numero='$dni' AND Codigo='$codigo'") ) {
+        if( $this->dbRepo->getSnapRow("tblcandidatostesistas","documento_numero='$dni' OR Codigo='$codigo'") ) {
             echo "Existe uno identico con DNI y Codigo";
             return;
         }
@@ -1018,7 +1018,7 @@ public function MostrarEstado($esta){
         // detallaremos evento interno Ev40
         echo "<input type=hidden name=evt value='40'>";
         echo "<input type=hidden name=idtram value='$idtram'>";
-        echo "<input type=checkbox name=borrt> <b>Borrar Trámite</b>";
+        echo "<input type=checkbox name=borrt> <b>Archivar Trámite</b>";
 
         /*
         $ci =& get_instance();
@@ -1112,6 +1112,7 @@ public function MostrarEstado($esta){
         echo "</div>";
     }
 
+    //utilizado : para sorteo
     public function execSorteo( $idtram=0 )
     {
         $this->gensession->IsLoggedAccess( PILAR_ADMIN );
@@ -1299,7 +1300,6 @@ public function MostrarEstado($esta){
        //echo "<td> <b>$doc->TipoDoc</b> <br><small>$doc->CategAbrev</small> </td>";
        $strsor .= "<td> $categ </td>";
        $strsor .= "<td> $grado </td>";
-       $strsor .= "<td> $antig </td>";
        $strsor .= "<td> $ponAn </td>";
        $strsor .= "<td> $ponde </td>";
        $strsor .= "</tr>";
@@ -1364,7 +1364,6 @@ public function MostrarEstado($esta){
    echo "<tr style='background-color: #FAEFEF;'>";
        echo "<td style='display:none;' > Id</td>";
        echo "<td > Nombre</td>";
-       echo "<td>Antiguedad </td>";
        echo "<td> Categoria </td>";
        echo "<td>N° de Proy. </td>";
        echo "</tr>";
@@ -1386,7 +1385,6 @@ public function MostrarEstado($esta){
        echo "<tr>";
        echo "<td style='display:none;'> $idDoc $posis </td>";
        echo "<td > $nombe $carre </td>";
-       echo "<td> <small>$doc->Antiguedad dias</small> </td>";
        echo "<td> ($doc->Tipo) <small>$doc->CategAbrev</small> </td>";
        echo "<td> <b>$conte</b> </td>";
        echo "</tr>";
@@ -1737,7 +1735,7 @@ public function MostrarEstado($esta){
         $this->gensession->IsLoggedAccess( PILAR_ADMIN );
         if( !$idtram ) return;
 
-        echo "<h4>Cancelación por exceso de Tiempo de Asesor</h4>";
+        echo "<h4>Archivado por exceso de Tiempo por el Asesor</h4>";
 
         $tram = $this->dbPilar->inProyTram($idtram);
         if(!$tram) { echo "No registro"; return; }
@@ -1748,9 +1746,7 @@ public function MostrarEstado($esta){
 
         ///echo "<br><b>Jurado :</b> [ $tram->IdJurado1 / $tram->IdJurado2 / $tram->IdJurado3 / $tram->IdJurado4 ]";
         echo "<br><b>Asesor(a) :</b> " . $this->dbRepo->indocente( $tram->IdJurado4 );
-        echo "<p><br><b>Se notificará al Asesor y Tesista, indicando que se rechaza el proyecto por exceso de tiempo, ";
-        echo "se cancelará el trámite para dar paso a uno nuevo.</b></p>";
-
+        echo "<p><br><b>Se notificará al Asesor y Tesistas, indicando que se archiva el proyecto por exceso de tiempo. ";
         // detallaremos evento interno Ev12 no Asesor rechazar
         echo "<input type=hidden name=evt value='12'>";
         echo "<input type=hidden name=idtram value='$idtram'>";
@@ -1850,7 +1846,7 @@ public function MostrarEstado($esta){
         {
                    
             $celu1 = $this->dbRepo->inCelu( $row->Id ); 
-            $a =$this->notiCeluNuevo($celu1,1);
+        //    $a =$this->notiCeluNuevo($celu1,1);
 
              $msg1 = "<h4>Bienvenido</h4>"
             . "Estimado(a)  <b>$row->Nombres $row->Apellidos</b> <br>"
@@ -1980,22 +1976,32 @@ public function MostrarEstado($esta){
                 "FechModif" => mlCurrentDate()
             ), $rowTram->Id );
 
-        // una vez guardado recargamos por los nuevos datos...
         $rowTram = $this->dbPilar->inProyTram( $rowTram->Id );
 
-
-        // memos revisiòn 1 proyecto
         $nroMemo = $this->inGenMemo( $rowTram, 1 );
         $anio  = date("Y");
         $Mostrarnro =str_pad($nroMemo, 3, "0", STR_PAD_LEFT);//agregado unuv2.0
         echo "Cod de Tramite: <b>$rowTram->Codigo</b><br>";
         echo "Memo Circular: <b>$Mostrarnro -  $anio -VRI-UNU</b><br>";
 
+        $msgenviar="El proyecto de tesis con codigo  <b>$rowTram->Codigo</b> ha sido sorteado.";
 
+        $this->logTramites( $sess->userId, $rowTram->Id, "Proyecto enviado a Revisión", $msgenviar );
+
+        $Rowdicestatramite = $this->dbPilar->getSnapRow( "dicestadtram", "Id=$rowTram->Estado"); 
+         $det = $this->dbPilar->inLastTramDet( $rowTram->Id );
 
         $msg = "<h4>Proyecto enviado a Revisión</h4><br>"
-             . "Su Proyecto de Tesis: <b>$rowTram->Codigo</b> ha sido enviado a los miembros de su Jurado. "
-             . "Será revisado en un plazo de 10 dias habiles mediante la <b>Plataforma PILAR</b>.";
+                     . "Por la presente se le comunica que su Proyecto de Tesis: <b>$rowTram->Codigo</b> ha sido sorteado  y esta conformado por los siguientes docentes:<br><br>   "
+                     . "Memo Circular: <b>$Mostrarnro-$anio-VRI-UNU</b><br>"
+                     . "Codigo : <b> $rowTram->Codigo </b><br>"
+                      . "Miembros del Jurado : &nbsp; <b>" . $this->dbRepo->inDocenteNom($rowTram->IdJurado1) . " ( PRESIDENTE )</b><br>"
+                       . " &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &nbsp;  <b>" . $this->dbRepo->inDocenteNom($rowTram->IdJurado2) . " ( PRIMER MIEMBRO )</b><br>"
+                       . " &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &nbsp; <b>" . $this->dbRepo->inDocenteNom($rowTram->IdJurado3) . " ( SEGUNDO MIEMBRO )</b><br>"
+
+                     . "Título : <b> $det->Titulo </b><br><br>"
+                     . "Su proyecto será revisado en un plazo de ".$Rowdicestatramite->Plazo." dias calendarios mediante la <b>Plataforma PILAR</b> ."
+                     ;
 
         if($rowTram->IdTesista2 !=0)
           {
@@ -2003,32 +2009,20 @@ public function MostrarEstado($esta){
             $mail2 = $this->dbPilar->inCorreo( $rowTram->IdTesista2);
             $cel= $this->dbPilar->inCelTesista( $rowTram->IdTesista1);
             $cel2= $this->dbPilar->inCelTesista( $rowTram->IdTesista2);
-            $this->logCorreos( $rowTram->IdTesista1,0, $mail, "Proyecto enviado a Revisión", $msg );
-            $this->logCorreos( $rowTram->IdTesista2,0, $mail2, "Proyecto enviado a Revisión", $msg );
-            $a=$this->notiCelu($cel,4);
-            $a=$a." - ".$this->notiCelu($cel2,4);
+            $this->logCorreos(0, $rowTram->IdTesista1, $mail, "Proyecto enviado a Revisión", $msg );
+            $this->logCorreos(0, $rowTram->IdTesista2, $mail2, "Proyecto enviado a Revisión", $msg );
+           // $a=$this->notiCelu($cel,4);
+           // $a=$a." - ".$this->notiCelu($cel2,4);
           }
         else
           {
             $mail = $this->dbPilar->inCorreo( $rowTram->IdTesista1);
             $cel= $this->dbPilar->inCelTesista( $rowTram->IdTesista1);
-            $this->logCorreos( $rowTram->IdTesista1,0,$mail, "Proyecto enviado a Revisión", $msg );
-            $a=$this->notiCelu($cel,4);
+            $this->logCorreos( 0,$rowTram->IdTesista1,$mail, "Proyecto enviado a Revisión", $msg );
+            //$a=$this->notiCelu($cel,4);
           }
 
-        $msg = "Sorteo y Envio a Revisión\n"
-          . "Proyecto: $rowTram->Codigo  -- Linea: $rowTram->IdLinea\n"
-          . "- Presidente: ($j1) \n- Primer Miembro: ($j2) \n- Segundo Miembro: ($j3) \n- Asesor: ($j4)"
-          ;
-        $this->logTramites( $sess->userId, $rowTram->Id, "Proyecto enviado a Revisión", $msg );
-
        
-
-        // correo a tesista
-        // correo a Jurados 4
-        // envio a jurados
-        //
-       $det = $this->dbPilar->inLastTramDet( $rowTram->Id );
           $msg = "<h4>Revisión Electrónica</h4><br>"
                      . "Por la presente se le comunica que se le ha enviado a su cuenta de Docente en la "
                      . "<b>Plataforma PILAR</b> el proyecto de tesis con el siguiente detalle:<br><br>   "
@@ -2039,12 +2033,19 @@ public function MostrarEstado($esta){
                        . " &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &nbsp; <b>" . $this->dbRepo->inDocenteNom($rowTram->IdJurado3) . " ( SEGUNDO MIEMBRO )</b><br>"
 
                      . "Título : <b> $det->Titulo </b><br><br>"
-                     . "Ud. tiene un plazo de 15 dias calendarios para realizar las revisiones mediante la Plataforma."
+                     . "Ud. tiene un plazo  de ".$Rowdicestatramite->Plazo." dias calendarios para realizar las revisiones mediante la Plataforma."
                      ;
+           $msgasesor = "<h4>Notificacion asesoria</h4><br>"
+                     . "Por la presente se le comunica que el proyecto con codigo $rowTram->Codigo de la cual Ud. es asesor, ha sido sorteado y esta conformado por los siguientes docentes:<br><br>   "
+                     . "Memo Circular: <b>$Mostrarnro-$anio-VRI-UNU</b><br>"
+                     . "Codigo : <b> $rowTram->Codigo </b><br>"
+                      . "Miembros del Jurado : &nbsp; <b>" . $this->dbRepo->inDocenteNom($rowTram->IdJurado1) . " ( PRESIDENTE )</b><br>"
+                       . " &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &nbsp;  <b>" . $this->dbRepo->inDocenteNom($rowTram->IdJurado2) . " ( PRIMER MIEMBRO )</b><br>"
+                       . " &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &nbsp; <b>" . $this->dbRepo->inDocenteNom($rowTram->IdJurado3) . " ( SEGUNDO MIEMBRO )</b><br>"
 
-          $msgasesor = "<h4>Notificacion asesoria</h4><br>"
-          . "Por la presente se le comunica que el proyecto con codigo $rowTram->Codigo de la cual Ud. es asesor, ha sido enviado a los miembros del Jurado, los jurados tiene un plazo de 15 dias calendarios para realizar las revisiones mediante la Plataforma."  
-          ;
+                     . "Título : <b> $det->Titulo </b><br><br>"
+                     . "Los miebros del jurado tiene un plazo  de ".$Rowdicestatramite->Plazo." dias calendarios para realizar las revisiones mediante la Plataforma PILAR."
+                     ;
 
           $corr1 = $this->dbRepo->inCorreo( $rowTram->IdJurado1 );
           $corr2 = $this->dbRepo->inCorreo( $rowTram->IdJurado2 );
@@ -2055,18 +2056,17 @@ public function MostrarEstado($esta){
           $celu2 = $this->dbRepo->inCelu( $rowTram->IdJurado2 );
           $celu3 = $this->dbRepo->inCelu( $rowTram->IdJurado3 );
           $celu4 = $this->dbRepo->inCelu( $rowTram->IdJurado4 ); //comentado unuv1.0
-          $a =$this->notiCelu($celu1,5);
-          $b =$this->notiCelu($celu2,5);
-          $c =$this->notiCelu($celu3,5);
-          $d =$this->notiCelu($celu4,6); //comentado unuv1.0
+        //  $a =$this->notiCelu($celu1,5);
+        //  $b =$this->notiCelu($celu2,5);
+        //  $c =$this->notiCelu($celu3,5);
+        //  $d =$this->notiCelu($celu4,6); //comentado unuv1.0
 
-          $this->logCorreoS( 0,$rowTram->IdJurado1, $corr1, "Revisión de Proyecto de Tesis", $msg);
-          $this->logCorreoS( 0,$rowTram->IdJurado2, $corr2,"Revisión de Proyecto de Tesis", $msg);
-          $this->logCorreoS( 0,$rowTram->IdJurado3, $corr3,"Revisión de Proyecto de Tesis", $msg );
-          $this->logCorreoS( 0,$rowTram->IdJurado3, $corr4, "Notificacion Asesoria de Proyecto de Tesis", $msgasesor);
+          $this->logCorreos( $rowTram->IdJurado1,0, $corr1, "Revisión de Proyecto de Tesis", $msg);
+          $this->logCorreos( $rowTram->IdJurado2,0, $corr2,"Revisión de Proyecto de Tesis", $msg);
+          $this->logCorreos( $rowTram->IdJurado3,0, $corr3,"Revisión de Proyecto de Tesis", $msg );
+          $this->logCorreos( $rowTram->IdJurado4,0, $corr4, "Proyecto Asesorado enviado a Revision", $msgasesor);
 
-          echo "Correos enviados correctamente<br>";
-          echo "El Proyecto está en Revisión desde Hoy.<br>";
+          echo $msgenviar;
 
         // Finalmente
         //-----------
@@ -2141,19 +2141,19 @@ public function MostrarEstado($esta){
         else{
           $fechPy = mlFechaNorm( $tram->FechRegProy );
           $titulo='Desaprobación de Proyecto';
-          $this->dbPilar->Update( "tesTramites", array('Tipo'=>0), $tram->Id );
+          $this->dbPilar->Update( "tesTramites", array('Tipo'=>0,'Estado'=>0), $tram->Id );
            $msg = "El Proyecto de Tesis con código <b>$tram->Codigo</b> <br>\n"
              . "presentado el <b>$fechPy</b> con </b><br>titulado: <b>".$row->Titulo."</b>.<br><br>\n\n"
-             . "Ha sido desaprobado, por lo que se procedera a archivar el presente trámite.<br><br>"
+             . "Ha sido desaprobado, por lo que se procedera Anular el presente trámite.<br><br>"
              . "Por la presente le comunicamos que queda habilitada la cuenta para realizar un nuevo trámite.\n"
              ; 
            $msg1= $msg; 
            $men=8;
         }
-        if($row->vb1==-1 || $row->vb2==-1  || $row->vb3==-1){
+        /*if($row->vb1==-1 || $row->vb2==-1  || $row->vb3==-1){
          echo "Por favor comunicarse con soporte PILAR ";
          return;
-         }
+         }*/
 
 
         $this->logTramites( $sess->userId, $tram->Id, $titulo, $msg );
@@ -2167,8 +2167,8 @@ public function MostrarEstado($esta){
               $this->logCorreos(0,$tram->IdTesista2, $mail2, $titulo, $msg );
                $cel= $this->dbPilar->inCelTesista( $tram->IdTesista1);
                $cel2= $this->dbPilar->inCelTesista( $tram->IdTesista2);
-               $a=$this->notiCelu($cel, $men);
-               $a=$a." - ".$this->notiCelu($cel2, $men);
+            //   $a=$this->notiCelu($cel, $men);
+            //   $a=$a." - ".$this->notiCelu($cel2, $men);
 
             }
           else
@@ -2176,7 +2176,7 @@ public function MostrarEstado($esta){
               $mail = $this->dbPilar->inCorreo( $tram->IdTesista1);
               $cel= $this->dbPilar->inCelTesista( $tram->IdTesista1);
               $this->logCorreos(0,$tram->IdTesista1, $mail,$titulo, $msg );
-             $a=$this->notiCelu($cel, $men);
+            // $a=$this->notiCelu($cel, $men);
             }
        //---------------------FIN----------------------------      
         echo $msg1;
@@ -2222,13 +2222,13 @@ public function MostrarEstado($esta){
 
          $this->logCorreos( 0,$tram->IdTesista1, $this->dbPilar->inCorreo($tram->IdTesista1), "Desaprobación de Proyecto", $mesj2 );
          $this->logCorreos( 0,$tram->IdTesista2, $this->dbPilar->inCorreo($tram->IdTesista2), "Desaprobación de Proyecto", $mesj2 );
-         $this->notiCeluNuevo($cel,2);
-         $this->notiCeluNuevo($cel2,2);
+        // $this->notiCeluNuevo($cel,2);
+        // $this->notiCeluNuevo($cel2,2);
       }
       else{
             $cel= $this->dbPilar->inCelTesista( $tram->IdTesista1);
             $this->logCorreos( 0,$tram->IdTesista1, $this->dbPilar->inCorreo($tram->IdTesista1), "Desaprobación de Proyecto", $mesj2 );
-            $this->notiCeluNuevo($cel,2);
+        //    $this->notiCeluNuevo($cel,2);
       }
 
        $this->logCorreos( $tram->IdJurado1,0, $this->dbRepo->inCorreo($tram->IdJurado1) , "Desaprobación de Proyecto", $jurado );
@@ -2236,6 +2236,10 @@ public function MostrarEstado($esta){
         $this->logCorreos( $tram->IdJurado3,0, $this->dbRepo->inCorreo($tram->IdJurado3) , "Desaprobación de Proyecto", $jurado);
         $this->logCorreos( $tram->IdJurado4,0, $this->dbRepo->inCorreo($tram->IdJurado4) , "Desaprobación de Proyecto", $asesor );
         echo "El trámite <b>$tram->Codigo</b> ha sido Archivado segun : ".$msg;
+    }
+
+    public function vwInfo($idPy){
+        $this->load->view("pilar/admin/infopb",array('IdProyect'=>$idPy));
     }
 
     //Utilizado : Proyecto rechazado por exceso de tiempo en revisiones 
@@ -2247,133 +2251,137 @@ public function MostrarEstado($esta){
         $dets = $this->dbPilar->inLastTramDet( $tram->Id );
         //$mssg = "El trámite <b>$tram->Codigo</b> con el proyecto: <b>$dets->Titulo</b>. Ya cuenta con $dias dias y el tesista no ha procedido con subir las correcciones. Por lo que se informa que:";
          $fin = "<br><br>Se ha procedido con la eliminación del trámite por exceso de tiempo.";
-        // aplicar el borrar trámite
-      
+        // aplicar el borrar trámite      
         if( $borr ){
-            $fin = "<br><br>Se ha procedido con la eliminación del trámite por exceso de tiempo.";
+            $fin = "Se ha Archivado el proyecto con codigo <b>$tram->Codigo</b> por Exceso de Tiempo en Revision.";
 
             $this->dbPilar->Update( "tesTramites", array(
                 'Tipo'    => 0,
             ), $tram->Id );
-
-        $fec = mlFechaNorm($tram->FechModif);
-        $pas = mlDiasTranscHoy($tram->FechModif);
-             ;
-
-        $mssg = "<h4> Rechazado por Exceso de Tiempo </h4><br>"
-        . "Su proyecto con codigo <b>".$tram->Codigo."</b> ya cuenta con $dias dias  desde el: <b>$fec</b> , la cual es un excesivo tiempo ,por lo que se procede con el registro del hecho y la anulación del trámite, podrá realizar un nuevo trámite en el tiempo que reformule el proyecto.";
-
-         $msg = "<h4> Rechazado por Exceso de Tiempo en Revision </h4><br>"
-              . "Se ha realizado la anulacion del proyecto <b>$tram->Codigo</b> "
-              . ", por motivo de exceso de tiempo($dias dias) desde el <b>$fec</b>";    
-
-         $this->logTramites( $sess->userId, $tram->Id, "Exceso de tiempo en Revision", $msg );
-
-         if($tram->IdTesista2 !=0)
-        {
-            $mail = $this->dbPilar->inCorreo( $tram->IdTesista1);
-            $mail2 = $this->dbPilar->inCorreo( $tram->IdTesista2);
-            $cel= $this->dbPilar->inCelTesista( $tram->IdTesista1);
-            $cel2= $this->dbPilar->inCelTesista( $tram->IdTesista2);
-            $this->logCorreos( 0,$tram->IdTesista1,$mail, "Exceso de tiempo de Proyecto", $mssg );
-            $this->logCorreos( 0,$tram->IdTesista2, $mail2, "Exceso de tiempo de Proyecto", $mssg );
-            $this->notiCelu($cel,2);
-            $this->notiCelu($cel2,2);
-        }
-        else
-        {
-            $mail = $this->dbPilar->inCorreo( $tram->IdTesista1);
-            $cel= $this->dbPilar->inCelTesista( $tram->IdTesista1);
-            $this->logCorreos( 0,$tram->IdTesista1,$mail, "Exceso de tiempo Asesor", $mssg );
-            $mail = $this->dbPilar->inCorreo( $tram->IdTesista1);
-            $this->notiCelu($cel,2);
-        }
-
-         
-
-
-        $corr1 = $this->dbRepo->inCorreo( $tram->IdJurado1 );
-        $corr2 = $this->dbRepo->inCorreo( $tram->IdJurado2 );
-        $corr3 = $this->dbRepo->inCorreo( $tram->IdJurado3 );
-        $corr4 = $this->dbRepo->inCorreo( $tram->IdJurado4 );
-             // logCorreo( $idTes,$idDoc, $correo, $titulo, $mensaje )
-        $celu1 = $this->dbRepo->inCelu( $tram->IdJurado1 );
-        $celu2 = $this->dbRepo->inCelu( $tram->IdJurado2 );
-        $celu3 = $this->dbRepo->inCelu( $tram->IdJurado3 );
-        $celu4 = $this->dbRepo->inCelu( $tram->IdJurado4 ); //comentado unuv1.0
-        $a =$this->notiCelu($celu1,5);
-        $b =$this->notiCelu($celu2,5);
-        $c =$this->notiCelu($celu3,5);
-        $d =$this->notiCelu($celu4,6); //comentado unuv1.0
-
-        $this->logCorreoS( 0,$tram->IdJurado1, $corr1, "Revisión de Proyecto de Tesis", $msg);
-        $this->logCorreoS( 0,$tram->IdJurado2, $corr2,"Revisión de Proyecto de Tesis", $msg);
-        $this->logCorreoS( 0,$tram->IdJurado3, $corr3,"Revisión de Proyecto de Tesis", $msg );
-        $this->logCorreoS( 0,$tram->IdJurado3, $corr4, "Notificacion Asesoria de Proyecto de Tesis", $msg);
-            
-        echo "Se ha rechazado el proyecto con codigo <b>$tram->Codigo</b> por Exceso de Tiempo en Revision.";
-        return;
-        } 
-        else 
-        {
-             
+          $Titulo ='Archivado por Exceso de Tiempo en Revision';
+           $this->logTramites( $sess->userId, $tram->Id, "Archivado por Exceso de tiempo en Revision", $fin );          
             //verificar si el tesista falta subir su proyecto o el 
-             $fin = "<br><br>En un plazo de 48 Horas deberá realizar observaciones en el proyecto con codigo  <b>$tram->Codigo</b> o se eliminara este trámite.";
+              $msgTesista = "<h4>  Archivado por Exceso de Tiempo en Revision  </h4><br>"
+        . "Su proyecto con codigo <b>".$tram->Codigo."</b> ha execedido el tiempo maximo en revision,por lo que se procede con el registro del hecho y la archivacion del trámite.<br><br>"
+        ."<em>Nota : Para la activacion del proyecto deberá presentar documentos sustentadorios ante su Comision de Grados y Titulos de su Facultad, caso contrario podra iniciar un nuevo tramite.</em>.</b></p>";
+
+         $msgAsesor = "<h4>Archivado por Exceso de Tiempo en Revision</h4><br>"
+        . "El proyecto con codigo <b>".$tram->Codigo."</b> la cual usted es Asesor ha execedido el tiempo maximo de revision, por lo que se procede con el registro del hecho y la archivacion del trámite.<br><br>"
+        ."<em>Nota : Para la activacion del proyecto se debera presentar documentos sustentadorios ante su Comision de Grados y Titulos de su Facultad, caso contrario podra iniciar un nuevo tramite.</em>.</b></p>";
+
+            $msgJurado = "<h4> Archivado por Exceso de Tiempo en Revision</h4><br>"
+        . "El proyecto con codigo <b>".$tram->Codigo."</b> la cual usted es Jurado ha execedido el tiempo maximo de revision, por lo que se procede con el registro del hecho y la archivacion del trámite.<br><br>"
+         ."<em>Nota : Para la activacion del proyecto se debera presentar documentos sustentadorios ante su Comision de Grados y Titulos de su Facultad.</em>.</b></p>";
+
+                 $corr1 = $this->dbRepo->inCorreo( $tram->IdJurado1 );
+                $celu1 = $this->dbRepo->inCelu( $tram->IdJurado1 ); 
+                $corr2 = $this->dbRepo->inCorreo($tram->IdJurado2);
+                $celu2 = $this->dbRepo->inCelu( $tram->IdJurado2 );  
+                 $corr3 = $this->dbRepo->inCorreo( $tram->IdJurado3);
+                $celu3 = $this->dbRepo->inCelu( $tram->IdJurado3 );
+                $corr4 = $this->dbRepo->inCorreo( $tram->IdJurado4);
+                $celu4 = $this->dbRepo->inCelu( $tram->IdJurado4 );
+
+                 $this->logCorreos( $tram->IdJurado1,0, $corr1,  $Titulo, $msgJurado);
+                $this->logCorreos( $tram->IdJurado2,0, $corr2,  $Titulo, $msgJurado);
+                $this->logCorreos( $tram->IdJurado3,0, $corr3,  $Titulo,$msgJurado);
+                                // $c =$this->notiCelu($celu3,5);                
+                $this->logCorreos( $tram->IdJurado4,0, $corr4,  $Titulo,$msgAsesor);
+
+            if($tram->IdTesista2 !=0)
+                {
+                    $mail = $this->dbPilar->inCorreo( $tram->IdTesista1);
+                    $mail2 = $this->dbPilar->inCorreo( $tram->IdTesista2);
+                    $cel= $this->dbPilar->inCelTesista( $tram->IdTesista1);
+                    $cel2= $this->dbPilar->inCelTesista( $tram->IdTesista2);
+                    $this->logCorreos( 0,$tram->IdTesista1,$mail,  $Titulo, $msgTesista );
+                    $this->logCorreos( 0,$tram->IdTesista2, $mail2,  $Titulo, $msgTesista );
+                //    $this->notiCelu($cel,2);
+                //    $this->notiCelu($cel2,2);
+                }
+                else
+                {
+                    $mail = $this->dbPilar->inCorreo( $tram->IdTesista1);
+                    $cel= $this->dbPilar->inCelTesista( $tram->IdTesista1);
+                    $this->logCorreos( 0,$tram->IdTesista1,$mail,  $Titulo, $msgTesista);
+                    $mail = $this->dbPilar->inCorreo( $tram->IdTesista1);
+                //    $this->notiCelu($cel,2);
+                }             
+            echo $fin;
+            return;
+            } 
+        else //Notificacion 
+        {   
+            $Titulo ='Notificacion de Revision de Proyecto';          
+            //verificar si el tesista falta subir su proyecto o el 
+              $msgTesista = "<h4> Notificacion por Exceso de Tiempo </h4><br>"
+        . "Su proyecto con codigo <b>".$tram->Codigo."</b> ha execedido el tiempo maximo,Usted tiene 48 horas para subir su proyecto corregido, caso contrario se archivara.<br><br>";
+
+         $msgAsesor = "<h4> Notificacion por Exceso de Tiempo </h4><br>"
+        . "El proyecto con codigo <b>".$tram->Codigo."</b> la cual usted es Asesor ha execido el tiempo maximo, tiene 48 horas para coordinar con su Asesorado para que suba su proyecto corregido, caso contrario se archivara.<br><br>";
+
+            $msgJurado = "<h4> Notificacion por Exceso de Tiempo </h4><br>"
+        . "El proyecto con codigo <b>".$tram->Codigo."</b> la cual usted es Jurado ha execido el tiempo maximo, tiene 48 horas para realizar observaciones y/o aprobación , caso contrario se archivara.<br><br>";
+
+             $fin = "Se Notifico sobre el exceso de tiempo del proyecto con codigo <b>$tram->Codigo</b> a los interesados. ";
+
              $this->logTramites( $sess->userId, $tram->Id, "Notificacion de Revision de Proyecto", $fin );
+        }   
 
             if($dets->vb1==0)
             {
                 $corr1 = $this->dbRepo->inCorreo( $tram->IdJurado1 );
                 $celu1 = $this->dbRepo->inCelu( $tram->IdJurado1 );  
-                $a =$this->notiCelu($celu1,5);             
-                $this->logCorreos( 0,$tram->IdJurado1, $corr1, "Notificacion de Revision de Proyecto", $fin.$a);
+            //    $a =$this->notiCelu($celu1,5);             
+                $this->logCorreos( $tram->IdJurado1,0, $corr1,  $Titulo, $msgJurado);
             }
 
             if($dets->vb2==0)
             {
                 $corr2 = $this->dbRepo->inCorreo($tram->IdJurado2);
                 $celu2 = $this->dbRepo->inCelu( $tram->IdJurado2 );  
-                 $b =$this->notiCelu($celu1,5);              
-                $this->logCorreos( 0,$tram->IdJurado2, $corr2, "Notificacion de Revision de Proyecto", $fin.$b);
+            //     $b =$this->notiCelu($celu2,5);              
+                $this->logCorreos( $tram->IdJurado2,0, $corr2,  $Titulo, $msgJurado);
             }
 
             if($dets->vb3==0)
             {
                 $corr3 = $this->dbRepo->inCorreo( $tram->IdJurado3);
                 $celu3 = $this->dbRepo->inCelu( $tram->IdJurado3 );
-                 $c =$this->notiCelu($celu3,5);                
-                $this->logCorreos( 0,$tram->IdJurado3, $corr3, "Notificacion de Revision de Proyecto", $fin.$c);
+            //     $c =$this->notiCelu($celu3,5);                
+                $this->logCorreos( $tram->IdJurado3,0, $corr3,  $Titulo,$msgJurado);
             }
-
-             if($dets->vb1!=0 && $det->vb2!=0 && $det->vb3!=0)
-            {
-                $fin = "<br><br>En un plazo de 48 Horas deberá subir su proyecto con codigo  <b>$tram->Codigo</b> corregido o se eliminara este trámite.";
-
+             if($dets->vb1!=0 && $dets->vb2!=0 && $dets->vb3!=0)
+            {            
                 if($tram->IdTesista2 !=0)
                 {
                     $mail = $this->dbPilar->inCorreo( $tram->IdTesista1);
                     $mail2 = $this->dbPilar->inCorreo( $tram->IdTesista2);
                     $cel= $this->dbPilar->inCelTesista( $tram->IdTesista1);
                     $cel2= $this->dbPilar->inCelTesista( $tram->IdTesista2);
-                    $this->logCorreos( 0,$tram->IdTesista1,$mail, "Notificacion de Revision de Proyecto", $fin );
-                    $this->logCorreos( 0,$tram->IdTesista2, $mail2, "Notificacion de Revision de Proyecto", $fin );
-                    $this->notiCelu($cel,2);
-                    $this->notiCelu($cel2,2);
+                    $this->logCorreos( 0,$tram->IdTesista1,$mail,  $Titulo, $msgTesista );
+                    $this->logCorreos( 0,$tram->IdTesista2, $mail2,  $Titulo, $msgTesista );
+                //    $this->notiCelu($cel,2);
+                //    $this->notiCelu($cel2,2);
                 }
                 else
                 {
                     $mail = $this->dbPilar->inCorreo( $tram->IdTesista1);
                     $cel= $this->dbPilar->inCelTesista( $tram->IdTesista1);
-                    $this->logCorreos( 0,$tram->IdTesista1,$mail, "Notificacion de Revision de Proyecto", $fin);
+                    $this->logCorreos( 0,$tram->IdTesista1,$mail,  $Titulo, $msgTesista);
                     $mail = $this->dbPilar->inCorreo( $tram->IdTesista1);
-                    $this->notiCelu($cel,2);
+                //    $this->notiCelu($cel,2);
                 }
-            
-             }   
+                //Notificacion Asesor
+                 $corr4 = $this->dbRepo->inCorreo( $tram->IdJurado4);
+                $celu4 = $this->dbRepo->inCelu( $tram->IdJurado4 );
+                // $c =$this->notiCelu($celu3,5);                
+                $this->logCorreos( $tram->IdJurado4,0, $corr4,  $Titulo,$msgAsesor);
+            }
         
-        echo "Se Notifico sobre el exceso de tiempo del proyecto con codigo <b>$tram->Codigo</b> a los interesados. ";
+        echo $fin;
         }      
-}
+
 
 
     //
@@ -2453,17 +2461,22 @@ public function MostrarEstado($esta){
 
         $tram = $this->dbPilar->inProyTram($rowTram->Id);
         if(!$tram){ echo "No registro"; return; }
-
       
        $this->dbPilar->Update( "tesTramites", array(
           'Estado'    => 2,
           'FechModif' => mlCurrentDate()
-        ), $tram->Id );
- 
+        ), $tram->Id ); 
+        $tram = $this->dbPilar->inProyTram($rowTram->Id);
+        $Rowdicestatramite = $this->dbPilar->getSnapRow( "dicestadtram", "Id=$tram->Estado"); 
         //------------------Correo a los tesistas -------------
         $msg = "<h4> Enviado al Asesor </h4><br>"
         . "Su proyecto con codigo <b>".$tram->Codigo."</b> ha sido enviado a su Asesor con la "
-        . "aprobacion del administrador de la Plataforma PILAR, su Asesor tendra un plazo de 3 dias calendarios para determinar la aprobación o rechazo mediante la <b>Plataforma PILAR</b>";
+        . "aprobacion del administrador de la Plataforma PILAR, su Asesor tendra un plazo de ". $Rowdicestatramite->Plazo." dias calendarios para determinar la aprobación o rechazo mediante la <b>Plataforma PILAR</b>.";
+
+         $msgEnviar="El proyecto ".$tram->Codigo ." ha sido enviado al Asesor con el formato ya revisado, el Asesor tiene ". $Rowdicestatramite->Plazo." dias calendarios para revisarlo y determinar la aprobación o rechazo mediante la <b>Plataforma PILAR</b>.";
+        //------------------------------------------------------------------------------------------------
+        $this->logTramites( $sess->userId, $tram->Id, "Enviado al Asesor", $msgEnviar ); 
+
         if($tram->IdTesista2 !=0)
         {
             $mail = $this->dbPilar->inCorreo( $tram->IdTesista1);
@@ -2472,8 +2485,8 @@ public function MostrarEstado($esta){
             $cel2= $this->dbPilar->inCelTesista( $tram->IdTesista2);
             $this->logCorreos( 0,$tram->IdTesista1,$mail, "Proyecto para Asesoria", $msg );
             $this->logCorreos( 0,$tram->IdTesista2, $mail2, "Proyecto para Asesoria", $msg );
-            $this->notiCelu($cel,2);
-            $this->notiCelu($cel2,2);
+        //    $this->notiCelu($cel,2);
+        //    $this->notiCelu($cel2,2);
         }
         else
         {
@@ -2481,22 +2494,18 @@ public function MostrarEstado($esta){
             $cel= $this->dbPilar->inCelTesista( $tram->IdTesista1);
             $this->logCorreos( 0,$tram->IdTesista1,$mail, "Proyecto para Asesoria", $msg );
             $mail = $this->dbPilar->inCorreo( $tram->IdTesista1);
-            $this->notiCelu($cel,2);
+        //    $this->notiCelu($cel,2);
         }
         //---------------------FIN----------------------------   
        //----------------Correo al Asesor---------------------
-        $msg = "<h4> Proyecto para Asesoria </h4><br>"
+        $msgAsesor = "<h4> Proyecto para Asesoria </h4><br>"
               . "Se le ha remitido el proyecto con código <b>$tram->Codigo</b> "
-              . "Ud. tiene 3 días calendarios para revisarlo y determinar la aprobación o rechazo mediante la <b>Plataforma PILAR</b>.";
+              . "Ud. tiene ". $Rowdicestatramite->Plazo." días calendarios para revisarlo y determinar la aprobación o rechazo mediante la <b>Plataforma PILAR</b>.";
         $mail = $this->dbRepo->inCorreo( $tram->IdJurado4 );
         $celu = $this->dbRepo->inCelu( $tram->IdJurado4 );
-        $this->logCorreos( $tram->IdJurado4,0, $mail, "Proyecto para Asesoria", $msg );
-  //---------------------FIN----------------------------
-        $a=$this->notiCelu($celu,3);
-        $msg=$msg.$a;
-        //------------------------------------------------------------------------------------------------
-        $this->logTramites( $sess->userId, $tram->Id, "Enviado al Asesor", $msg );   
-        echo "El proyecto ".$tram->Codigo ." ha sido enviado al Asesor con el formato ya revisado.";
+        $this->logCorreos( $tram->IdJurado4,0, $mail, "Proyecto para Asesoria", $msgAsesor );
+  //---------------------FIN----------------------------  
+        echo $msgEnviar;
     }
 
     //Utilizado : Proyecto rechazado por formato 
@@ -2507,14 +2516,15 @@ public function MostrarEstado($esta){
             echo "Error: No es borrable";
             return;
         }
-        $titulo='Corregir Formato Rde Proyecto de Tesis'; //agregado unuv.2.0
+        $titulo='Corregir Formato de Proyecto de Tesis'; //agregado unuv.2.0
         $msg = $_POST["msg"];
 
-        $this->dbPilar->Update( "tesTramites", array('Tipo'=>0,'Estado'=>0), $tram->Id );
+        $this->dbPilar->Update( "tesTramites", array('Tipo'=>0,'Estado'=>0,'FechModif' => mlCurrentDate()), $tram->Id );
         $msg1="el proyecto de tesis con codigo <b class='text-danger'>$tram->Codigo</b> fue Retornado,se notifico mediante correo electronico y mensaje de texto al Tesista";
         $msgenviar ="<b>Saludos.</b><br>\nSu proyecto con codigo <b>".$tram->Codigo."</b> ha sido rechazado, contiene los siguientes errores:  <br><br>\n".$msg
-         ." <br> <br> Debera corregir y subir nuevamente su proyecto."; //Agregado unuv1.0
+         ." <br><br> <em>Nota : Debera corregir las observaciones de su proyecto e iniciar nuevamente su tramite.</em>"; //Agregado unuv1.0
 
+         $this->logTramites( $sess->userId, $tram->Id, "Retorna Proyecto : Corregir Observaciones", $msgenviar ); 
         if($tram->IdTesista2 !=0)
           {
             $mail = $this->dbPilar->inCorreo( $tram->IdTesista1);
@@ -2523,17 +2533,16 @@ public function MostrarEstado($esta){
             $cel2= $this->dbPilar->inCelTesista( $tram->IdTesista2);
             $this->logCorreos( 0,$tram->IdTesista1, $mail,  $titulo, $msgenviar );
             $this->logCorreos( 0,$tram->IdTesista2, $mail2,  $titulo, $msgenviar );
-            $this->notiCelu($cel,1);
-            $this->notiCelu($cel2,1);
+        //    $this->notiCelu($cel,1);
+        //    $this->notiCelu($cel2,1);
           }
         else
         {
             $cel= $this->dbPilar->inCelTesista( $tram->IdTesista1);
             $mail = $this->dbPilar->inCorreo( $tram->IdTesista1);
             $this->logCorreos(0,$tram->IdTesista1,$mail,  $titulo, $msgenviar );
-            $this->notiCelu($cel,1);
-          }
-        $this->logTramites( $sess->userId, $tram->Id, "Retorna Proyecto : Corregir Observaciones", $msgenviar );    
+        //    $this->notiCelu($cel,1);
+          }           
         echo  $msg1;
     }
     
@@ -2550,23 +2559,25 @@ public function MostrarEstado($esta){
         $pas = mlDiasTranscHoy($rowTram->FechModif);
              ;
         // no borramos pero dejamos para consultas de eliminacion
-        $this->dbPilar->Update( "tesTramites", array('Tipo'=>0), $tram->Id );
+        $this->dbPilar->Update( "tesTramites", array('Tipo'=>0,'FechModif' => mlCurrentDate()), $tram->Id );
 
-        $msg = "<h4> Rechazado por Exceso de Tiempo </h4><br>"
-        . "Su proyecto con codigo <b>".$tram->Codigo."</b> Ha estado en la bandeja del Asesor un excesivo tiempo "
-         . "por <b>$pas</b> dias, desde el: <b>$fec</b> se procede con el registro del hecho y la anulación del trámite, "
-         . "podrá realizar un nuevo trámite en el tiempo que reformula el proyecto o elije otro Asesor.";
+         $msgEnviar="El proyecto ".$tram->Codigo ." ha sido archivado por exceso de tiempo del proyecto en la bandeja del Asesor.";    
+        $this->logTramites($sess->userId, $tram->Id, "Exceso de tiempo Asesor", $msgEnviar);
+
+         $msg = "<h4> Rechazado por Exceso de Tiempo </h4><br>"
+        . "Su proyecto con codigo <b>".$tram->Codigo."</b> se encuentra archivado por exceso de tiempo en la bandeja del Asesor.<br><br>"
+        ."<em>Nota : Para la activacion del proyecto el docente deberá presentar documentos sustentadorios ante su Comision de Grados y Titulos de su Facultad, caso contrario podra iniciar nuevamente su tramite.</em>.</b></p>";
 
         if($tram->IdTesista2 !=0)
         {
             $mail = $this->dbPilar->inCorreo( $tram->IdTesista1);
             $mail2 = $this->dbPilar->inCorreo( $tram->IdTesista2);
-            $cel= $this->dbPilar->inCelTesista( $tram->IdTesista1);
-            $cel2= $this->dbPilar->inCelTesista( $tram->IdTesista2);
+            //$cel= $this->dbPilar->inCelTesista( $tram->IdTesista1);
+           // $cel2= $this->dbPilar->inCelTesista( $tram->IdTesista2);
             $this->logCorreos( 0,$tram->IdTesista1,$mail, "Exceso de tiempo Asesor", $msg );
             $this->logCorreos( 0,$tram->IdTesista2, $mail2, "Exceso de tiempo Asesor", $msg );
-            $this->notiCelu($cel,2);
-            $this->notiCelu($cel2,2);
+           // $this->notiCelu($cel,2);
+           // $this->notiCelu($cel2,2);
         }
         else
         {
@@ -2574,21 +2585,20 @@ public function MostrarEstado($esta){
             $cel= $this->dbPilar->inCelTesista( $tram->IdTesista1);
             $this->logCorreos( 0,$tram->IdTesista1,$mail, "Exceso de tiempo Asesor", $msg );
             $mail = $this->dbPilar->inCorreo( $tram->IdTesista1);
-            $this->notiCelu($cel,2);
+            //$this->notiCelu($cel,2);
         }
         //---------------------FIN----------------------------   
        //----------------Correo al Asesor---------------------
         $msgAse = "<h4> Rechazado por Exceso de Tiempo </h4><br>"
-              . "Se ha realizado la anulacion del proyecto <b>$tram->Codigo</b> "
-              . ", por motivo de exceso de tiempo en su bandeja de la Plataforma PILAR.";
+              . "El proyecto con codigo <b>$tram->Codigo</b> "
+              . "se ha archivado por motivo de exceso de tiempo en su bandeja de la Plataforma PILAR.<br><br>"
+              ."<em>Nota : Para la activacion del proyecto el deberá presentar documentos sustentadorios ante su Comision de Grados y Titulos de su Facultad, caso contrario el tesista podra iniciar nuevamente su tramite.</em>.</b></p>";;
         $mail = $this->dbRepo->inCorreo( $tram->IdJurado4 );
         $celu = $this->dbRepo->inCelu( $tram->IdJurado4 );
-        $this->logCorreos( $tram->IdJurado4,0, $mail, "Exceso de tiempo Asesor", $msg );
+        $this->logCorreos( $tram->IdJurado4,0, $mail, "Exceso de tiempo Asesor", $msgAse );
   //---------------------FIN----------------------------
-        $a=$this->notiCelu($celu,3);
-        $msg=$msg.$a;
-        $this->logTramites($sess->userId, $tram->Id, "Exceso de tiempo Asesor", $msgAse );
-        echo "El <b>$tram->Codigo</b> fue Anulado por exceso de tiempo.";
+  
+        echo $msgEnviar;
     }
 
     public function tesHabili( $idtram=0 )
@@ -2606,6 +2616,24 @@ public function MostrarEstado($esta){
         );
    
         $this->load->view( "pilar/admin/edtHabSub", $args );
+        // echo " Nolo hagas ";
+    }
+
+    //Agregado unuv2.0
+    public function habilitarProyecto( $idtram=0 )
+    {
+        $this->gensession->IsLoggedAccess( PILAR_ADMIN );
+        if( !$idtram ){
+            echo "No tiene tramite activo";
+            return;
+        }
+
+        $args = array(
+            'tram' => $this->dbPilar->inProyTram($idtram)    ,  // full
+            'dets' => $this->dbPilar->inLastTramDet($idtram)    // it:1
+        );
+   
+        $this->load->view( "pilar/admin/HabProy", $args );
         // echo " Nolo hagas ";
     }
 
@@ -2634,22 +2662,91 @@ public function MostrarEstado($esta){
         $motivo = mlSecurePost("motivo");
 
         $tram = $this->dbPilar->inProyTram($idtram);
-        $this->dbPilar->Update( "tesTramites", array("Tipo"=>0), $idtram );
+        $this->dbPilar->Update( "tesTramites", array("Tipo"=>0,"Estado" =>0,'FechModif'  => mlCurrentDate()), $idtram );
 
-        $motivo = "<b>Renucia a Proyecto de Tesis</b><br><br><b>Motivo:</b> ".$motivo . "<br><b>Codigo de Proyecto:</b> $tram->Codigo<br><br>". "Por tal motivo se procede a archivar el presente trámite";
+        $motivo = "<b>Renucia a Proyecto de Tesis</b><br><br><b>Motivo:</b> ".$motivo . "<br><b>Codigo de Proyecto:</b> $tram->Codigo<br><br>". "Por tal motivo se procede a anular el presente trámite";
 
         // al log
         $this->logTramites( $sess->userId, $tram->Id, "Renuncia a Proyecto de Tesis", $motivo );
 
-        // enviamos al tesista y a los jurados
-        $this->logCorreo( $tram->Id, $this->dbPilar->inCorreo($tram->IdTesista1), "Renuncia a Proyecto de Tesis", $motivo );
-        $this->logCorreo( $tram->Id, $this->dbRepo->inCorreo($tram->IdJurado1) , "Renuncia a Proyecto de Tesis", $motivo );
-        $this->logCorreo( $tram->Id, $this->dbRepo->inCorreo($tram->IdJurado2) , "Renuncia a Proyecto de Tesis", $motivo );
-        $this->logCorreo( $tram->Id, $this->dbRepo->inCorreo($tram->IdJurado3) , "Renuncia a Proyecto de Tesis", $motivo );
-        $this->logCorreo( $tram->Id, $this->dbRepo->inCorreo($tram->IdJurado4) , "Renuncia a Proyecto de Tesis", $motivo );
+         if($tram->IdTesista2 !=0)
+          {
+            $mail = $this->dbPilar->inCorreo( $tram->IdTesista1);
+            $mail2 = $this->dbPilar->inCorreo( $tram->IdTesista2);
+            $cel= $this->dbPilar->inCelTesista( $tram->IdTesista1);
+            $cel2= $this->dbPilar->inCelTesista( $tram->IdTesista2);
+            $this->logCorreos(0, $tram->IdTesista1, $mail, "Renuncia a Proyecto de Tesis", $motivo );
+            $this->logCorreos(0, $tram->IdTesista2, $mail2, "Renuncia a Proyecto de Tesis",$motivo );
+            //$a=$this->notiCelu($cel,4);
+           // $a=$a." - ".$this->notiCelu($cel2,4);
+          }
+        else
+          {
+            $mail = $this->dbPilar->inCorreo( $tram->IdTesista1);
+            $cel= $this->dbPilar->inCelTesista( $tram->IdTesista1);
+            $this->logCorreos( 0,$tram->IdTesista1,$mail, "Renuncia a Proyecto de Tesis", $motivo);
+           // $a=$this->notiCelu($cel,4);
+          }
 
-        echo $motivo;
-        echo "<br>El proyecto se <b>Archivo Correctamente</b>.";
+        // enviamos al tesista y a los jurados
+
+       // $this->logCorreo( $tram->Id, $this->dbPilar->inCorreo($tram->IdTesista1), "Renuncia a Proyecto de Tesis", $motivo );
+        $this->logCorreos($tram->IdJurado1,0,$this->dbRepo->inCorreo($tram->IdJurado1) , "Renuncia a Proyecto de Tesis", $motivo );
+        $this->logCorreos( $tram->IdJurado2,0,$this->dbRepo->inCorreo($tram->IdJurado2) , "Renuncia a Proyecto de Tesis", $motivo );
+        $this->logCorreos( $tram->IdJurado3,0, $this->dbRepo->inCorreo($tram->IdJurado3) , "Renuncia a Proyecto de Tesis", $motivo );
+        $this->logCorreos( $tram->IdJurado4,0, $this->dbRepo->inCorreo($tram->IdJurado4) , "Renuncia a Proyecto de Tesis", $motivo );
+
+        //echo $motivo;
+        echo "<br>El proyecto se <b>Anulo Correctamente</b>.";
+    }
+
+
+    //agregadounuv2.0
+    public function inSaveHabilitarPro()
+    {
+        $this->gensession->IsLoggedAccess( PILAR_ADMIN );
+        $sess = $this->gensession->GetData( PILAR_ADMIN );
+
+        $idtram = mlSecurePost("idtram");
+        $motivo = mlSecurePost("motivo");
+
+        $tram = $this->dbPilar->inProyTram($idtram);
+        $this->dbPilar->Update( "tesTramites", array("Tipo"=>1,'FechModif'  => mlCurrentDate()), $idtram );
+
+        $motivo = "<b>Halibitación de Proyecto de Tesis</b><br><br><b>Motivo:</b> ".$motivo . "<br><b>Codigo de Proyecto:</b> $tram->Codigo<br><br>". "Por tal motivo se procede a anular el presente trámite";
+
+        // al log
+        $this->logTramites( $sess->userId, $tram->Id, "Habilitación de Proyecto de Tesis", $motivo );
+
+         if($tram->IdTesista2 !=0)
+          {
+            $mail = $this->dbPilar->inCorreo( $tram->IdTesista1);
+            $mail2 = $this->dbPilar->inCorreo( $tram->IdTesista2);
+            $cel= $this->dbPilar->inCelTesista( $tram->IdTesista1);
+            $cel2= $this->dbPilar->inCelTesista( $tram->IdTesista2);
+            $this->logCorreos(0, $tram->IdTesista1, $mail, "Habilitación de Proyecto de Tesis", $motivo );
+            $this->logCorreos(0, $tram->IdTesista2, $mail2, "Habilitación de Proyecto de Tesis",$motivo );
+            //$a=$this->notiCelu($cel,4);
+           // $a=$a." - ".$this->notiCelu($cel2,4);
+          }
+        else
+          {
+            $mail = $this->dbPilar->inCorreo( $tram->IdTesista1);
+            $cel= $this->dbPilar->inCelTesista( $tram->IdTesista1);
+            $this->logCorreos( 0,$tram->IdTesista1,$mail, "Habilitación de Proyecto de Tesis", $motivo);
+           // $a=$this->notiCelu($cel,4);
+          }
+
+        // enviamos al tesista y a los jurados
+
+       // $this->logCorreo( $tram->Id, $this->dbPilar->inCorreo($tram->IdTesista1), "Renuncia a Proyecto de Tesis", $motivo );
+        $this->logCorreos($tram->IdJurado1,0,$this->dbRepo->inCorreo($tram->IdJurado1) , "Habilitación de Proyecto de Tesis", $motivo );
+        $this->logCorreos( $tram->IdJurado2,0,$this->dbRepo->inCorreo($tram->IdJurado2) , "Habilitación de Proyecto de Tesis", $motivo );
+        $this->logCorreos( $tram->IdJurado3,0, $this->dbRepo->inCorreo($tram->IdJurado3) , "Habilitación de Proyecto de Tesis", $motivo );
+        $this->logCorreos( $tram->IdJurado4,0, $this->dbRepo->inCorreo($tram->IdJurado4) , "Habilitación de Proyecto de Tesis", $motivo );
+
+        //echo $motivo;
+        echo "<br>El proyecto se <b>Habilito Correctamente</b>.";
     }
 
 
@@ -2935,14 +3032,7 @@ public function MostrarEstado($esta){
 
             echo "<br>* Log Agregado";
             echo "<br>* Estado cambiado a $nuvesta";
-
-            $msg = "<h4>Saludos</h4><br>"
-                . "Sr(a). <b>$nombes $apells</b> <br>"
-                . "Su estado en la <b>Plataforma PILAR</b>. ha sido modificado bajo el siguiente tenor: $descrip"
-                ;
-
-            // grabar en LOG de correos y envio mail.
-            $this->logCorreos( 0, $id, "Modificación en Plataforma VRI", $msg );
+            
         }
 
 
@@ -2975,7 +3065,12 @@ public function MostrarEstado($esta){
             echo "<br>* Contraseña cambiada";
         }
 
+        $msg = "<h4>Actualizacion de Datos</h4><br>"
+                . "Sr(a). <b>$nombes $apells</b> se ha actualizado sus datos en la PLATAFORMA PILAR."
+                ;
 
+            // grabar en LOG de correos y envio mail.
+            $this->logCorreos( $idDoc,0,$correo, "Modificación en Datos Docente", $msg );
         echo "<br><b>fin!</b> <hr>";
         echo "<a onclick=\"lodPanel('admin/panelLista')\" href=\"javascript:void(0)\" class=\"btn btn-info\"> Refrezcar </a>";
     }
@@ -3036,8 +3131,9 @@ public function MostrarEstado($esta){
                                3 => 'ING.',
                                4 => 'BACH.');
         $nombreUni = $this->dbRepo->getSnapRow("dicuniversidades","Id=$universidad");
+        $Docente1 = $this->dbRepo->getSnapRow("tblDocentes","Id=$iddoce");
         $this->dbPilar->Insert("docEstudios", array(
-            'IdDocente'  => $iddoce,     
+            'IdDocente'  => $Docente1->Id,     
             'Universidad' => $nombreUni->Nombre,    
             'IdGrado'      => $abrev,  
             'AbrevGrado' => $nombresAbrev[$abrev],
@@ -3097,24 +3193,24 @@ public function ModificarTesista()
         $motivo = mlSecurePost( "motivo" );
 
 
-       $Tes = $this->dbPilar->getSnapRow("tbltesistas","Id=$id");
+     $Tes = $this->dbPilar->getSnapRow("tbltesistas","Id=$id");
         if( !$Tes ) return;
 
         $this->dbPilar->Update("tbltesistas", array(
-            'DNI'  => $dni,     
-            'Nombres' => $nombres,    
+            'DNI'  => $dni,    
+            'Codigo' => $codigo,               
             'Apellidos' => $apellidos,  
-            'Codigo' => $codigo,
-            'Correo' => $correo,
+            'Nombres' => $nombres,             
             'Direccion' => $direccion,
-            'NroCelular' => $celular
+            'NroCelular' => $celular,
+            'Correo' => $correo
         ),$id);
         $Tes = $this->dbPilar->getSnapRow("tbltesistas","Id=$id");
         $msg = "<h4>Saludos</h4><br>"
                 . "Sr(a). <b>$nombres $apellidos</b> <br>"
-                . "Se ha actualizado sus datos segun : $motivo";
+                . "Se ha actualizado sus datos: $motivo";
 
-        //$this->logCorreos( 0,$Tes->Id, $Tes->Correo, "Modificación Datos Tesista ", $msg );
+        $this->logCorreos( 0,$Tes->Id, $Tes->Correo, "Modificación Datos Tesista ", $msg );
         echo "Se actualizado los datos del Tesista.";
     }
     // ingresar nuevo docente en repositior pass 123

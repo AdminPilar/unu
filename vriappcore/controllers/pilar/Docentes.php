@@ -866,15 +866,15 @@ class Docentes extends CI_Controller {
                $cel2= $this->dbPilar->inCelTesista( $tram->IdTesista2);
                $this->logCorreo( $sess->userId, $mail, "Aceptación de Asesor", $msg );
                $this->logCorreo( $sess->userId, $mail2, "Aceptación de Asesor", $msg );
-               $a=$this->notiCelu($cel,2);
-               $a=$a." - ".$this->notiCelu($cel2,2);
+            //   $a=$this->notiCelu($cel,2);
+            //   $a=$a." - ".$this->notiCelu($cel2,2);
              }
            else
              {
                $mail = $this->dbPilar->inCorreo( $tram->IdTesista1);
                 $cel= $this->dbPilar->inCelTesista( $tram->IdTesista1);
                $this->logCorreo( $sess->userId, $mail, "Aceptación de Asesor", $msg );
-               $a=$this->notiCelu($cel,2);
+            //   $a=$this->notiCelu($cel,2);
              }
              $a='';
              $msg=$msg.$a;

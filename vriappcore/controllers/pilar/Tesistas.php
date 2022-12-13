@@ -1441,15 +1441,15 @@ class Tesistas extends CI_Controller {
             $cel2= $this->dbPilar->inCelTesista( $tesi2);
             $this->logCorreo( $tesi1, $mail, "Subida de Proyecto", $msg );
             $this->logCorreo( $tesi2, $mail2, "Subida de Proyecto", $msg );
-            $this->notiCelu($cel,2);
-            $this->notiCelu($cel2,2);
+        //    $this->notiCelu($cel,2);
+        //    $this->notiCelu($cel2,2);
           }
         else
           {
             $cel= $this->dbPilar->inCelTesista( $tesi1);
              $mail = $this->dbPilar->inCorreo( $tesi1);
             $this->logCorreo( $tesi1, $mail, "Subida de Proyecto", $msg );
-            $this->notiCelu($cel,2);
+        //    $this->notiCelu($cel,2);
           }
 
          $msg = "Se ha registrado el proyecto: <b>$codigo</b><br> "
@@ -1558,9 +1558,9 @@ class Tesistas extends CI_Controller {
             'Tipo'      => 1,
             'IdTramite' => $tram->Id,
             'Title'     => $titul,
-            'Abstract'  => $resum,
+           // 'Abstract'  => $resum,
             'Conclus'   => "*",
-            'Keywords'  => $clave
+            //'Keywords'  => $clave
         ));
 
 
@@ -2103,7 +2103,7 @@ class Tesistas extends CI_Controller {
 
             // grabar en LOG de correos y enviamos mail
             $this->logCorreo( $myId, $mail, "Inscripción", $msg );
-            $this->notiCelu(mlSecurePost("celu"),1);
+        //    $this->notiCelu(mlSecurePost("celu"),1);
 
             echo "Registro completo, revise su <b>e-mail</b> y <b>celular</b.";
 

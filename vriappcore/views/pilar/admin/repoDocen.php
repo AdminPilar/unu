@@ -645,8 +645,9 @@ function cargarLineas(iddoce){
          $("#fecha").val( "" ); 
          $("#mencion").val( "" ); 
          $("#archivo").val( "" );
-         $("#doc").val( arg ); 
-
+         //document.getElementById("doc").value = arg;
+         $("#doc").val( arg );
+         //document.getElementById('mencion').value='hola '+document.getElementById('doc').value ;
 
        }
      });   
