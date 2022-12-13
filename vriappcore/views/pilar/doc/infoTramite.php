@@ -17,46 +17,7 @@
 
     $nro = $tproys->num_rows();
 
-    $procesos = array (
-        "Proyecto nuevo",
-        "Asesoria",
-        "Para Sorteo",
-        "En Revisión (1)",//agregado unuv1.0
-        "En Revisión (2)", //agregado unuv1.0
-        "En Revisión (3)",//agregado unuv1.0
-        "En Dictamen",
-        "Proy. Aprobado", 
-        "Presentacion Grado de Bach.",      // 10
-        "Revisión de Formato de Borrador",     // 11
-        "Revision Borrador (1)",
-        "Revision Borrador (2)",
-        "Revision Borrador (3)",
-        "Dictamen",
-        "Revision Presencial",
-        "Borrador de Tesis Final",
-        "Otros"
-    );
-
-    $proceclr = array(
-        "btn-default",//1
-        "btn-primary",
-        "btn-success",
-        "btn-success",
-        "btn-success",
-        "btn-success",
-        "btn-warning",
-        "btn-success", //8
-        "btn-success",
-        "btn-success",
-        "btn-success",
-        "btn-warning",
-        "btn-success",
-        "btn-success",
-        "btn-success",
-        "btn-success"
-
-    );
-
+  
     $posjurado = array(
         "Presidente",
         "Primer miembro",
@@ -82,17 +43,23 @@
         $archivo= "<a href='$archi' target='_blank' class='btn btn-xs btn-info'> Archivo</a>";
         //$archivo= "<a href='http://vriunap.pe/repositor/docs/$det->Archivo' target='_blank' class='btn btn-xs btn-info'> Archivo</a>";
         $menus = "";
+        $Rowdicestatramite = $this->dbPilar->getSnapRow( "dicestadtram", "Id=$row->Estado");  //se sgrego unuv2.0
         $estado = "";
-        if($row->IdTesista2!=0){
+
+        /*if($row->IdTesista2!=0){
             $aut="<p style='font-size:9.5px;font-weight:bold; margin-bottom: 0px'>"
                  . "Este proyecto tiene 2 Tesistas</p>";
-        }
+        }*/
+        $aut = "<p style='font-size:9.5px;font-weight:bold; margin-bottom: 0px'>"
+                 . "TESISTA(S): ".$this->dbPilar->inTesistas($row->Id)."</p>";
 		//-----------------------------------------------------------------------------------------------------
-        if( $row->Estado >= 1 && $row->Estado <= 8 ) {
+        /*if( $row->Estado >= 1 && $row->Estado <= 8 ) {
             $btnclr = $proceclr[ $row->Estado-1 ];
             $estado = $procesos[ $row->Estado-1 ];
             $estado = "<button class='btn btn-xs $btnclr'> $estado </button>";
-        }
+        }*/
+        $estado = "<button class='btn btn-xs $Rowdicestatramite->TipoBoton'> $Rowdicestatramite->Nombre </button>";
+                        $estado = $estado . " <br> ";
 
 		//-----------------------------------------------------------------------------------------------------
 		if( $row->Tipo == 1 ) {
@@ -165,9 +132,9 @@
 		if( $row->Tipo == 2 ) {
 
 			//$estado = $posjurado[ $pos - 1 ];
-            $btnclr = $proceclr[ $row->Estado-1 ];
+            /*$btnclr = $proceclr[ $row->Estado-1 ];
             $estado = $procesos[ $row->Estado-1 ];
-            $estado = "<button class='btn btn-xs $btnclr'> $estado </button>";
+            $estado = "<button class='btn btn-xs $btnclr'> $estado </button>";*/
 
 			if( $row->Estado == 9 ) {
 				$menus = ($row->Estado==9)? "<i>(trámite en proceso)</i>":"";

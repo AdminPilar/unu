@@ -74,6 +74,31 @@
 <div id='Final' style="display: none;" class="panel panel-info">
  <div class="panel-heading">
         <h2 class="panel-title">Observaciones de los miembros del jurado</h2>
+    </div><br>
+    <div>
+      <?php
+       $TipoMiembro = array (
+        "Presidente",
+        "Primer Miembro",
+        "Segundo Miembro"
+    );
+      echo "<ul>"; 
+        $count=0;
+                $doc = array(
+                    1=>$this->dbRepo->inDocenteRow($tram->IdJurado1),
+                    2=>$this->dbRepo->inDocenteRow($tram->IdJurado2),
+                    3=>$this->dbRepo->inDocenteRow($tram->IdJurado3),
+                );
+                for ($i=1; $i <=3 ; $i++) { 
+                    if($doc[$i]){
+                        $status=($doc[$i]->Activo >= 5)?"(Docente Habilitado)":"(<b>OBSERVADO</b>Necesita Cambio)";
+                        $kind=($doc[$i]->Activo >= 5)?"success":"danger";
+                        echo "<li class='text-$kind'> $status |  ".$TipoMiembro[$i-1] ." | ".$doc[$i]->DatosPers."  </li>";
+                    }
+                }
+         echo "</ul>";
+
+      ?>
     </div>
      <div class="panel-body" id="plops">
       <div id="blq1" class="col-md-12" style="background: #FFFFFA">
@@ -237,7 +262,7 @@
                       <textarea name="nomproy" type="text" class="form-control" rows="3" style="text-transform: uppercase" required><?=$titulo?></textarea>
                   </div>
               </div>
-               <div class="form-group success">
+               <!--<div class="form-group success">
                 <div class="col-md-4" align="left"> 
                   <label class="control-label"> Resumen (Abstract) (*) </label>
                
@@ -245,17 +270,17 @@
                   <div class="col-md-7">
                       <textarea name="resumen" id='resumen' type="text" class="form-control" rows="3" placeholder="acepta varias lineas" required></textarea>
                   </div>
-              </div>
+              </div> -->
               <!-- Text area -->
-              <div class="form-group success">
+             <!-- <div class="form-group success">
                 <div class="col-md-4" align="left"> 
                   <label class="control-label"> Palabras clave (keywords) (*) </label>
                 </div>
                   <div class="col-md-7">
                       <input name="pclaves" id='pclaves' type="text" class="form-control input-md" placeholder="separadas por coma y acaba en punto" required>
                       <!-- <span class="help-block">  </span> -->
-                  </div>
-              </div>
+                  <!--</div>
+              </div>-->
                
                <div class="form-group">
                   <div class="col-md-12">

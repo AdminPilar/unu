@@ -47,7 +47,7 @@
       </div>
       <!----------fin Menu vertical -------------->
       <!----------Pantalla principal   -------------->
-      <div class="container info-pilar2" style="background: url('<?= base_url("vriadds/pilar/imag/baner.jpg"); ?>');background-repeat:no-repeat;">
+      <div class="container info-pilar2" style="background: url('<?= base_url("vriadds/pilar/imag/baner.jpg"); ?>');background-repeat:no-repeat;background-size: cover;">
         <img class="img-responsive logo-pilar3" src="<?= base_url("vriadds/pilar/imag/pilar-n.png"); ?>">
         <h3 id="name-pilar">Plataforma de Investigación Universitaria <br>Integrada a la Labor Académica con Responsabilidad </h3>
         <h4><i>Universidad Nacional de Ucayali</i>

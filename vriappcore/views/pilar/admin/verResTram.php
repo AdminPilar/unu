@@ -10,7 +10,8 @@
          <button onclick='sndLoad("admin/tesEdiTitu/<?=$idtram?>", null,true);' class="btn btn-primary" style="font-size: 12px; font-weight: bold"> <i class="glyphicon glyphicon-edit"></i> Cambiar Titulo </button>
         <?php } ?>
         <?php if($ttram->Estado!=0 && $ttram->Tipo==0) {?>
-        <button onclick='sndLoad("admin/tesHabili/<?=$idtram?>", null,true)' class="btn btn-success" style="font-size: 12px; font-weight: bold"> <i class="glyphicon glyphicon-cog"></i> Habilitar </button>
+        <button onclick='sndLoad("admin/habilitarProyecto/<?=$idtram?>", null,true)' class="btn btn-success" style="font-size: 12px; font-weight: bold"> <i class="glyphicon glyphicon-cog"></i> Habilitar </button>
+        <!--<button onclick='sndLoad("admin/tesHabili/<?=$idtram?>", null,true)' class="btn btn-success" style="font-size: 12px; font-weight: bold"> <i class="glyphicon glyphicon-cog"></i> Habilitar </button>-->
         |
        
       <?php } ?>        
@@ -22,10 +23,11 @@
         <?php endif; ?>
         <?php
         // determinar si ya tiene 3 iteraciones
-        if( $tdets and $tdets->num_rows() >= 3 ) {
+        if( $ttram->Estado==8 ) {
             echo '| <a target="_blank" href="tesistas/actaProy/'.$ttram->Id.'" class="btn btn-default" style="font-size: 12px; font-weight: bold"> <i class="glyphicon glyphicon-qrcode"></i> Acta Proy </a>';
-            echo '| <a target="_blank" href="tesistas/actaBorr/'.$ttram->Id.'" class="btn btn-default" style="font-size: 12px; font-weight: bold"> <i class="glyphicon glyphicon-qrcode"></i> Acta Borr </a>';
+           // echo '| <a target="_blank" href="tesistas/actaBorr/'.$ttram->Id.'" class="btn btn-default" style="font-size: 12px; font-weight: bold"> <i class="glyphicon glyphicon-qrcode"></i> Acta Borr </a>';
         }
+
         ?>
         </fieldset>
     </div>
@@ -61,7 +63,7 @@
           </table>
         </fieldset>
          <fieldset>
-    <legend>Datos Tesis</legend> 
+    <legend>Datos Proyecto</legend> 
           <table class="table table-bordered table-striped" style="font-size: 13px">
               <tr>
                   <th> Cod de Proy </th>
@@ -132,6 +134,7 @@
 </div>
 <?php endif; ?>
 
+
 <div class="col-md-12" id="panelView">
   <div class="col-md-12 workspace">
      <fieldset>
@@ -164,6 +167,7 @@
 </fieldset>
   </div>
 </div>
+
 
 
 

@@ -53,19 +53,17 @@
             <div class="form-group no-print">
                 <input type="hidden" name="tipo" value="<?=$tipo?>"> <!-- Kind of view -->
                 <label class="col-md-1 control-label" for="selectbasic"> ESTADO </label>
-                <div class="col-md-2">
-                    <select id="estado" name="estado" class="form-control" onchange="<?=$onsubm?>" autofocus> <!-- required -->
+                 <div class="col-md-2">
+                    <select id="estado" name="estado" class="form-control" onchange="<?=$onsubm?>" autofocus> 
                         <option value="0">(todos)</option>
                         <?php
-                        for( $Id=$ini; $Id<=$fin ; $Id++  )
-                        {
-                            $issel = ($Id==$estado)? "selected" : "";
-                            $estado1 = $procesos[ ($Id >18 or $Id <0)? 0:$Id ];
-                            echo "<option value=$Id $issel> $estado1 </option>";
+                        foreach ($tEstadotip->result() as  $value) {
+                            $issel = ($value->Id==$estado)? "selected" : "";
+                            echo "<option value='$value->Id' $issel>$value->Nombre </option>";
                         }
                         ?>
                     </select>
-                </div>               
+                </div>              
 
             </div>
         </fieldset>
@@ -113,6 +111,7 @@
     foreach( $tproys->result() as $row ) 
    		{
 				$rowi=$this->dbPilar->getSnapRow("tesTramsDet","IdTramite=$row->Id ORDER BY Iteracion DESC");
+				 $Rowdicestatramite = $this->dbPilar->getSnapRow( "dicestadtram", "Id=$row->Estado");  //se sgrego unuv2.0 
 				$rowgrado=$this->dbPilar->getOneField("testramsbach","File","IdTramite=$row->Id and IdTesista=$row->IdTesista1");
 				$diasp  = mlDiasTranscHoy( $row->FechModif );
 				$estado = "";
@@ -125,11 +124,12 @@
 				if( $row->Estado >= 9 )
 				$aut = "<p style='font-size:9.5px;font-weight:bold; margin-bottom: 0px'>"
 				 . "TESISTA(S): ".$this->dbPilar->inTesistas($row->Id)."</p>";
-				
+				$estado = $Rowdicestatramite->Nombre;
 				switch ($row->Estado) {
+					
 					case 9:
 						$opt=""; 
-						$estado="Presentacion Grado de Bach.";
+						//$estado="Presentacion Grado de Bach.";
 						$opt="<a href='$grado' target=_blank class='btn btn-success btn-xs' title='Grado de Bachiller - Tesista 1'><span class='glyphicon glyphicon-list-alt'></span></a>";
 						if($row->IdTesista2!=0)
 							{
@@ -142,7 +142,7 @@
 						break;
 					case 10:
 						$opt="";
-						$estado="Revisión de Formato de Borrador";						
+						//$estado="Revisión de Formato de Borrador";						
 
 						$opt.="<a href='javascript:void(0)' onclick=\"jsLoadModalCord($row->Id,'cordinads/MostrarArchivos/')\" class='btn btn-info btn-xs' title='Archivos Subidos'><span class='glyphicon glyphicon-folder-open'></span></a> </a> | ";
 
@@ -175,7 +175,7 @@
 								$opt="$opt1";
 							}
 						}*/
-						$estado="Revisión Borrador (1)";
+						//$estado="Revisión Borrador (1)";
 						break;
 					case 12:
 						$revisiones ="[ $rowi->vb1 / $rowi->vb2 / $rowi->vb3 ]";
@@ -189,7 +189,7 @@
 						if($sess->userLevel==4 | $sess->userLevel==1){
 							$opt.= " | <button onclick='popLoad(\"cordinads/execAprobBorr/$row->Id\",$nro)' class='btn btn-xs btn-warning' title='Monitoriar'> <span class='glyphicon glyphicon-check'></span> </button>";
 						}
-						$estado="Revisión Borrador (2)";
+						//$estado="Revisión Borrador (2)";
 						break;
 					case 13:
 						$revisiones ="[ $rowi->vb1 / $rowi->vb2 / $rowi->vb3 ]";
@@ -203,7 +203,7 @@
 						if($sess->userLevel==4 | $sess->userLevel==1){
 							$opt.= " | <button onclick='popLoad(\"cordinads/execAprobBorr/$row->Id\",$nro)' class='btn btn-xs btn-warning' title='Monitoriar'> <span class='glyphicon glyphicon-check'></span> </button>";
 						}
-						$estado="Revisión Borrador (3)";
+						//$estado="Revisión Borrador (3)";
 						break;
 					case 14:
 						$days=mlDiasTranscHoy($row->FechModif);
@@ -218,11 +218,11 @@
 						}
 
 
-						$estado="Dictamen";
+						//$estado="Dictamen";
 						break;
 					case 15:
 						$opt="";
-						$estado="Revision Presencial ";
+						//$estado="Revision Presencial ";
 						if($sess->userLevel==4 | $sess->userLevel==1){
 							$opt.= "<button onclick='popLoad(\"cordinads/execAprobBorr/$row->Id\",$nro)' class='btn btn-xs btn-warning' title='Monitoriar'> <span class='glyphicon glyphicon-check'></span> </button>";
 						}
@@ -230,7 +230,7 @@
 					case 16:
 						
 						$opt="<a href='javascript:void(0)' onclick=\"jsLoadModalCord($row->Id,'cordinads/MostrarArchivos/')\" class='btn btn-info btn-xs' title='Archivos Subidos'><span class='glyphicon glyphicon-folder-open'></span></a> </a>";
-						$estado="Archivo Final";
+						//$estado="Archivo Final";
 						break;
 					default:
 						$opt="";

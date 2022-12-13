@@ -3,8 +3,8 @@
 
     <div class="col-md-12">
         <div class="col-md-11">
-            <b> <?php echo $estado . " - [ $rowDoc->Apellidos $rowDoc->Nombres ]"; ?> </b>
-            - <small>( <?php echo $rowDoc->Edad>150? "Ingrese FechNacim" : $rowDoc->Edad ?> ) - [Id:<?=$rowDoc->Id?>] </small>
+          <!--  <b> <?php echo $estado . " - [ $rowDoc->Apellidos $rowDoc->Nombres ]"; ?> </b>
+            - <small>( <?php echo $rowDoc->Edad>150? "Ingrese FechNacim" : $rowDoc->Edad ?> ) - [Id:<?=$rowDoc->Id?>] </small>-->
         </div>
         <div class="col-md-1">
             <a onclick="lodPanel('admin/panelLista')" class="btn btn-danger btn-block" href="javascript:void(0)" ><span class="glyphicon glyphicon-off"></span> Salir </a>           
@@ -164,7 +164,7 @@
             </div>
 
             <!-- Text input-->
-            <div class="form-group">
+            <div class="form-group" style="display:none">
                 <label class="col-md-3 control-label"> Contraseña </label>
                 <div class="col-md-9">
                     <input name="clave" type="password" class="form-control input-md" value="">

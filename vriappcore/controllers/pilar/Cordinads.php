@@ -199,7 +199,8 @@ public function vwProyectos(){
     'tproys' => $tproys,
     'carrer' => $carrer,
     'estado' => $estado,
-    'tipo'   => $tipo
+    'tipo'   => $tipo,
+    'tEstadotip' => $this->dbPilar->getTable( "dicestadtram", "Tipo=$tipo" )
   ) );
 
     // $this->innerTrams( 1 
@@ -238,7 +239,8 @@ public function vwBorradores(){
     'tproys' => $tproys,
     'carrer' => $carrer,
     'estado' => $estado,
-    'tipo'   => $tipo
+    'tipo'   => $tipo,
+    'tEstadotip' => $this->dbPilar->getTable( "dicestadtram", "Tipo=$tipo" )
   ) );
 }
 public function vwInfo($idPy){
@@ -1382,7 +1384,9 @@ public function innerTrams( $tipo=null )
     'tproys' => $tproys,
     'carrer' => $carrer,
     'estado' => $estado,
-    'tipo'   => $tipo
+    'tipo'   => $tipo,
+    'tEstadotip' => $this->dbPilar->getTable( "dicestadtram", "Tipo=$tipo" )
+
     ) );
   }
   else if($tipo==0)
@@ -1403,7 +1407,8 @@ public function innerTrams( $tipo=null )
     'tproys' => $tproys,
     'carrer' => $carrer,
     'estado' => $estado,
-    'tipo'   => $tipo
+    'tipo'   => $tipo,
+    'tEstadotip' => $this->dbPilar->getTable( "dicestadtram", "Tipo=$tipo" )
     ) );
   }
 }
@@ -1504,15 +1509,15 @@ private function inRechaza( $rowTram , $msg)
 
          $this->logCorreo( $tram->IdTesista1,0, $mail,  $titulo, $msgenviar );
          $this->logCorreo( $tram->IdTesista2,0, $mail2,  $titulo, $msgenviar );
-        $this->notiCelu($cel,1);
-         $this->notiCelu($cel2,1);
+      //  $this->notiCelu($cel,1);
+      //   $this->notiCelu($cel2,1);
 
       }
       else{
             $cel= $this->dbPilar->inCelTesista( $tram->IdTesista1);
             $mail = $this->dbPilar->inCorreo( $tram->IdTesista1);
             $this->logCorreo( $tram->IdTesista1,0, $mail,  $titulo, $msgenviar );
-            $this->notiCelu($cel,1);
+      //      $this->notiCelu($cel,1);
       }
       //-----------Fin
    //$mail = $this->dbPilar->inCorreo( $tram->IdTesista1 ); //comentado unuv1.0
@@ -1688,8 +1693,8 @@ public function listPyDire( $idtram=0 )
          $cel2= $this->dbPilar->inCelTesista( $tram->IdTesista2);
          $this->logCorreo( $tram->IdTesista1,0, $mail, "Proyecto para Asesoria", $msg );
          $this->logCorreo( $tram->IdTesista2,0, $mail2, "Proyecto para Asesoria", $msg );
-         $this->notiCelu($cel,2);
-         $this->notiCelu($cel2,2);
+      //   $this->notiCelu($cel,2);
+      //   $this->notiCelu($cel2,2);
 
       }
       else
@@ -1698,7 +1703,7 @@ public function listPyDire( $idtram=0 )
           $cel= $this->dbPilar->inCelTesista( $tram->IdTesista1);
          $this->logCorreo( $tram->IdTesista1,0, $mail, "Proyecto para Asesoria", $msg );
           $mail = $this->dbPilar->inCorreo( $tram->IdTesista1);
-          $this->notiCelu($cel,2);
+      //    $this->notiCelu($cel,2);
       }
    //---------------------FIN----------------------------
    
@@ -1712,8 +1717,8 @@ public function listPyDire( $idtram=0 )
   //---------------------FIN----------------------------
     $a='';
    $this->logCordinads('S', '6 ', "Envia Proyecto a Asesor", $msg );
-   $a=$this->notiCelu($celu,3);
-   $msg=$msg.$a;
+//   $a=$this->notiCelu($celu,3);
+//   $msg=$msg.$a;
         //------------------------------------------------------------------------------------------------
    $this->logTramites( $sess->userId, $tram->Id, "Enviado al Asesor", $msg );
    
@@ -1962,7 +1967,7 @@ public function notificarDocente($idjurado)
    $this->gensession->IsLoggedAccess( PILAR_CORDIS );
 
    $celu = $this->dbRepo->inCelu( $idjurado );   
-   $a=$this->notiCelu($celu,9);
+//   $a=$this->notiCelu($celu,9);
    echo "<div class='col-md-12'><h3><img class='img-responsive' src='".base_url("vriadds/pilar/imag/sms1.png")."'> El mensaje de texto fue enviado correctamente</img></h3>"; 
    echo "<hr width=100%  align='left'  size=2   noshade='noshade'> "; 
 }
@@ -2160,7 +2165,6 @@ public function execSorteo( $idtram=0 )
        //echo "<td> <b>$doc->TipoDoc</b> <br><small>$doc->CategAbrev</small> </td>";
        $strsor .= "<td> $categ </td>";
        $strsor .= "<td> $grado </td>";
-       $strsor .= "<td> $antig </td>";
        $strsor .= "<td> $ponAn </td>";
        $strsor .= "<td> $ponde </td>";
        $strsor .= "</tr>";
@@ -2225,7 +2229,6 @@ public function execSorteo( $idtram=0 )
    echo "<tr style='background-color: #FAEFEF;'>";
        echo "<td style='display:none;' > Id</td>";
        echo "<td > Nombre</td>";
-       echo "<td>Antiguedad </td>";
        echo "<td> Categoria </td>";
        echo "<td>N° de Proy. </td>";
        echo "</tr>";
@@ -2247,7 +2250,6 @@ public function execSorteo( $idtram=0 )
        echo "<tr>";
        echo "<td style='display:none;'> $idDoc $posis </td>";
        echo "<td > $nombe $carre </td>";
-       echo "<td> <small>$doc->Antiguedad dias</small> </td>";
        echo "<td> ($doc->Tipo) <small>$doc->CategAbrev</small> </td>";
        echo "<td> <b>$conte</b> </td>";
        echo "</tr>";
@@ -2388,8 +2390,8 @@ private function inPasar6( $tram, $sess )
               $this->logCorreo( $tram->IdTesista2,0, $mail2, $titulo, $msg );
                $cel= $this->dbPilar->inCelTesista( $tram->IdTesista1);
                $cel2= $this->dbPilar->inCelTesista( $tram->IdTesista2);
-               $a=$this->notiCelu($cel, $men);
-               $a=$a." - ".$this->notiCelu($cel2, $men);
+            //   $a=$this->notiCelu($cel, $men);
+            //   $a=$a." - ".$this->notiCelu($cel2, $men);
 
             }
           else
@@ -2397,7 +2399,7 @@ private function inPasar6( $tram, $sess )
               $mail = $this->dbPilar->inCorreo( $tram->IdTesista1);
               $cel= $this->dbPilar->inCelTesista( $tram->IdTesista1);
               $this->logCorreo( $tram->IdTesista1,0, $mail,$titulo, $msg );
-             $a=$this->notiCelu($cel, $men);
+            // $a=$this->notiCelu($cel, $men);
             }
        //---------------------FIN----------------------------      
         echo $msg1;
@@ -2560,15 +2562,15 @@ public function inDoSorteo($rowTram, $sess){
     $cel2= $this->dbPilar->inCelTesista( $rowTram->IdTesista2);
     $this->logCorreo( $rowTram->IdTesista1,0, $mail, "Proyecto enviado a Revisión", $msg );
     $this->logCorreo( $rowTram->IdTesista2,0, $mail2, "Proyecto enviado a Revisión", $msg );
-    $a=$this->notiCelu($cel,4);
-    $a=$a." - ".$this->notiCelu($cel2,4);
+   // $a=$this->notiCelu($cel,4);
+   // $a=$a." - ".$this->notiCelu($cel2,4);
   }
 else
   {
     $mail = $this->dbPilar->inCorreo( $rowTram->IdTesista1);
     $cel= $this->dbPilar->inCelTesista( $rowTram->IdTesista1);
     $this->logCorreo( $rowTram->IdTesista1,0,$mail, "Proyecto enviado a Revisión", $msg );
-    $a=$this->notiCelu($cel,4);
+   // $a=$this->notiCelu($cel,4);
   }
 //---------------------FIN----------------------------
 
@@ -2612,10 +2614,10 @@ else
   $celu2 = $this->dbRepo->inCelu( $rowTram->IdJurado2 );
   $celu3 = $this->dbRepo->inCelu( $rowTram->IdJurado3 );
   $celu4 = $this->dbRepo->inCelu( $rowTram->IdJurado4 ); //comentado unuv1.0
-  $a =$this->notiCelu($celu1,5);
-  $b =$this->notiCelu($celu2,5);
-  $c =$this->notiCelu($celu3,5);
-  $d =$this->notiCelu($celu4,6); //comentado unuv1.0
+//  $a =$this->notiCelu($celu1,5);
+//  $b =$this->notiCelu($celu2,5);
+//  $c =$this->notiCelu($celu3,5);
+//  $d =$this->notiCelu($celu4,6); //comentado unuv1.0
 
   $this->logCorreo( 0,$rowTram->IdJurado1, $corr1, "Revisión de Proyecto de Tesis", $msg);
   $this->logCorreo( 0,$rowTram->IdJurado2, $corr2,"Revisión de Proyecto de Tesis", $msg);

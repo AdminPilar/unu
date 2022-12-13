@@ -165,15 +165,6 @@ function Acceso(codigo){
             <div class ='modal-body' id='popis'>
               <br>
             <form id='corazon' method='POST'>
-              <div class="form-group row">
-                <label class="col-md-4 control-label"> Codigo </label>
-                <div class="col-md-7">
-                  <input id ="contra" name="contra" type="text" class="form-control input-md" value="TesistaUNU" readonly>
-                  
-                </div>
-                <div class="col-md-1">
-                </div>
-              </div>
                <div class="form-group row">
                 <label class="col-sm-3 col-form-label">Codigo</label>
                 <div class="col-sm-9">
@@ -221,6 +212,7 @@ function Acceso(codigo){
                 <label class="col-sm-3 col-form-label">Motivo</label>
                 <div class="col-sm-9">
                   <textarea name="motivo" class="form-control" id="motivo"> </textarea>
+                  <span>De acuerdo a la solicitud presentada por el Tesitas .....</span>
                 </div>
               </div>            
             </form>
